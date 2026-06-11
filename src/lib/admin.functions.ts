@@ -2,7 +2,8 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-async function assertAdmin(ctx: { supabase: { rpc: (n: string, p: Record<string, unknown>) => Promise<{ data: unknown }> }; userId: string }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function assertAdmin(ctx: any) {
   const { data } = await ctx.supabase.rpc("has_role", { _user_id: ctx.userId, _role: "admin" });
   if (!data) throw new Error("Forbidden");
 }
@@ -76,7 +77,9 @@ export const toggleProductFlag = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error } = await supabaseAdmin.from("products").update({ [data.field]: data.value }).eq("id", data.productId);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const patch: any = { [data.field]: data.value };
+    const { error } = await supabaseAdmin.from("products").update(patch).eq("id", data.productId);
     if (error) throw new Error(error.message);
     return { ok: true };
   });

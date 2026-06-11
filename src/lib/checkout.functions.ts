@@ -81,10 +81,10 @@ export const placeOrder = createServerFn({ method: "POST" })
     if (data.coupon_code) {
       const { data: c } = await supabaseAdmin
         .from("coupons")
-        .select("code, discount_type, discount_value, min_order_amount, max_uses, used_count, is_active, expires_at")
+        .select("code, discount_type, discount_value, min_order, usage_limit, used_count, is_active, expires_at")
         .eq("code", data.coupon_code.toUpperCase())
         .maybeSingle();
-      if (c && c.is_active && (!c.expires_at || new Date(c.expires_at) > new Date()) && subtotal >= Number(c.min_order_amount ?? 0)) {
+      if (c && c.is_active && (!c.expires_at || new Date(c.expires_at) > new Date()) && subtotal >= Number(c.min_order ?? 0)) {
         discount = c.discount_type === "percent"
           ? Math.round((subtotal * Number(c.discount_value)) / 100)
           : Number(c.discount_value);

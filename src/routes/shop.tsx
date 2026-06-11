@@ -44,12 +44,12 @@ function Shop() {
             type="search"
             defaultValue={search.q ?? ""}
             placeholder="Search…"
-            onChange={(e) => navigate({ search: (p) => ({ ...p, q: e.target.value || undefined }) })}
+            onChange={(e) => navigate({ search: (p: typeof search) => ({ ...p, q: e.target.value || undefined }) })}
             className="rounded-md bg-card border border-border px-3 py-2 text-sm w-56"
           />
           <select
             value={search.sort ?? "newest"}
-            onChange={(e) => navigate({ search: (p) => ({ ...p, sort: e.target.value as never }) })}
+            onChange={(e) => navigate({ search: (p: typeof search) => ({ ...p, sort: e.target.value as never }) })}
             className="rounded-md bg-card border border-border px-3 py-2 text-sm"
           >
             <option value="newest">Newest</option>

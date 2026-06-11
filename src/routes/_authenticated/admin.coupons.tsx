@@ -7,12 +7,12 @@ export const Route = createFileRoute("/_authenticated/admin/coupons")({
   component: Coupons,
 });
 
-type Coupon = { id: string; code: string; discount_type: string; discount_value: number; min_order_amount: number; max_uses: number | null; used_count: number; is_active: boolean; expires_at: string | null };
+type Coupon = { id: string; code: string; discount_type: string; discount_value: number; min_order: number; usage_limit: number | null; used_count: number; is_active: boolean; expires_at: string | null };
 
 function Coupons() {
   const [coupons, setCoupons] = useState<Coupon[]>([]);
   useEffect(() => {
-    supabase.from("coupons").select("*").order("created_at", { ascending: false }).then(({ data }) => setCoupons((data ?? []) as Coupon[]));
+    supabase.from("coupons").select("*").order("created_at", { ascending: false }).then(({ data }) => setCoupons((data ?? []) as unknown as Coupon[]));
   }, []);
   return (
     <div>
@@ -28,8 +28,8 @@ function Coupons() {
                 <td className="p-3 font-mono font-bold">{c.code}</td>
                 <td className="p-3">{c.discount_type}</td>
                 <td className="p-3">{c.discount_type === "percent" ? `${c.discount_value}%` : inr(c.discount_value)}</td>
-                <td className="p-3">{inr(c.min_order_amount)}</td>
-                <td className="p-3">{c.used_count}{c.max_uses ? ` / ${c.max_uses}` : ""}</td>
+                <td className="p-3">{inr(c.min_order)}</td>
+                <td className="p-3">{c.used_count}{c.usage_limit ? ` / ${c.usage_limit}` : ""}</td>
                 <td className="p-3">{c.is_active ? "Yes" : "No"}</td>
               </tr>
             ))}
