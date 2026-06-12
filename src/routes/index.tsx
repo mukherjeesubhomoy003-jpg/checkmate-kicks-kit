@@ -83,6 +83,11 @@ function Home() {
         </div>
       </section>
 
+      {/* World Cup — Player Edition */}
+      <WorldCupSection />
+
+
+
       {/* Categories */}
       <section className="container-x py-16">
         <div className="flex items-end justify-between mb-8">
