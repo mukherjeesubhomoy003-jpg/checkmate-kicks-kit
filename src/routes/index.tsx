@@ -5,6 +5,7 @@ import heroImg from "@/assets/hero.jpg";
 import bannerImg from "@/assets/banner-1.jpg";
 import { listCategories, listProducts } from "@/lib/products.functions";
 import { ProductCard } from "@/components/products/ProductCard";
+import { WorldCupSection } from "@/components/home/WorldCupSection";
 
 const catsQ = queryOptions({ queryKey: ["categories"], queryFn: () => listCategories() });
 const featQ = queryOptions({ queryKey: ["products", "featured"], queryFn: () => listProducts({ data: { featured: true, limit: 8 } }) });
