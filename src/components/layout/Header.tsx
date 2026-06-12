@@ -1,89 +1,43 @@
 import { Link } from "@tanstack/react-router";
-import { ShoppingBag, Search, User, Menu, X, Heart } from "lucide-react";
-import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useCart } from "@/lib/cart-context";
+import { Instagram, Mail, MessageCircle, Phone, Users } from "lucide-react";
 import { Logo } from "./Logo";
-
-const nav = [
-  { to: "/shop", label: "Shop" },
-  { to: "/category/$slug", params: { slug: "jerseys" }, label: "Jerseys" },
-  { to: "/category/$slug", params: { slug: "shoes" }, label: "Shoes" },
-  { to: "/category/$slug", params: { slug: "footballs" }, label: "Footballs" },
-  { to: "/category/$slug", params: { slug: "gk-gloves" }, label: "Gloves" },
-  { to: "/category/$slug", params: { slug: "training" }, label: "Training" },
-] as const;
+import { BRAND } from "@/components/order/OrderModal";
 
 export function Header() {
-  const { count } = useCart();
-  const [open, setOpen] = useState(false);
-  const [authed, setAuthed] = useState(false);
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => setAuthed(!!data.session));
-    const { data: sub } = supabase.auth.onAuthStateChange((_, s) => setAuthed(!!s));
-    return () => sub.subscription.unsubscribe();
-  }, []);
-
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
-      <div className="container-x flex h-16 items-center gap-6">
-        <button className="md:hidden" aria-label="Menu" onClick={() => setOpen(!open)}>
-          {open ? <X className="size-5" /> : <Menu className="size-5" />}
-        </button>
+    <header className="sticky top-0 z-50 border-b border-gold/40 bg-white/85 backdrop-blur-xl">
+      <div className="absolute inset-x-0 bottom-0 h-px hairline-gold" />
+      <div className="container-x flex h-16 items-center gap-4">
         <Link to="/" className="flex items-center gap-2" aria-label="Checkmate home">
-          <Logo className="h-10 w-auto bg-white/95 rounded-md px-2 py-1" />
+          <Logo className="h-10 w-auto rounded-md" />
         </Link>
-        <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-          {nav.map((n) => (
-            <Link
-              key={n.label}
-              to={n.to as never}
-              params={(n as { params?: Record<string, string> }).params as never}
-              className="text-muted-foreground hover:text-foreground transition-colors"
-              activeProps={{ className: "text-foreground" }}
-            >
-              {n.label}
-            </Link>
-          ))}
+
+        <nav className="hidden md:flex ml-6 items-center gap-6 text-sm font-semibold text-neutral-700">
+          <a href="#collection" className="hover:text-[#8a6a14]">World Cup '26</a>
+          <a href="#how" className="hover:text-[#8a6a14]">How to Order</a>
+          <a href="#contact" className="hover:text-[#8a6a14]">Contact</a>
         </nav>
-        <div className="ml-auto flex items-center gap-1">
-          <Link to="/shop" className="hidden sm:inline-flex p-2 hover:text-primary" aria-label="Search">
-            <Search className="size-5" />
-          </Link>
-          <Link to="/wishlist" className="p-2 hover:text-primary" aria-label="Wishlist">
-            <Heart className="size-5" />
-          </Link>
-          <Link to={authed ? "/account" : "/auth"} className="p-2 hover:text-primary" aria-label="Account">
-            <User className="size-5" />
-          </Link>
-          <Link to="/cart" className="relative p-2 hover:text-primary" aria-label="Cart">
-            <ShoppingBag className="size-5" />
-            {count > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 grid h-5 min-w-5 place-items-center rounded-full bg-primary px-1 text-[10px] font-bold text-primary-foreground">
-                {count}
-              </span>
-            )}
-          </Link>
+
+        <div className="ml-auto flex items-center gap-1.5">
+          <a href={BRAND.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram"
+            className="p-2 rounded-full text-neutral-600 hover:text-[#8a6a14] hover:bg-[#fbf4dd]">
+            <Instagram className="size-4" />
+          </a>
+          <a href={`mailto:${BRAND.email}`} aria-label="Email"
+            className="hidden sm:inline-flex p-2 rounded-full text-neutral-600 hover:text-[#8a6a14] hover:bg-[#fbf4dd]">
+            <Mail className="size-4" />
+          </a>
+          <a href={BRAND.whatsappGroup} target="_blank" rel="noopener noreferrer" aria-label="Join WhatsApp group"
+            className="hidden sm:inline-flex p-2 rounded-full text-neutral-600 hover:text-[#8a6a14] hover:bg-[#fbf4dd]">
+            <Users className="size-4" />
+          </a>
+          <a href={`https://wa.me/${BRAND.whatsappPrimary}`} target="_blank" rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-xs font-bold uppercase tracking-wider"
+            style={{ background: "var(--gradient-gold)", color: "#1a1a1a", border: "1px solid #8a6a14" }}>
+            <MessageCircle className="size-3.5" /> Order
+          </a>
         </div>
       </div>
-      {open && (
-        <div className="md:hidden border-t border-border/60 bg-background">
-          <div className="container-x flex flex-col py-3 gap-1">
-            {nav.map((n) => (
-              <Link
-                key={n.label}
-                to={n.to as never}
-                params={(n as { params?: Record<string, string> }).params as never}
-                onClick={() => setOpen(false)}
-                className="py-2 text-sm text-muted-foreground hover:text-foreground"
-              >
-                {n.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
     </header>
   );
 }
