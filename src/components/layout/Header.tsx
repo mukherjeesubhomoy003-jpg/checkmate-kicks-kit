@@ -3,6 +3,7 @@ import { ShoppingBag, Search, User, Menu, X, Heart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCart } from "@/lib/cart-context";
+import { Logo } from "./Logo";
 
 const nav = [
   { to: "/shop", label: "Shop" },
@@ -30,8 +31,8 @@ export function Header() {
         <button className="md:hidden" aria-label="Menu" onClick={() => setOpen(!open)}>
           {open ? <X className="size-5" /> : <Menu className="size-5" />}
         </button>
-        <Link to="/" className="font-display text-xl font-bold tracking-tight">
-          <span className="text-primary">CHECK</span>MATE
+        <Link to="/" className="flex items-center gap-2" aria-label="Checkmate home">
+          <Logo className="h-10 w-auto bg-white/95 rounded-md px-2 py-1" />
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
           {nav.map((n) => (

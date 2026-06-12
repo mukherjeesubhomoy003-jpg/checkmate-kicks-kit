@@ -1,13 +1,12 @@
 import { Link } from "@tanstack/react-router";
+import { Logo } from "./Logo";
 
 export function Footer() {
   return (
     <footer className="mt-24 border-t border-border/60 bg-card/40">
       <div className="container-x py-14 grid gap-10 md:grid-cols-4">
         <div>
-          <div className="font-display text-xl font-bold">
-            <span className="text-primary">CHECK</span>MATE
-          </div>
+          <Logo className="h-12 w-auto bg-white/95 rounded-md px-2 py-1" />
           <p className="mt-3 text-sm text-muted-foreground max-w-xs">
             Premium football gear engineered for performance. Built for athletes who never settle.
           </p>
