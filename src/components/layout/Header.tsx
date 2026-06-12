@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Instagram, Mail, MessageCircle, Phone, Users } from "lucide-react";
+import { Instagram, Mail, MessageCircle, Users } from "lucide-react";
 import { Logo } from "./Logo";
 import { BRAND } from "@/components/order/OrderModal";
 
