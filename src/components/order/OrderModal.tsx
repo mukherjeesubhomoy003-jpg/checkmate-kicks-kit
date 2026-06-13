@@ -39,9 +39,6 @@ export function OrderModal({ team, image, open, onClose }: Props) {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [pincode, setPincode] = useState("");
-  const [nameOnBack, setNameOnBack] = useState("");
-  const [numberOnBack, setNumberOnBack] = useState("");
-  const [notes, setNotes] = useState("");
 
   if (!open) return null;
 
