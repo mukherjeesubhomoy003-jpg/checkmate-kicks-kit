@@ -261,7 +261,7 @@ export function OrderModal({ team, image, open, onClose }: Props) {
                   <div className="mt-2 text-sm">
                     <div className="font-semibold">{team} — {kit} Kit</div>
                     <div className="text-muted-foreground">Size {size} · Qty {qty}</div>
-                    {nameOnBack && <div className="text-muted-foreground">{nameOnBack} {numberOnBack && `#${numberOnBack}`}</div>}
+                    </div>
                   </div>
                   <div className="mt-3 h-px hairline-gold" />
                   <Row label="Subtotal" value={`₹${subtotal}`} />
