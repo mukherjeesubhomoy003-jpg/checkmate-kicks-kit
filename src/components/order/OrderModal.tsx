@@ -50,7 +50,6 @@ export function OrderModal({ team, image, open, onClose }: Props) {
   const reset = () => {
     setStep(1); setKit("Home"); setSize("L"); setQty(1);
     setName(""); setPhone(""); setAddress(""); setCity(""); setPincode("");
-    setNameOnBack(""); setNumberOnBack(""); setNotes("");
   };
   const close = () => { onClose(); setTimeout(reset, 250); };
 
@@ -63,8 +62,6 @@ export function OrderModal({ team, image, open, onClose }: Props) {
       `*Item:* ${team} — ${kit} Kit (Player Edition)`,
       `*Size:* ${size}`,
       `*Qty:* ${qty}`,
-      nameOnBack ? `*Name on back:* ${nameOnBack}` : "",
-      numberOnBack ? `*Number:* ${numberOnBack}` : "",
       `*Unit price:* ₹${unit}`,
       `*Subtotal:* ₹${subtotal}`,
       `*Shipping:* Free (standard)`,
@@ -75,7 +72,6 @@ export function OrderModal({ team, image, open, onClose }: Props) {
       `Phone: ${phone}`,
       `Address: ${address}`,
       `City: ${city}  Pincode: ${pincode}`,
-      notes ? `Notes: ${notes}` : "",
       ``,
       paid ? `✅ Payment done — sharing screenshot next.` : `🕒 Will pay shortly via UPI QR.`,
     ].filter(Boolean);
