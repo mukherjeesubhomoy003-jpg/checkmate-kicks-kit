@@ -39,9 +39,6 @@ export function OrderModal({ team, image, open, onClose }: Props) {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [pincode, setPincode] = useState("");
-  const [nameOnBack, setNameOnBack] = useState("");
-  const [numberOnBack, setNumberOnBack] = useState("");
-  const [notes, setNotes] = useState("");
 
   if (!open) return null;
 
@@ -53,7 +50,6 @@ export function OrderModal({ team, image, open, onClose }: Props) {
   const reset = () => {
     setStep(1); setKit("Home"); setSize("L"); setQty(1);
     setName(""); setPhone(""); setAddress(""); setCity(""); setPincode("");
-    setNameOnBack(""); setNumberOnBack(""); setNotes("");
   };
   const close = () => { onClose(); setTimeout(reset, 250); };
 
@@ -66,8 +62,6 @@ export function OrderModal({ team, image, open, onClose }: Props) {
       `*Item:* ${team} — ${kit} Kit (Player Edition)`,
       `*Size:* ${size}`,
       `*Qty:* ${qty}`,
-      nameOnBack ? `*Name on back:* ${nameOnBack}` : "",
-      numberOnBack ? `*Number:* ${numberOnBack}` : "",
       `*Unit price:* ₹${unit}`,
       `*Subtotal:* ₹${subtotal}`,
       `*Shipping:* Free (standard)`,
@@ -78,7 +72,6 @@ export function OrderModal({ team, image, open, onClose }: Props) {
       `Phone: ${phone}`,
       `Address: ${address}`,
       `City: ${city}  Pincode: ${pincode}`,
-      notes ? `Notes: ${notes}` : "",
       ``,
       paid ? `✅ Payment done — sharing screenshot next.` : `🕒 Will pay shortly via UPI QR.`,
     ].filter(Boolean);
@@ -164,9 +157,6 @@ export function OrderModal({ team, image, open, onClose }: Props) {
                 <Field label="Address" value={address} onChange={setAddress} placeholder="House, street, area" className="sm:col-span-2" />
                 <Field label="City" value={city} onChange={setCity} placeholder="City" />
                 <Field label="Pincode" value={pincode} onChange={(v) => setPincode(v.replace(/\D/g, "").slice(0, 6))} placeholder="6-digit" />
-                <Field label="Name on back (optional)" value={nameOnBack} onChange={setNameOnBack} placeholder="e.g. MESSI" />
-                <Field label="Number (optional)" value={numberOnBack} onChange={(v) => setNumberOnBack(v.replace(/\D/g, "").slice(0, 3))} placeholder="10" />
-                <Field label="Notes (optional)" value={notes} onChange={setNotes} placeholder="Anything else" className="sm:col-span-2" />
               </div>
 
               <div className="mt-5 rounded-xl border border-gold/40 bg-gold-soft p-4">
@@ -176,6 +166,37 @@ export function OrderModal({ team, image, open, onClose }: Props) {
                 <div className="my-2 h-px hairline-gold" />
                 <Row label="Total" value={`₹${total}`} strong />
                 <div className="mt-2 text-[11px] text-muted-foreground">All-India delivery · No COD (for safety) · Pay via UPI QR on next step.</div>
+              </div>
+
+              {/* Contact details */}
+              <div className="mt-4 rounded-xl border border-gold/40 bg-white p-4">
+                <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#8a6a14]">Reach us anytime</div>
+                <div className="mt-2 grid grid-cols-1 gap-1.5 text-xs text-neutral-700">
+                  <a href={`https://wa.me/${BRAND.whatsappPrimary}`} target="_blank" rel="noopener noreferrer" className="hover:text-[#8a6a14]">
+                    WhatsApp (Ankush): +91 70033 69589
+                  </a>
+                  <a href={`https://wa.me/${BRAND.whatsappAlt}`} target="_blank" rel="noopener noreferrer" className="hover:text-[#8a6a14]">
+                    Alternate: +91 85830 25727
+                  </a>
+                  <a href={`mailto:${BRAND.email}`} className="hover:text-[#8a6a14]">{BRAND.email}</a>
+                  <a href={BRAND.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-[#8a6a14]">Instagram · @checkmate.jersey</a>
+                  <a href={BRAND.whatsappGroup} target="_blank" rel="noopener noreferrer" className="hover:text-[#8a6a14]">Join our WhatsApp community</a>
+                </div>
+              </div>
+
+              {/* Terms & conditions */}
+              <div className="mt-4 rounded-xl border border-gold/40 bg-gold-soft p-4">
+                <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#8a6a14]">🟩 Terms &amp; Conditions</div>
+                <ol className="mt-2 list-decimal pl-5 space-y-1.5 text-[11.5px] text-neutral-700 leading-relaxed">
+                  <li>You have to make a proper video of opening the parcel.</li>
+                  <li>Product will be changed only when the product is damaged in package or missing in package — the opening video is the only proof.</li>
+                  <li>We will share a proper size chart for your order. After receiving the product, no replacement on size-related issues.</li>
+                  <li>If we send the wrong product or wrong size, that item will be replaced.</li>
+                </ol>
+                <div className="mt-3 space-y-1 text-[11.5px] text-neutral-700">
+                  <div>➡️ Delivery time: <span className="font-semibold">15–20 days</span></div>
+                  <div>➡️ We share product tracking — you can track your order ❤️</div>
+                </div>
               </div>
 
               <div className="mt-5 flex flex-col sm:flex-row gap-2">
@@ -240,7 +261,6 @@ export function OrderModal({ team, image, open, onClose }: Props) {
                   <div className="mt-2 text-sm">
                     <div className="font-semibold">{team} — {kit} Kit</div>
                     <div className="text-muted-foreground">Size {size} · Qty {qty}</div>
-                    {nameOnBack && <div className="text-muted-foreground">{nameOnBack} {numberOnBack && `#${numberOnBack}`}</div>}
                   </div>
                   <div className="mt-3 h-px hairline-gold" />
                   <Row label="Subtotal" value={`₹${subtotal}`} />
