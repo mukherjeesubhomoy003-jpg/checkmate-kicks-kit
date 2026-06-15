@@ -80,8 +80,8 @@ function Home() {
         </div>
       </section>
 
-      {/* World Cup Collection */}
-      <WorldCupSection />
+      {/* World Cup Collection — featured preview, full catalogue on /world-cup-2026 */}
+      <WorldCupSection preview={8} showBanner={false} />
 
       {/* How to order */}
       <section id="how" className="container-x py-20">

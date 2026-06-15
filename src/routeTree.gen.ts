@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WorldCup2026RouteImport } from './routes/world-cup-2026'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
@@ -29,6 +30,11 @@ import { Route as AuthenticatedAccountOrdersRouteImport } from './routes/_authen
 import { Route as ApiPublicInvoiceIdRouteImport } from './routes/api/public/invoice.$id'
 import { Route as AuthenticatedAccountOrdersIdRouteImport } from './routes/_authenticated/account.orders.$id'
 
+const WorldCup2026Route = WorldCup2026RouteImport.update({
+  id: '/world-cup-2026',
+  path: '/world-cup-2026',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WishlistRoute = WishlistRouteImport.update({
   id: '/wishlist',
   path: '/wishlist',
@@ -136,6 +142,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/shop': typeof ShopRoute
   '/wishlist': typeof WishlistRoute
+  '/world-cup-2026': typeof WorldCup2026Route
   '/account': typeof AuthenticatedAccountRouteWithChildren
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/checkout': typeof AuthenticatedCheckoutRoute
@@ -156,6 +163,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/shop': typeof ShopRoute
   '/wishlist': typeof WishlistRoute
+  '/world-cup-2026': typeof WorldCup2026Route
   '/account': typeof AuthenticatedAccountRouteWithChildren
   '/checkout': typeof AuthenticatedCheckoutRoute
   '/category/$slug': typeof CategorySlugRoute
@@ -177,6 +185,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/shop': typeof ShopRoute
   '/wishlist': typeof WishlistRoute
+  '/world-cup-2026': typeof WorldCup2026Route
   '/_authenticated/account': typeof AuthenticatedAccountRouteWithChildren
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/checkout': typeof AuthenticatedCheckoutRoute
@@ -199,6 +208,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/shop'
     | '/wishlist'
+    | '/world-cup-2026'
     | '/account'
     | '/admin'
     | '/checkout'
@@ -219,6 +229,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/shop'
     | '/wishlist'
+    | '/world-cup-2026'
     | '/account'
     | '/checkout'
     | '/category/$slug'
@@ -239,6 +250,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/shop'
     | '/wishlist'
+    | '/world-cup-2026'
     | '/_authenticated/account'
     | '/_authenticated/admin'
     | '/_authenticated/checkout'
@@ -261,6 +273,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   ShopRoute: typeof ShopRoute
   WishlistRoute: typeof WishlistRoute
+  WorldCup2026Route: typeof WorldCup2026Route
   CategorySlugRoute: typeof CategorySlugRoute
   ProductSlugRoute: typeof ProductSlugRoute
   ApiPublicInvoiceIdRoute: typeof ApiPublicInvoiceIdRoute
@@ -268,6 +281,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/world-cup-2026': {
+      id: '/world-cup-2026'
+      path: '/world-cup-2026'
+      fullPath: '/world-cup-2026'
+      preLoaderRoute: typeof WorldCup2026RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/wishlist': {
       id: '/wishlist'
       path: '/wishlist'
@@ -469,6 +489,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   ShopRoute: ShopRoute,
   WishlistRoute: WishlistRoute,
+  WorldCup2026Route: WorldCup2026Route,
   CategorySlugRoute: CategorySlugRoute,
   ProductSlugRoute: ProductSlugRoute,
   ApiPublicInvoiceIdRoute: ApiPublicInvoiceIdRoute,

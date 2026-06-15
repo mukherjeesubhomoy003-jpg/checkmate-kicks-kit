@@ -13,9 +13,9 @@ export function Header() {
         </Link>
 
         <nav className="hidden md:flex ml-6 items-center gap-6 text-sm font-semibold text-neutral-700">
-          <a href="#collection" className="hover:text-[#8a6a14]">World Cup '26</a>
-          <a href="#how" className="hover:text-[#8a6a14]">How to Order</a>
-          <a href="#contact" className="hover:text-[#8a6a14]">Contact</a>
+          <Link to="/world-cup-2026" className="hover:text-[#8a6a14]">World Cup '26</Link>
+          <Link to="/" hash="how" className="hover:text-[#8a6a14]">How to Order</Link>
+          <a href={`https://wa.me/${BRAND.whatsappPrimary}`} target="_blank" rel="noopener noreferrer" className="hover:text-[#8a6a14]">Contact</a>
         </nav>
 
         <div className="ml-auto flex items-center gap-1.5">
