@@ -28,12 +28,12 @@ function Home() {
         <div aria-hidden className="absolute inset-0 opacity-40" style={{
           backgroundImage: "radial-gradient(circle at 15% 20%, #d4af37 0, transparent 40%), radial-gradient(circle at 85% 80%, #b8862b 0, transparent 45%)",
         }} />
-        <div className="container-x relative py-28 md:py-40 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em]"
+        <div className="container-x relative py-20 sm:py-28 md:py-40 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full px-3 sm:px-4 py-1.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.18em] sm:tracking-[0.22em]"
             style={{ background: "rgba(255,248,225,0.12)", color: "#f4d77a", border: "1px solid #d4af37", backdropFilter: "blur(6px)" }}>
             <Zap className="size-3" /> World Cup 2026 · Player Edition
           </div>
-          <h1 className="mt-6 font-display text-6xl md:text-8xl font-bold leading-[0.92] tracking-tight">
+          <h1 className="mt-5 sm:mt-6 font-display text-5xl sm:text-6xl md:text-8xl font-bold leading-[0.92] tracking-tight">
             <span style={{ backgroundImage: "linear-gradient(180deg,#ffffff 0%,#fff7d6 60%,#e6c976 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent", textShadow: "0 2px 24px rgba(0,0,0,0.4)" }}>
               Wear Your
             </span>
