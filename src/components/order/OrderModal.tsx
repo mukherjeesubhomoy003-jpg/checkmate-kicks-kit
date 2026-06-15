@@ -320,68 +320,172 @@ function InvoiceView(props: {
   const { orderNo, team, kit, size, qty, unit, subtotal, shipping, total, name, phone, address, city, pincode, onClose } = props;
   const date = useMemo(() => new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }), []);
 
+  const estDelivery = useMemo(() => {
+    const d1 = new Date(); d1.setDate(d1.getDate() + 15);
+    const d2 = new Date(); d2.setDate(d2.getDate() + 20);
+    const fmt = (d: Date) => d.toLocaleDateString("en-IN", { day: "2-digit", month: "short" });
+    return `${fmt(d1)} – ${fmt(d2)}`;
+  }, []);
+
+  const logoUrl = typeof window !== "undefined" ? new URL(logoAsset.url, window.location.origin).href : logoAsset.url;
+
+  const sendOnWhatsApp = () => {
+    const text = [
+      `*Order Confirmation — CHECKMATE*`,
+      `Order #: ${orderNo}`,
+      `${team} — ${kit} Kit · Size ${size} · Qty ${qty}`,
+      `Total Paid: ₹${total}`,
+      `Ship to: ${name}, ${address}, ${city} - ${pincode}`,
+      `Phone: +91 ${phone}`,
+      `Est. Delivery: ${estDelivery}`,
+      ``,
+      `Sharing payment screenshot now ✅`,
+    ].join("\n");
+    const url = `https://api.whatsapp.com/send?phone=${BRAND.whatsappPrimary}&text=${encodeURIComponent(text)}`;
+    window.open(url, "_blank");
+  };
+
   const printInvoice = () => {
-    const html = `<!doctype html><html><head><meta charset="utf-8"/><title>Invoice ${orderNo}</title>
+    const html = `<!doctype html><html><head><meta charset="utf-8"/><title>Invoice ${orderNo} · CHECKMATE</title>
 <style>
   *{box-sizing:border-box}
-  body{font-family:-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:#1a1a1a;margin:0;padding:32px;background:#fff}
-  .wrap{max-width:760px;margin:0 auto;border:1px solid #e5e0c8}
-  .hd{background:linear-gradient(135deg,#1a1a1a,#2b2b2b);color:#f4d77a;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #d4af37}
-  .hd h1{margin:0;font-size:22px;letter-spacing:.18em}
-  .hd .meta{font-size:11px;color:#e5d28a;text-align:right}
-  .body{padding:24px}
+  body{font-family:-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:#1a1a1a;margin:0;padding:24px;background:#f6f3ea}
+  .wrap{max-width:780px;margin:0 auto;border:1px solid #e5e0c8;background:#fff;box-shadow:0 20px 50px -30px rgba(0,0,0,0.25)}
+  .hd{background:linear-gradient(135deg,#1a1a1a,#2b2b2b);color:#f4d77a;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #d4af37;gap:16px}
+  .brand{display:flex;align-items:center;gap:14px}
+  .brand img{width:54px;height:54px;border-radius:10px;border:1.5px solid #d4af37;background:#fff;object-fit:cover}
+  .brand h1{margin:0;font-size:22px;letter-spacing:.18em}
+  .brand .tag{font-size:9.5px;letter-spacing:.22em;margin-top:3px;color:#e5d28a}
+  .meta{font-size:11px;color:#e5d28a;text-align:right;line-height:1.55}
+  .meta b{color:#f4d77a;font-size:13px;letter-spacing:.12em}
+  .body{padding:22px 24px}
   .row{display:flex;justify-content:space-between;gap:24px;margin-bottom:18px}
-  .col{flex:1}
-  h3{font-size:11px;text-transform:uppercase;letter-spacing:.18em;color:#8a6a14;margin:0 0 6px}
-  table{width:100%;border-collapse:collapse;margin-top:8px}
-  th,td{padding:10px 8px;text-align:left;border-bottom:1px solid #eee;font-size:13px}
-  th{background:#fbf4dd;color:#8a6a14;text-transform:uppercase;font-size:10px;letter-spacing:.14em}
-  .tot{font-weight:700;font-size:16px}
-  .ft{padding:16px 24px;border-top:1px solid #eee;font-size:11px;color:#666;text-align:center}
-  .stamp{display:inline-block;border:2px solid #1a7a3a;color:#1a7a3a;padding:4px 10px;border-radius:6px;font-weight:700;letter-spacing:.18em;font-size:11px;transform:rotate(-6deg)}
-  @media print{body{padding:0}.no-print{display:none}}
+  .col{flex:1;min-width:0}
+  h3{font-size:10px;text-transform:uppercase;letter-spacing:.2em;color:#8a6a14;margin:0 0 6px;font-weight:700}
+  .kv{font-size:12.5px;line-height:1.65}
+  table{width:100%;border-collapse:collapse;margin-top:6px}
+  th,td{padding:10px 8px;text-align:left;border-bottom:1px solid #efe9d3;font-size:12.5px;vertical-align:top}
+  th{background:#fbf4dd;color:#8a6a14;text-transform:uppercase;font-size:9.5px;letter-spacing:.16em}
+  .tot{font-weight:800;font-size:16px;color:#1a1a1a}
+  .totals{margin-top:14px;margin-left:auto;width:300px}
+  .totals .ln{display:flex;justify-content:space-between;padding:5px 0;font-size:12.5px}
+  .ft{padding:14px 24px;border-top:1px solid #efe9d3;font-size:10.5px;color:#777;text-align:center;background:#fbf9f1}
+  .stamp{display:inline-block;border:2.5px solid #1a7a3a;color:#1a7a3a;padding:4px 12px;border-radius:6px;font-weight:800;letter-spacing:.22em;font-size:11px;transform:rotate(-7deg);margin-top:6px}
+  .pill{display:inline-block;background:#fbf4dd;color:#8a6a14;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+  .box{border:1px solid #efe9d3;border-radius:10px;padding:12px 14px;background:#fcfaf3}
+  .box h4{margin:0 0 6px;font-size:10px;letter-spacing:.18em;color:#8a6a14;text-transform:uppercase}
+  .box .v{font-size:12px;color:#333;line-height:1.55}
+  @media print{body{padding:0;background:#fff}.no-print{display:none}.wrap{box-shadow:none;border:none}}
 </style></head><body>
 <div class="wrap">
-  <div class="hd"><div><h1>CHECKMATE</h1><div style="font-size:10px;letter-spacing:.22em;margin-top:2px">PLAYER EDITION · WORLD CUP 2026</div></div>
-  <div class="meta">Tax Invoice<br/><b style="color:#f4d77a">${orderNo}</b><br/>${date}</div></div>
-  <div class="body">
-    <div class="row">
-      <div class="col"><h3>Billed to</h3>
-        <div><b>${escapeHtml(name)}</b></div>
-        <div>${escapeHtml(address)}</div>
-        <div>${escapeHtml(city)} — ${escapeHtml(pincode)}</div>
-        <div>+91 ${escapeHtml(phone)}</div>
-      </div>
-      <div class="col" style="text-align:right"><h3>Seller · CHECKMATE Jersey</h3>
-        <div>📧 checkmatejersey@gmail.com</div>
-        <div>📱 WhatsApp: +91 70033 69589</div>
-        <div>📱 Alt: +91 85830 25727</div>
-        <div>📷 instagram.com/checkmate.jersey</div>
-        <div style="margin-top:10px"><span class="stamp">PAID</span></div>
-      </div>
+  <div class="hd">
+    <div class="brand">
+      <img src="${logoUrl}" alt="CHECKMATE"/>
+      <div><h1>CHECKMATE</h1><div class="tag">PLAYER EDITION · WORLD CUP 2026</div></div>
     </div>
-    <table>
-      <thead><tr><th>Item</th><th>Size</th><th style="text-align:center">Qty</th><th style="text-align:right">Unit</th><th style="text-align:right">Amount</th></tr></thead>
-      <tbody><tr>
-        <td><b>${escapeHtml(team)}</b><br/><span style="color:#888;font-size:11px">${kit} Kit · Player Edition</span></td>
-        <td>${size}</td><td style="text-align:center">${qty}</td>
-        <td style="text-align:right">₹${unit}</td><td style="text-align:right">₹${subtotal}</td>
-      </tr></tbody>
-    </table>
-    <div style="margin-top:14px;margin-left:auto;width:280px">
-      <div style="display:flex;justify-content:space-between;padding:4px 0"><span>Subtotal</span><span>₹${subtotal}</span></div>
-      <div style="display:flex;justify-content:space-between;padding:4px 0"><span>Shipping</span><span>${shipping === 0 ? "FREE" : "₹" + shipping}</span></div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #d4af37;margin-top:6px" class="tot"><span>Total</span><span>₹${total}</span></div>
-      <div style="font-size:11px;color:#666;margin-top:4px">Paid via UPI · ankushkhatik218@okhdfcbank</div>
-    </div>
-    <div style="margin-top:24px;font-size:11px;color:#666;line-height:1.6">
-      <b style="color:#8a6a14">Delivery:</b> 15–20 days. Tracking shared on WhatsApp after dispatch.<br/>
-      <b style="color:#8a6a14">Replacement:</b> Only if parcel is damaged/missing in opening video, or wrong item/size sent. No size-related returns after delivery.
+    <div class="meta">
+      <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase">Tax Invoice</div>
+      <div><b>${orderNo}</b></div>
+      <div>${date}</div>
+      <div style="margin-top:6px"><span class="pill" style="background:#1a7a3a;color:#fff">PAID</span></div>
     </div>
   </div>
-  <div class="ft">Thank you for shopping with CHECKMATE · Wear Your Passion</div>
+
+  <div class="body">
+    <div class="row">
+      <div class="col"><h3>Billed &amp; Shipped to</h3>
+        <div class="kv">
+          <b style="font-size:14px">${escapeHtml(name)}</b><br/>
+          ${escapeHtml(address)}<br/>
+          ${escapeHtml(city)} — ${escapeHtml(pincode)}<br/>
+          📱 +91 ${escapeHtml(phone)}
+        </div>
+      </div>
+      <div class="col" style="text-align:right"><h3>Sold By</h3>
+        <div class="kv">
+          <b>CHECKMATE Jersey</b><br/>
+          Player-Edition Football Kits<br/>
+          📧 ${BRAND.email}<br/>
+          📱 WhatsApp: +91 70033 69589<br/>
+          📱 Alt: +91 85830 25727<br/>
+          📷 instagram.com/checkmate.jersey
+        </div>
+        <div><span class="stamp">PAID</span></div>
+      </div>
+    </div>
+
+    <table>
+      <thead><tr>
+        <th style="width:42%">Item Description</th>
+        <th>HSN</th><th>Size</th>
+        <th style="text-align:center">Qty</th>
+        <th style="text-align:right">Unit (₹)</th>
+        <th style="text-align:right">Amount (₹)</th>
+      </tr></thead>
+      <tbody><tr>
+        <td>
+          <b>${escapeHtml(team)} — ${kit} Kit</b><br/>
+          <span style="color:#888;font-size:11px">Player Edition · World Cup 2026 · Match-grade dri-fit fabric</span>
+        </td>
+        <td>6109</td>
+        <td>${size}</td>
+        <td style="text-align:center">${qty}</td>
+        <td style="text-align:right">${unit}</td>
+        <td style="text-align:right">${subtotal}</td>
+      </tr></tbody>
+    </table>
+
+    <div class="totals">
+      <div class="ln"><span>Subtotal</span><span>₹${subtotal}</span></div>
+      <div class="ln"><span>Shipping (All-India)</span><span>${shipping === 0 ? "FREE" : "₹" + shipping}</span></div>
+      <div class="ln"><span>Discount</span><span>—</span></div>
+      <div class="ln tot" style="border-top:1.5px solid #d4af37;margin-top:6px;padding-top:8px"><span>Grand Total</span><span>₹${total}</span></div>
+      <div style="font-size:11px;color:#666;margin-top:6px;text-align:right">Inclusive of all taxes</div>
+    </div>
+
+    <div class="grid2">
+      <div class="box">
+        <h4>Payment</h4>
+        <div class="v">
+          Method: <b>UPI</b><br/>
+          UPI ID: ${UPI_ID}<br/>
+          Payee: ${UPI_NAME}<br/>
+          Status: <b style="color:#1a7a3a">PAID ✓</b>
+        </div>
+      </div>
+      <div class="box">
+        <h4>Delivery</h4>
+        <div class="v">
+          ETA: <b>${estDelivery}</b> (15–20 days)<br/>
+          Mode: Tracked courier<br/>
+          Tracking: shared on WhatsApp after dispatch<br/>
+          Support: +91 70033 69589
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:18px;padding:12px 14px;border:1px dashed #d4af37;border-radius:10px;background:#fbf4dd">
+      <div style="font-size:10px;letter-spacing:.18em;color:#8a6a14;font-weight:700;text-transform:uppercase">Replacement Policy</div>
+      <ol style="margin:6px 0 0 18px;padding:0;font-size:11px;color:#555;line-height:1.65">
+        <li>Record a clear opening video of the parcel — required as proof.</li>
+        <li>Replacement only for damaged/missing items shown in the opening video, or if wrong item/size is sent by us.</li>
+        <li>No size-related returns after delivery — confirm size from our chart before dispatch.</li>
+      </ol>
+    </div>
+
+    <div style="margin-top:14px;font-size:10.5px;color:#777;text-align:center">
+      This is a computer-generated invoice and does not require a signature.
+    </div>
+  </div>
+  <div class="ft">
+    Thank you for shopping with <b style="color:#8a6a14">CHECKMATE</b> · Wear Your Passion ❤️<br/>
+    For any query: WhatsApp +91 70033 69589 · ${BRAND.email}
+  </div>
 </div>
-<div class="no-print" style="text-align:center;margin-top:16px"><button onclick="window.print()" style="padding:10px 20px;background:#1a1a1a;color:#f4d77a;border:1px solid #d4af37;border-radius:999px;font-weight:700;letter-spacing:.18em;cursor:pointer">PRINT / SAVE AS PDF</button></div>
+<div class="no-print" style="text-align:center;margin:18px 0">
+  <button onclick="window.print()" style="padding:10px 22px;background:#1a1a1a;color:#f4d77a;border:1px solid #d4af37;border-radius:999px;font-weight:700;letter-spacing:.18em;cursor:pointer">PRINT / SAVE AS PDF</button>
+</div>
 </body></html>`;
     const w = window.open("", "_blank");
     if (w) { w.document.write(html); w.document.close(); }
@@ -391,9 +495,10 @@ function InvoiceView(props: {
     <div className="p-5 sm:p-6">
       <div className="text-center">
         <div className="mx-auto size-14 rounded-full bg-[#1a7a3a] grid place-items-center text-white"><Check className="size-7" /></div>
-        <div className="mt-3 font-display text-2xl font-semibold">Order Placed</div>
+        <div className="mt-3 font-display text-2xl font-semibold">Payment Received · Order Placed</div>
         <div className="mt-1 text-sm text-muted-foreground">Order number</div>
         <div className="mt-1 text-xl font-bold tracking-[0.18em] text-[#8a6a14]">{orderNo}</div>
+        <div className="mt-1 text-[11px] text-muted-foreground">{date}</div>
       </div>
 
       <div className="mt-5 rounded-xl border border-gold/40 bg-gold-soft p-4 max-w-md mx-auto">
@@ -401,24 +506,30 @@ function InvoiceView(props: {
         <Row label={`${team} — ${kit} · ${size} × ${qty}`} value={`₹${subtotal}`} />
         <Row label="Shipping" value="Free" />
         <Row label="Total Paid" value={`₹${total}`} strong />
-        <div className="mt-2 text-[11px] text-muted-foreground">
-          Ship to: {name}, {address}, {city} — {pincode}
+        <div className="mt-2 text-[11px] text-muted-foreground leading-relaxed">
+          <b>Ship to:</b> {name}, {address}, {city} — {pincode}<br/>
+          <b>ETA:</b> {estDelivery} · Tracking on WhatsApp
         </div>
       </div>
 
-      <div className="mt-5 flex flex-col sm:flex-row gap-2 justify-center">
-        <button onClick={printInvoice}
-          className="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold uppercase tracking-[0.18em]"
-          style={{ background: "var(--gradient-gold)", color: "#1a1a1a", border: "1px solid #8a6a14" }}>
-          <Printer className="size-4" /> Download Invoice
+      <div className="mt-5 flex flex-col sm:flex-row gap-2 justify-center max-w-md mx-auto">
+        <button onClick={sendOnWhatsApp}
+          className="flex-1 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white"
+          style={{ background: "#25D366", border: "1px solid #128C7E" }}>
+          <MessageCircle className="size-4" /> Send Screenshot on WhatsApp
         </button>
-        <button onClick={onClose} className="rounded-full px-6 py-3 text-sm font-semibold border border-border hover:border-gold/60">
-          Done
+        <button onClick={printInvoice}
+          className="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold uppercase tracking-[0.16em]"
+          style={{ background: "var(--gradient-gold)", color: "#1a1a1a", border: "1px solid #8a6a14" }}>
+          <Printer className="size-4" /> Invoice
         </button>
       </div>
+      <div className="mt-2 text-center">
+        <button onClick={onClose} className="text-xs text-muted-foreground hover:underline">Done</button>
+      </div>
 
-      <div className="mt-4 text-center text-[11px] text-muted-foreground">
-        A copy of your order has been sent on WhatsApp. We'll confirm dispatch with tracking shortly.
+      <div className="mt-4 text-center text-[11px] text-muted-foreground px-4">
+        Your order has already been sent on WhatsApp. Please share the payment screenshot so we can confirm dispatch.
       </div>
     </div>
   );
