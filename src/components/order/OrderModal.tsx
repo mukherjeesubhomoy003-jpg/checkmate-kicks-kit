@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
-import { X, Check, Phone, ShieldCheck, Printer } from "lucide-react";
+import { X, Check, Phone, ShieldCheck, Printer, MessageCircle } from "lucide-react";
 import qrAsset from "@/assets/payment-qr.png.asset.json";
+import logoAsset from "@/assets/checkmate-logo.asset.json";
 
 // === Brand contact / order routing =====================================
 export const BRAND = {
