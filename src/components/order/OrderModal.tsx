@@ -92,19 +92,44 @@ export function OrderModal({ team, image, open, onClose }: Props) {
     ].join("\n");
   };
 
+  // Robust WhatsApp redirect — anchor-click works where window.open is blocked
+  // (in-app browsers, mobile Safari popup blocker). Falls back to location change.
+  const openWhatsApp = (text: string) => {
+    const number = BRAND.whatsappPrimary;
+    const msg = encodeURIComponent(text);
+    // api.whatsapp.com/send is the most cross-platform endpoint (desktop + mobile + in-app browsers)
+    const url = `https://api.whatsapp.com/send?phone=${number}&text=${msg}`;
+    try {
+      const a = document.createElement("a");
+      a.href = url;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } catch {
+      window.location.href = url;
+    }
+    // Safety net: if nothing happened after 800ms, fall back to same-tab navigation
+    setTimeout(() => {
+      if (!document.hidden) {
+        // user may still be on the page (popup blocked) — navigate same tab
+        window.location.href = `https://wa.me/${number}?text=${msg}`;
+      }
+    }, 800);
+  };
+
   const confirmPaid = () => {
     const num = orderNo || nextOrderNumber();
     if (!orderNo) setOrderNo(num);
-    const url = `https://wa.me/${BRAND.whatsappPrimary}?text=${encodeURIComponent(buildMessage(true, num))}`;
-    window.open(url, "_blank", "noopener,noreferrer");
+    openWhatsApp(buildMessage(true, num));
     setStep(3);
   };
 
   const sendOrderUnpaid = () => {
     const num = orderNo || nextOrderNumber();
     if (!orderNo) setOrderNo(num);
-    const url = `https://wa.me/${BRAND.whatsappPrimary}?text=${encodeURIComponent(buildMessage(false, num))}`;
-    window.open(url, "_blank", "noopener,noreferrer");
+    openWhatsApp(buildMessage(false, num));
     setStep(3);
   };
 
@@ -326,10 +351,11 @@ function InvoiceView(props: {
         <div>${escapeHtml(city)} — ${escapeHtml(pincode)}</div>
         <div>+91 ${escapeHtml(phone)}</div>
       </div>
-      <div class="col" style="text-align:right"><h3>Seller</h3>
-        <div><b>CHECKMATE Jersey</b></div>
-        <div>checkmatejersey@gmail.com</div>
-        <div>+91 70033 69589</div>
+      <div class="col" style="text-align:right"><h3>Seller · CHECKMATE Jersey</h3>
+        <div>📧 checkmatejersey@gmail.com</div>
+        <div>📱 WhatsApp: +91 70033 69589</div>
+        <div>📱 Alt: +91 85830 25727</div>
+        <div>📷 instagram.com/checkmate.jersey</div>
         <div style="margin-top:10px"><span class="stamp">PAID</span></div>
       </div>
     </div>
