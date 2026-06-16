@@ -92,6 +92,9 @@ function Home() {
       {/* Happy customers — real WhatsApp reviews */}
       <HappyCustomers />
 
+      {/* Share with friends banner */}
+      <ShareBanner />
+
       {/* How to order */}
       <section id="how" className="container-x py-20">
         <div className="text-center">
