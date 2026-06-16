@@ -3,7 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Minus, Plus, Save, LogOut, Lock } from "lucide-react";
+import { Minus, Plus, Save, LogOut, Lock, Eye, EyeOff } from "lucide-react";
 import { JERSEYS } from "@/lib/jerseys";
 import {
   useJerseyStock,
@@ -29,6 +29,7 @@ function LoginGate({ onSuccess }: { onSuccess: (token: string) => void }) {
   const loginAdmin = useServerFn(loginJerseyAdmin);
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
+  const [showPw, setShowPw] = useState(false);
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(false);
   async function submit(e: React.FormEvent) {
@@ -54,8 +55,15 @@ function LoginGate({ onSuccess }: { onSuccess: (token: string) => void }) {
         <input value={id} onChange={(e) => setId(e.target.value)} autoComplete="off"
           className="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm" />
         <label className="mt-3 block text-xs font-semibold uppercase tracking-wider text-neutral-600">Password</label>
-        <input type="password" value={pw} onChange={(e) => setPw(e.target.value)}
-          className="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm" />
+        <div className="relative mt-1">
+          <input type={showPw ? "text" : "password"} value={pw} onChange={(e) => setPw(e.target.value)}
+            className="w-full rounded-md border border-neutral-300 px-3 py-2 pr-10 text-sm" />
+          <button type="button" onClick={() => setShowPw((s) => !s)}
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-700"
+            aria-label={showPw ? "Hide password" : "Show password"}>
+            {showPw ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+          </button>
+        </div>
         {err && <div className="mt-3 text-xs text-red-600">{err}</div>}
         <button type="submit" disabled={loading}
           className="mt-5 w-full rounded-full px-4 py-2.5 text-xs font-bold uppercase tracking-wider"
