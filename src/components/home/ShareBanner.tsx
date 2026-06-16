@@ -18,6 +18,7 @@ const WHATSAPP_MESSAGE =
 
 export function ShareBanner() {
   const [copied, setCopied] = useState(false);
+  const [copiedMsg, setCopiedMsg] = useState(false);
 
   const copyLink = async () => {
     try {
