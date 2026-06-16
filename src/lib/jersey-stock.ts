@@ -19,20 +19,15 @@ export function useJerseyStock() {
   });
 }
 
-const ADMIN_KEY = "cm_jersey_admin";
-const ADMIN_ID = "ANKUSHKHATIK123";
-const ADMIN_PW = "ANKUSH@123";
+const ADMIN_KEY = "cm_jersey_admin_token";
 
-export function checkAdminCreds(id: string, pw: string) {
-  return id === ADMIN_ID && pw === ADMIN_PW;
-}
-export function setAdminSession() {
-  if (typeof window !== "undefined") localStorage.setItem(ADMIN_KEY, "1");
+export function setAdminSession(token: string) {
+  if (typeof window !== "undefined") localStorage.setItem(ADMIN_KEY, token);
 }
 export function clearAdminSession() {
   if (typeof window !== "undefined") localStorage.removeItem(ADMIN_KEY);
 }
-export function isAdminSession() {
-  if (typeof window === "undefined") return false;
-  return localStorage.getItem(ADMIN_KEY) === "1";
+export function getAdminSession() {
+  if (typeof window === "undefined") return "";
+  return localStorage.getItem(ADMIN_KEY) ?? "";
 }
