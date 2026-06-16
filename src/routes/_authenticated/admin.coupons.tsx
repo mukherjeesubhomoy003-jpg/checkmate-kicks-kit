@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useServerFn } from "@tanstack/react-start";
+import { useQuery } from "@tanstack/react-query";
 import { inr } from "@/lib/format";
+import { adminListCoupons } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/_authenticated/admin/coupons")({
   component: Coupons,
@@ -10,10 +11,8 @@ export const Route = createFileRoute("/_authenticated/admin/coupons")({
 type Coupon = { id: string; code: string; discount_type: string; discount_value: number; min_order: number; usage_limit: number | null; used_count: number; is_active: boolean; expires_at: string | null };
 
 function Coupons() {
-  const [coupons, setCoupons] = useState<Coupon[]>([]);
-  useEffect(() => {
-    supabase.from("coupons").select("*").order("created_at", { ascending: false }).then(({ data }) => setCoupons((data ?? []) as unknown as Coupon[]));
-  }, []);
+  const listCoupons = useServerFn(adminListCoupons);
+  const { data: coupons = [] } = useQuery({ queryKey: ["admin-coupons"], queryFn: () => listCoupons() as Promise<Coupon[]> });
   return (
     <div>
       <h1 className="text-3xl font-bold mb-6">Coupons</h1>

@@ -1,23 +1,21 @@
-import { createFileRoute, Link, Outlet, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, redirect } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
 import { LayoutDashboard, Package, ShoppingBag, Tag, ArrowLeft } from "lucide-react";
 import { myProfile } from "@/lib/account.functions";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Admin — CHECKMATE" }] }),
+  beforeLoad: async () => {
+    const data = await myProfile();
+    if (!data.isAdmin) throw redirect({ to: "/account" });
+  },
   component: AdminLayout,
 });
 
 function AdminLayout() {
   const fn = useServerFn(myProfile);
   const { data, isLoading } = useQuery({ queryKey: ["my-profile"], queryFn: () => fn() });
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!isLoading && data && !data.isAdmin) navigate({ to: "/account" });
-  }, [isLoading, data, navigate]);
 
   if (isLoading || !data) return <div className="container-x py-20 text-muted-foreground">Loading…</div>;
   if (!data.isAdmin) return null;

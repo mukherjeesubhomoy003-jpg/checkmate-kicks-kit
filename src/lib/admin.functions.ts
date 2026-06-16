@@ -49,6 +49,19 @@ export const adminListOrders = createServerFn({ method: "GET" })
     return data ?? [];
   });
 
+export const adminListCoupons = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertAdmin(context);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data } = await supabaseAdmin
+      .from("coupons")
+      .select("id, code, discount_type, discount_value, min_order, usage_limit, used_count, is_active, expires_at")
+      .order("created_at", { ascending: false })
+      .limit(200);
+    return data ?? [];
+  });
+
 export const updateOrderStatus = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator(

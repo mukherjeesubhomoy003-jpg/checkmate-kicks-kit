@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { inr } from "@/lib/format";
+import { createInvoiceLink, myOrderDetail } from "@/lib/account.functions";
 
 export const Route = createFileRoute("/_authenticated/account/orders/$id")({
   head: () => ({ meta: [{ title: "Order — CHECKMATE" }] }),
@@ -19,21 +20,30 @@ function OrderDetail() {
   const { id } = Route.useParams();
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
+  const [invoiceLoading, setInvoiceLoading] = useState(false);
+  const getInvoiceLink = useServerFn(createInvoiceLink);
+  const getOrderDetail = useServerFn(myOrderDetail);
   useEffect(() => {
     (async () => {
-      const { data } = await supabase
-        .from("orders")
-        .select("*, order_items(*)")
-        .eq("id", id)
-        .maybeSingle();
+      const data = await getOrderDetail({ data: { orderId: id } });
       setOrder(data as unknown as Order);
       setLoading(false);
     })();
-  }, [id]);
+  }, [id, getOrderDetail]);
 
   if (loading) return <div className="py-10 text-muted-foreground">Loading…</div>;
   if (!order) return <div className="py-10">Order not found.</div>;
   const addr = order.shipping_address;
+  async function openInvoice() {
+    if (!order) return;
+    setInvoiceLoading(true);
+    try {
+      const { href } = await getInvoiceLink({ data: { orderId: order.id } });
+      window.open(href, "_blank", "noopener,noreferrer");
+    } finally {
+      setInvoiceLoading(false);
+    }
+  }
   return (
     <div>
       <div className="flex items-center justify-between flex-wrap gap-3">
@@ -85,9 +95,9 @@ function OrderDetail() {
               <div className="mt-2">{addr.phone}</div>
             </div>
           </div>
-          <a href={`/api/public/invoice/${order.id}`} target="_blank" rel="noreferrer" className="block w-full text-center rounded-full bg-primary px-4 py-2.5 font-semibold text-primary-foreground glow-primary">
-            Download Invoice
-          </a>
+          <button type="button" onClick={openInvoice} disabled={invoiceLoading} className="block w-full text-center rounded-full bg-primary px-4 py-2.5 font-semibold text-primary-foreground glow-primary disabled:opacity-60">
+            {invoiceLoading ? "Preparing…" : "Download Invoice"}
+          </button>
         </aside>
       </div>
     </div>

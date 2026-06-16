@@ -3,15 +3,37 @@ import { createFileRoute } from "@tanstack/react-router";
 export const Route = createFileRoute("/api/public/invoice/$id")({
   server: {
     handlers: {
-      GET: async ({ params }) => {
+      GET: async ({ params, request }) => {
+        const url = new URL(request.url);
+        const token = url.searchParams.get("token") ?? "";
+        const [payload, signature] = token.split(".");
+        if (!payload || !signature) return new Response("Unauthorized", { status: 401 });
+
+        const { createHmac } = await import("crypto");
+        const secret = process.env.LOVABLE_API_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY;
+        if (!secret) return new Response("Service unavailable", { status: 503 });
+        const expected = createHmac("sha256", secret).update(payload).digest("base64url");
+        if (signature !== expected) return new Response("Unauthorized", { status: 401 });
+
+        let claims: { orderId?: string; exp?: number };
+        try {
+          claims = JSON.parse(Buffer.from(payload, "base64url").toString("utf8"));
+        } catch {
+          return new Response("Unauthorized", { status: 401 });
+        }
+        if (claims.orderId !== params.id || !claims.exp || claims.exp < Date.now()) {
+          return new Response("Unauthorized", { status: 401 });
+        }
+
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
         const { data: order } = await supabaseAdmin
           .from("orders")
-          .select("*, order_items(*)")
+          .select("id, order_number, created_at, shipping_address, customer_email, customer_phone, payment_method, payment_status, status, subtotal, discount, shipping, tax, total, order_items(product_name, variant_label, unit_price, quantity, total_price)")
           .eq("id", params.id)
           .maybeSingle();
         if (!order) return new Response("Not found", { status: 404 });
 
+        const esc = (value: unknown) => String(value ?? "").replace(/[&<>'"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[ch]!));
         const inr = (n: number) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(Number(n));
         const addr = (order.shipping_address ?? {}) as Record<string, string>;
         const items = ((order.order_items ?? []) as { product_name: string; variant_label: string | null; unit_price: number; quantity: number; total_price: number }[]);
@@ -33,19 +55,19 @@ export const Route = createFileRoute("/api/public/invoice/$id")({
   </div>
   <div class="right">
     <div style="font-weight:700;font-size:18px">INVOICE</div>
-    <div class="muted">${order.order_number}</div>
+    <div class="muted">${esc(order.order_number)}</div>
     <div class="muted">${new Date(order.created_at).toLocaleDateString()}</div>
   </div>
 </div>
 <div class="flex" style="margin-top:24px">
   <div class="box" style="flex:1">
     <div class="muted" style="margin-bottom:4px">BILL TO</div>
-    <div style="font-weight:600">${addr.full_name ?? ""}</div>
-    <div>${addr.line1 ?? ""}</div>
-    ${addr.line2 ? `<div>${addr.line2}</div>` : ""}
-    <div>${addr.city ?? ""}, ${addr.state ?? ""} ${addr.postal_code ?? ""}</div>
-    <div>${addr.country ?? ""}</div>
-    <div style="margin-top:6px">${order.customer_email ?? ""} • ${order.customer_phone ?? ""}</div>
+    <div style="font-weight:600">${esc(addr.full_name)}</div>
+    <div>${esc(addr.line1)}</div>
+    ${addr.line2 ? `<div>${esc(addr.line2)}</div>` : ""}
+    <div>${esc(addr.city)}, ${esc(addr.state)} ${esc(addr.postal_code)}</div>
+    <div>${esc(addr.country)}</div>
+    <div style="margin-top:6px">${esc(order.customer_email)} • ${esc(order.customer_phone)}</div>
   </div>
   <div class="box" style="flex:1">
     <div class="muted" style="margin-bottom:4px">PAYMENT</div>
@@ -57,7 +79,7 @@ export const Route = createFileRoute("/api/public/invoice/$id")({
 <table>
   <thead><tr><th>Item</th><th class="right">Qty</th><th class="right">Unit</th><th class="right">Total</th></tr></thead>
   <tbody>
-    ${items.map((it) => `<tr><td>${it.product_name}${it.variant_label ? `<div class="muted">${it.variant_label}</div>` : ""}</td><td class="right">${it.quantity}</td><td class="right">${inr(Number(it.unit_price))}</td><td class="right">${inr(Number(it.total_price))}</td></tr>`).join("")}
+    ${items.map((it) => `<tr><td>${esc(it.product_name)}${it.variant_label ? `<div class="muted">${esc(it.variant_label)}</div>` : ""}</td><td class="right">${it.quantity}</td><td class="right">${inr(Number(it.unit_price))}</td><td class="right">${inr(Number(it.total_price))}</td></tr>`).join("")}
   </tbody>
 </table>
 <table style="margin-top:8px">
