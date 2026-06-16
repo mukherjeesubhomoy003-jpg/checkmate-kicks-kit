@@ -186,21 +186,28 @@ export function OrderModal({
                 <div className="font-display text-2xl font-semibold">{team}</div>
                 <div className="text-xs uppercase tracking-[0.22em] text-[#8a6a14] mt-1">Player Edition · 2026</div>
 
-                <div className="mt-4 grid grid-cols-2 gap-2">
-                  {(["Home", "Away"] as Kit[]).map((k) => (
-                    <button key={k} onClick={() => setKit(k)}
-                      className={`rounded-lg border px-3 py-2.5 text-sm font-semibold transition ${
-                        kit === k ? "border-[#b8862b] bg-[#fbf4dd] text-[#1a1a1a]" : "border-border hover:border-gold/60"
-                      }`}>
-                      <div>{k} Kit</div>
-                      <div className="text-xs font-normal text-muted-foreground">₹{PRICE[k]}</div>
-                    </button>
-                  ))}
-                </div>
+                {!hideKitSelector && (
+                  <div className="mt-4 grid grid-cols-2 gap-2">
+                    {(["Home", "Away"] as Kit[]).map((k) => (
+                      <button key={k} onClick={() => setKit(k)}
+                        className={`rounded-lg border px-3 py-2.5 text-sm font-semibold transition ${
+                          kit === k ? "border-[#b8862b] bg-[#fbf4dd] text-[#1a1a1a]" : "border-border hover:border-gold/60"
+                        }`}>
+                        <div>{k} Kit</div>
+                        <div className="text-xs font-normal text-muted-foreground">₹{PRICE[k]}</div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {hideKitSelector && (
+                  <div className="mt-4 rounded-lg border border-[#b8862b] bg-[#fbf4dd] px-3 py-2.5 text-sm font-semibold text-[#1a1a1a]">
+                    Special Drop · <span className="text-[#8a6a14]">₹{unit}</span>
+                  </div>
+                )}
 
                 <label className="mt-4 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Size</label>
                 <div className="mt-2 flex flex-wrap gap-2">
-                  {SIZES.map((s) => (
+                  {availableSizes.map((s) => (
                     <button key={s} onClick={() => setSize(s)}
                       className={`size-10 rounded-full border text-sm font-semibold transition ${
                         size === s ? "border-[#b8862b] bg-[#1a1a1a] text-[#f4d77a]" : "border-border hover:border-gold/60"
@@ -213,6 +220,35 @@ export function OrderModal({
                   <button onClick={() => setQty(Math.max(1, qty - 1))} className="px-3 py-1.5">−</button>
                   <span className="px-3 text-sm font-semibold">{qty}</span>
                   <button onClick={() => setQty(qty + 1)} className="px-3 py-1.5">+</button>
+                </div>
+
+                {/* Back-printing add-on */}
+                <div className="mt-5 rounded-xl border-2 border-dashed border-gold/60 bg-[#fffaeb] p-3">
+                  <label className="flex items-start gap-2.5 cursor-pointer">
+                    <input type="checkbox" checked={addPrint} onChange={(e) => setAddPrint(e.target.checked)}
+                      className="mt-1 size-4 accent-[#b8862b]" />
+                    <div className="flex-1">
+                      <div className="text-sm font-semibold text-[#1a1a1a]">Add back printing (Name + Number)</div>
+                      <div className="text-[11px] text-neutral-600">Optional · +₹{PRINT_ADDON} · heat-pressed on back</div>
+                    </div>
+                  </label>
+                  {addPrint && (
+                    <div className="mt-3 grid grid-cols-2 gap-2">
+                      <label className="block">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Name on back</span>
+                        <input value={printName} onChange={(e) => setPrintName(e.target.value.toUpperCase().slice(0, 14))}
+                          placeholder="MESSI" className="mt-1 w-full rounded-md border border-border bg-white px-2.5 py-2 text-sm font-bold tracking-wider focus:border-[#b8862b] focus:outline-none" />
+                      </label>
+                      <label className="block">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Number</span>
+                        <input value={printNumber} onChange={(e) => setPrintNumber(e.target.value.replace(/\D/g, "").slice(0, 3))}
+                          placeholder="10" className="mt-1 w-full rounded-md border border-border bg-white px-2.5 py-2 text-sm font-bold focus:border-[#b8862b] focus:outline-none" />
+                      </label>
+                      {!printingValid && (
+                        <div className="col-span-2 text-[11px] text-red-600">Fill both name and number, or uncheck add-on.</div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -227,7 +263,8 @@ export function OrderModal({
               </div>
 
               <div className="mt-5 rounded-xl border border-gold/40 bg-gold-soft p-4">
-                <Row label={`${kit} Kit × ${qty}`} value={`₹${subtotal}`} />
+                <Row label={`${hideKitSelector ? team : `${kit} Kit`} × ${qty}`} value={`₹${subtotal}`} />
+                {addPrint && <Row label={`Back printing · ${printName || "—"} #${printNumber || "—"}`} value={`₹${printingFee}`} />}
                 <Row label="Shipping" value="Free" />
                 <Row label="Fast delivery (optional)" value="up to ₹100 · billed on WhatsApp" muted />
                 <div className="my-2 h-px hairline-gold" />
@@ -290,17 +327,20 @@ export function OrderModal({
                 <div className="rounded-xl border border-border p-4">
                   <div className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">Order summary</div>
                   <div className="mt-2 text-sm">
-                    <div className="font-semibold">{team} — {kit} Kit</div>
+                    <div className="font-semibold">{team}{!hideKitSelector && ` — ${kit} Kit`}</div>
                     <div className="text-muted-foreground">Size {size} · Qty {qty}</div>
+                    {addPrint && <div className="text-muted-foreground">Back: <b>{printName}</b> #{printNumber}</div>}
                   </div>
                   <div className="mt-3 h-px hairline-gold" />
                   <Row label="Subtotal" value={`₹${subtotal}`} />
+                  {addPrint && <Row label="Back printing" value={`₹${printingFee}`} />}
                   <Row label="Shipping" value="Free" />
                   <Row label="Total" value={`₹${total}`} strong />
                   <div className="mt-3 text-[11px] text-muted-foreground leading-relaxed">
-                    1. Pay ₹{total} using the QR<br />
-                    2. Tap below — your order opens in WhatsApp<br />
-                    3. Attach payment screenshot · we confirm & ship
+                    1. Pay <b>₹{total}</b> using the QR<br />
+                    2. Tap below <b>only after payment</b><br />
+                    3. Order opens in WhatsApp · attach payment screenshot<br />
+                    4. We confirm & generate your invoice ✅
                   </div>
                 </div>
 
@@ -308,12 +348,11 @@ export function OrderModal({
                   <button onClick={confirmPaid}
                     className="w-full inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold uppercase tracking-[0.18em]"
                     style={{ background: "var(--gradient-gold)", color: "#1a1a1a", border: "1px solid #8a6a14" }}>
-                    <Check className="size-4" /> I've Paid — Send Order & Get Invoice
+                    <Check className="size-4" /> I've Paid — Send Screenshot & Get Invoice
                   </button>
-                  <button onClick={sendOrderUnpaid}
-                    className="w-full inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold border border-border hover:border-gold/60">
-                    Send Order First, Pay After
-                  </button>
+                  <div className="text-[11px] text-muted-foreground text-center px-2">
+                    ⚠️ Invoice is generated <b>only after</b> payment is confirmed. Please complete the UPI payment first.
+                  </div>
                   <button onClick={() => setStep(1)} className="text-xs text-muted-foreground hover:underline mt-1">
                     ← Edit details
                   </button>
@@ -326,8 +365,9 @@ export function OrderModal({
         {step === 3 && (
           <InvoiceView
             orderNo={orderNo}
-            team={team} kit={kit} size={size} qty={qty}
+            team={team} kit={hideKitSelector ? "" : kit} size={size} qty={qty}
             unit={unit} subtotal={subtotal} shipping={shipping} total={total}
+            printName={addPrint ? printName : ""} printNumber={addPrint ? printNumber : ""} printingFee={printingFee}
             name={name} phone={phone} address={address} city={city} pincode={pincode}
             onClose={close}
           />
