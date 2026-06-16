@@ -38,15 +38,27 @@ export function ShareBanner() {
     }
   };
 
-  const shareText = encodeURIComponent(
-    "🔥 CHECKMATE Jersey — Player Edition World Cup 2026\n\n" +
-    "Home ₹1000 | Away ₹1100 | Free shipping all India\n" +
-    "Order on WhatsApp. No COD — UPI only.\n\n" +
-      SITE_URL
-  );
+  const shareText = encodeURIComponent(WHATSAPP_MESSAGE);
 
   const shareWhatsApp = () => {
     window.open(`https://wa.me/?text=${shareText}`, "_blank", "noopener,noreferrer");
+  };
+
+  const copyMessage = async () => {
+    try {
+      await navigator.clipboard.writeText(WHATSAPP_MESSAGE);
+      setCopiedMsg(true);
+      setTimeout(() => setCopiedMsg(false), 2500);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = WHATSAPP_MESSAGE;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      setCopiedMsg(true);
+      setTimeout(() => setCopiedMsg(false), 2500);
+    }
   };
 
   return (
