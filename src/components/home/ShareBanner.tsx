@@ -127,6 +127,20 @@ export function ShareBanner() {
                 </div>
               </div>
             </div>
+
+            {/* WhatsApp copy-paste message */}
+            <div className="mt-6 rounded-xl bg-[#0a1228] border border-[#d4af37]/40 p-4 text-left">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#f4d77a]">Copy & paste in WhatsApp</span>
+                <button onClick={copyMessage}
+                  className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider transition hover:scale-[1.02]"
+                  style={{ background: copiedMsg ? "#25D366" : "var(--gradient-gold)", color: copiedMsg ? "#fff" : "#1a1a1a" }}>
+                  {copiedMsg ? <><Check className="size-3" /> Copied</> : <><Copy className="size-3" /> Copy Text</>}
+                </button>
+              </div>
+              <pre className="mt-3 whitespace-pre-wrap text-[12px] leading-relaxed text-neutral-200 font-sans"
+                style={{ wordBreak: "break-word" }}>{WHATSAPP_MESSAGE}</pre>
+            </div>
           </div>
 
           {/* Share actions */}
