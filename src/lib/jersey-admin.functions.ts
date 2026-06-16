@@ -1,6 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
+const ADMIN_CREDENTIAL_HASH = "0669589e15f2c104278df157f867736c5d8006b3d367d355ee0812438a3d043a";
+
 const stockUpdateSchema = z.object({
   id: z.string().regex(/^j\d{2}$/),
   stock: z.number().int().min(0).max(9999),
@@ -24,13 +26,14 @@ export const loginJerseyAdmin = createServerFn({ method: "POST" })
     }),
   )
   .handler(async ({ data }) => {
-    const adminId = "ANKUSHKHATIK123";
-    const adminPassword = "ANKUSH@123";
-    if (data.id.trim() !== adminId || data.password !== adminPassword) {
+    const { createHmac } = await import("crypto");
+    const attemptedHash = createHmac("sha256", getSigningSecret())
+      .update(`${data.id.trim()}\u0000${data.password}`)
+      .digest("hex");
+    if (attemptedHash !== ADMIN_CREDENTIAL_HASH) {
       throw new Error("Invalid credentials");
     }
 
-    const { createHmac } = await import("crypto");
     const payload = Buffer.from(
       JSON.stringify({ sub: "jersey-admin", exp: Date.now() + 1000 * 60 * 60 * 4 }),
     ).toString("base64url");
