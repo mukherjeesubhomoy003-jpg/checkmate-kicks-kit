@@ -153,12 +153,8 @@ export function OrderModal({
     setStep(3);
   };
 
-  const sendOrderUnpaid = () => {
-    const num = orderNo || nextOrderNumber();
-    if (!orderNo) setOrderNo(num);
-    openWhatsApp(buildMessage(false, num));
-    setStep(3);
-  };
+
+
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6" role="dialog" aria-modal="true">
