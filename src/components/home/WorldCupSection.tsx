@@ -17,6 +17,7 @@ type Props = {
 
 export function WorldCupSection({ preview, showBanner = true, heading }: Props) {
   const [active, setActive] = useState<Jersey | null>(null);
+  const { data: stockMap } = useJerseyStock();
   const list = preview ? JERSEYS.slice(0, preview) : JERSEYS;
 
   return (
