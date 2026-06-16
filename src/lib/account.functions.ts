@@ -21,6 +21,26 @@ export const myProfile = createServerFn({ method: "GET" })
     return { profile, isAdmin: !!isAdmin };
   });
 
+export const createInvoiceLink = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(z.object({ orderId: z.string().uuid() }))
+  .handler(async ({ data, context }) => {
+    const { data: order } = await context.supabase
+      .from("orders")
+      .select("id")
+      .eq("id", data.orderId)
+      .eq("user_id", context.userId)
+      .maybeSingle();
+    if (!order) throw new Error("Order not found");
+
+    const { createHmac } = await import("crypto");
+    const secret = process.env.LOVABLE_API_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (!secret) throw new Error("Invoice service is unavailable");
+    const payload = Buffer.from(JSON.stringify({ orderId: data.orderId, exp: Date.now() + 1000 * 60 * 10 })).toString("base64url");
+    const signature = createHmac("sha256", secret).update(payload).digest("base64url");
+    return { href: `/api/public/invoice/${data.orderId}?token=${payload}.${signature}` };
+  });
+
 export const updateProfile = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator(z.object({ full_name: z.string().min(1).max(120), phone: z.string().max(20).optional() }))
