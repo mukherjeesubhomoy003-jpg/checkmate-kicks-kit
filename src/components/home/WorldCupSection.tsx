@@ -4,6 +4,7 @@ import { ArrowRight, Trophy, Sparkles, ShoppingBag } from "lucide-react";
 import { OrderModal } from "@/components/order/OrderModal";
 import banner from "@/assets/wc-banner.jpg.asset.json";
 import { JERSEYS, type Jersey } from "@/lib/jerseys";
+import { useJerseyStock } from "@/lib/jersey-stock";
 
 type Props = {
   /** Show only the first N jerseys, with an "Explore more" CTA. */

@@ -13,6 +13,7 @@ import { Route as WorldCup2026RouteImport } from './routes/world-cup-2026'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as JerseyAdminRouteImport } from './routes/jersey-admin'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
@@ -48,6 +49,11 @@ const ShopRoute = ShopRouteImport.update({
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JerseyAdminRoute = JerseyAdminRouteImport.update({
+  id: '/jersey-admin',
+  path: '/jersey-admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CartRoute = CartRouteImport.update({
@@ -139,6 +145,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/jersey-admin': typeof JerseyAdminRoute
   '/reset-password': typeof ResetPasswordRoute
   '/shop': typeof ShopRoute
   '/wishlist': typeof WishlistRoute
@@ -160,6 +167,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/jersey-admin': typeof JerseyAdminRoute
   '/reset-password': typeof ResetPasswordRoute
   '/shop': typeof ShopRoute
   '/wishlist': typeof WishlistRoute
@@ -182,6 +190,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/jersey-admin': typeof JerseyAdminRoute
   '/reset-password': typeof ResetPasswordRoute
   '/shop': typeof ShopRoute
   '/wishlist': typeof WishlistRoute
@@ -205,6 +214,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/cart'
+    | '/jersey-admin'
     | '/reset-password'
     | '/shop'
     | '/wishlist'
@@ -226,6 +236,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/cart'
+    | '/jersey-admin'
     | '/reset-password'
     | '/shop'
     | '/wishlist'
@@ -247,6 +258,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/cart'
+    | '/jersey-admin'
     | '/reset-password'
     | '/shop'
     | '/wishlist'
@@ -270,6 +282,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   CartRoute: typeof CartRoute
+  JerseyAdminRoute: typeof JerseyAdminRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ShopRoute: typeof ShopRoute
   WishlistRoute: typeof WishlistRoute
@@ -307,6 +320,13 @@ declare module '@tanstack/react-router' {
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jersey-admin': {
+      id: '/jersey-admin'
+      path: '/jersey-admin'
+      fullPath: '/jersey-admin'
+      preLoaderRoute: typeof JerseyAdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cart': {
@@ -486,6 +506,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   CartRoute: CartRoute,
+  JerseyAdminRoute: JerseyAdminRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ShopRoute: ShopRoute,
   WishlistRoute: WishlistRoute,
