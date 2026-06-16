@@ -27,7 +27,18 @@ type Props = {
   image: string;
   open: boolean;
   onClose: () => void;
+  /** Override per-jersey price (used for special drops like Argentina Messi). */
+  priceOverride?: number;
+  /** Restrict size options for this jersey. */
+  sizesOverride?: Size[];
+  /** Hide the Home/Away kit selector entirely. */
+  hideKitSelector?: boolean;
+  /** Pre-fill the back-printing fields. */
+  defaultPrintingName?: string;
+  defaultPrintingNumber?: string;
 };
+
+const PRINT_ADDON = 250;
 
 // Sequential order number — counter persisted in browser localStorage
 function nextOrderNumber(): string {
@@ -43,11 +54,19 @@ function nextOrderNumber(): string {
   return `CHKM-${String(n).padStart(4, "0")}`;
 }
 
-export function OrderModal({ team, image, open, onClose }: Props) {
+export function OrderModal({
+  team, image, open, onClose,
+  priceOverride, sizesOverride, hideKitSelector,
+  defaultPrintingName = "", defaultPrintingNumber = "",
+}: Props) {
+  const availableSizes = sizesOverride ?? (SIZES as readonly Size[] as Size[]);
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [kit, setKit] = useState<Kit>("Home");
-  const [size, setSize] = useState<Size>("L");
+  const [size, setSize] = useState<Size>(availableSizes[0] ?? "L");
   const [qty, setQty] = useState(1);
+  const [addPrint, setAddPrint] = useState(false);
+  const [printName, setPrintName] = useState(defaultPrintingName);
+  const [printNumber, setPrintNumber] = useState(defaultPrintingNumber);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
@@ -57,29 +76,36 @@ export function OrderModal({ team, image, open, onClose }: Props) {
 
   if (!open) return null;
 
-  const unit = PRICE[kit];
+  const unit = priceOverride ?? PRICE[kit];
   const subtotal = unit * qty;
+  const printingFee = addPrint ? PRINT_ADDON : 0;
   const shipping = 0;
-  const total = subtotal + shipping;
+  const total = subtotal + printingFee + shipping;
 
   const reset = () => {
-    setStep(1); setKit("Home"); setSize("L"); setQty(1);
+    setStep(1); setKit("Home"); setSize(availableSizes[0] ?? "L"); setQty(1);
+    setAddPrint(false); setPrintName(defaultPrintingName); setPrintNumber(defaultPrintingNumber);
     setName(""); setPhone(""); setAddress(""); setCity(""); setPincode(""); setOrderNo("");
   };
   const close = () => { onClose(); setTimeout(reset, 250); };
 
-  const validDetails = name.trim() && /^[6-9]\d{9}$/.test(phone.trim()) && address.trim() && city.trim() && /^\d{6}$/.test(pincode.trim());
+  const printingValid = !addPrint || (printName.trim().length > 0 && printNumber.trim().length > 0);
+  const validDetails = name.trim() && /^[6-9]\d{9}$/.test(phone.trim()) && address.trim() && city.trim() && /^\d{6}$/.test(pincode.trim()) && printingValid;
 
   const buildMessage = (paid: boolean, orderNumber: string) => {
+    const itemLine = hideKitSelector
+      ? `*Item:* ${team} (Player Edition)`
+      : `*Item:* ${team} — ${kit} Kit (Player Edition)`;
     return [
       `*New Order — CHECKMATE*`,
       `*Order #:* ${orderNumber}`,
       ``,
-      `*Item:* ${team} — ${kit} Kit (Player Edition)`,
+      itemLine,
       `*Size:* ${size}`,
       `*Qty:* ${qty}`,
       `*Unit:* ₹${unit}`,
       `*Subtotal:* ₹${subtotal}`,
+      ...(addPrint ? [`*Back Printing:* ${printName.toUpperCase()} #${printNumber} (+₹${PRINT_ADDON})`] : []),
       `*Shipping:* Free`,
       `*Total:* ₹${total}`,
       ``,
