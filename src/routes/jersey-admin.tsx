@@ -3,7 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Minus, Plus, Save, LogOut, Lock } from "lucide-react";
+import { Minus, Plus, Save, LogOut, Lock, Eye, EyeOff } from "lucide-react";
 import { JERSEYS } from "@/lib/jerseys";
 import {
   useJerseyStock,
