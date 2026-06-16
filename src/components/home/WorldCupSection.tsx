@@ -104,7 +104,7 @@ export function WorldCupSection({ preview, showBanner = true, heading }: Props) 
             </Link>
           )}
           <div className="text-[11px] uppercase tracking-[0.25em] text-neutral-500 text-center px-4">
-            Free shipping · All-India delivery · Fast-delivery surcharge up to ₹100
+            Free shipping · All-India delivery · Delivered to your doorstep within 7 days
           </div>
         </div>
       </div>

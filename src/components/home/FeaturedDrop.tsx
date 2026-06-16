@@ -73,7 +73,7 @@ export function FeaturedDrop() {
               </button>
             </div>
             <div className="mt-3 text-[11px] uppercase tracking-[0.22em] text-neutral-400">
-              Free all-India shipping · 15–20 days delivery
+              Free all-India shipping · Delivered to your doorstep within 7 days
             </div>
           </div>
         </div>

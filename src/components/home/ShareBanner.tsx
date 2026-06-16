@@ -14,7 +14,7 @@ const WHATSAPP_MESSAGE =
   "3️⃣ Tap *Order on WhatsApp* → pay via UPI\n" +
   "4️⃣ Send payment screenshot → we ship pan-India 📦\n\n" +
   "🔗 " + SITE_URL + "\n\n" +
-  "No COD — UPI only | All sizes: S, M, L, XL, 2XL";
+  "No COD — UPI only | Delivered to your doorstep within 7 days | All sizes: S, M, L, XL, 2XL";
 
 export function ShareBanner() {
   const [copied, setCopied] = useState(false);

@@ -262,7 +262,6 @@ export function OrderModal({
                 <Row label={`${hideKitSelector ? team : `${kit} Kit`} × ${qty}`} value={`₹${subtotal}`} />
                 {addPrint && <Row label={`Back printing · ${printName || "—"} #${printNumber || "—"}`} value={`₹${printingFee}`} />}
                 <Row label="Shipping" value="Free" />
-                <Row label="Fast delivery (optional)" value="up to ₹100 · billed on WhatsApp" muted />
                 <div className="my-2 h-px hairline-gold" />
                 <Row label="Total" value={`₹${total}`} strong />
                 <div className="mt-2 text-[11px] text-muted-foreground">All-India delivery · No COD · Pay via UPI QR on next step.</div>
@@ -277,7 +276,7 @@ export function OrderModal({
                   <li>If we send the wrong product or wrong size, that item will be replaced.</li>
                 </ol>
                 <div className="mt-3 space-y-1 text-[11.5px] text-neutral-700">
-                  <div>➡️ Delivery time: <span className="font-semibold">15–20 days</span></div>
+                  <div>➡️ Delivery time: <span className="font-semibold">Within 7 days — delivered to your doorstep</span></div>
                   <div>➡️ We share product tracking — you can track your order ❤️</div>
                 </div>
               </div>
