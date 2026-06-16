@@ -492,21 +492,35 @@ function InvoiceView(props: {
         <th style="text-align:right">Unit (₹)</th>
         <th style="text-align:right">Amount (₹)</th>
       </tr></thead>
-      <tbody><tr>
-        <td>
-          <b>${escapeHtml(team)} — ${kit} Kit</b><br/>
-          <span style="color:#888;font-size:11px">Player Edition · World Cup 2026 · Match-grade dri-fit fabric</span>
-        </td>
-        <td>6109</td>
-        <td>${size}</td>
-        <td style="text-align:center">${qty}</td>
-        <td style="text-align:right">${unit}</td>
-        <td style="text-align:right">${subtotal}</td>
-      </tr></tbody>
+      <tbody>
+        <tr>
+          <td>
+            <b>${escapeHtml(itemLine)}</b><br/>
+            <span style="color:#888;font-size:11px">Player Edition · Match-grade dri-fit fabric</span>
+          </td>
+          <td>6109</td>
+          <td>${size}</td>
+          <td style="text-align:center">${qty}</td>
+          <td style="text-align:right">${unit}</td>
+          <td style="text-align:right">${subtotal}</td>
+        </tr>
+        ${printName ? `<tr>
+          <td>
+            <b>Back Printing — ${escapeHtml(printName)} #${escapeHtml(printNumber)}</b><br/>
+            <span style="color:#888;font-size:11px">Heat-pressed custom name & number on back</span>
+          </td>
+          <td>6109</td>
+          <td>—</td>
+          <td style="text-align:center">1</td>
+          <td style="text-align:right">${printingFee}</td>
+          <td style="text-align:right">${printingFee}</td>
+        </tr>` : ""}
+      </tbody>
     </table>
 
     <div class="totals">
       <div class="ln"><span>Subtotal</span><span>₹${subtotal}</span></div>
+      ${printName ? `<div class="ln"><span>Back printing add-on</span><span>₹${printingFee}</span></div>` : ""}
       <div class="ln"><span>Shipping (All-India)</span><span>${shipping === 0 ? "FREE" : "₹" + shipping}</span></div>
       <div class="ln"><span>Discount</span><span>—</span></div>
       <div class="ln tot" style="border-top:1.5px solid #d4af37;margin-top:6px;padding-top:8px"><span>Grand Total</span><span>₹${total}</span></div>
@@ -572,7 +586,8 @@ function InvoiceView(props: {
 
       <div className="mt-5 rounded-xl border border-gold/40 bg-gold-soft p-4 max-w-md mx-auto">
         <div className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">Summary</div>
-        <Row label={`${team} — ${kit} · ${size} × ${qty}`} value={`₹${subtotal}`} />
+        <Row label={`${itemLine} · ${size} × ${qty}`} value={`₹${subtotal}`} />
+        {printName && <Row label={`Printing · ${printName} #${printNumber}`} value={`₹${printingFee}`} />}
         <Row label="Shipping" value="Free" />
         <Row label="Total Paid" value={`₹${total}`} strong />
         <div className="mt-2 text-[11px] text-muted-foreground leading-relaxed">
