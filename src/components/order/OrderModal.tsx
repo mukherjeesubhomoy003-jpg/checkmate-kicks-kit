@@ -380,10 +380,11 @@ export function OrderModal({
 function InvoiceView(props: {
   orderNo: string; team: string; kit: string; size: string; qty: number;
   unit: number; subtotal: number; shipping: number; total: number;
+  printName: string; printNumber: string; printingFee: number;
   name: string; phone: string; address: string; city: string; pincode: string;
   onClose: () => void;
 }) {
-  const { orderNo, team, kit, size, qty, unit, subtotal, shipping, total, name, phone, address, city, pincode, onClose } = props;
+  const { orderNo, team, kit, size, qty, unit, subtotal, shipping, total, printName, printNumber, printingFee, name, phone, address, city, pincode, onClose } = props;
   const date = useMemo(() => new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }), []);
 
   const estDelivery = useMemo(() => {
@@ -394,12 +395,14 @@ function InvoiceView(props: {
   }, []);
 
   const logoUrl = typeof window !== "undefined" ? new URL(logoAsset.url, window.location.origin).href : logoAsset.url;
+  const itemLine = kit ? `${team} — ${kit} Kit` : team;
 
   const sendOnWhatsApp = () => {
     const text = [
       `*Order Confirmation — CHECKMATE*`,
       `Order #: ${orderNo}`,
-      `${team} — ${kit} Kit · Size ${size} · Qty ${qty}`,
+      `${itemLine} · Size ${size} · Qty ${qty}`,
+      ...(printName ? [`Back Printing: ${printName} #${printNumber}`] : []),
       `Total Paid: ₹${total}`,
       `Ship to: ${name}, ${address}, ${city} - ${pincode}`,
       `Phone: +91 ${phone}`,
