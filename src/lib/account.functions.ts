@@ -13,6 +13,20 @@ export const myOrders = createServerFn({ method: "GET" })
     return data ?? [];
   });
 
+export const myOrderDetail = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(z.object({ orderId: z.string().uuid() }))
+  .handler(async ({ data, context }) => {
+    const { data: order, error } = await context.supabase
+      .from("orders")
+      .select("*, order_items(*)")
+      .eq("id", data.orderId)
+      .eq("user_id", context.userId)
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    return order;
+  });
+
 export const myProfile = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
