@@ -4,8 +4,21 @@ import { Copy, Check, Share2, MessageCircle, ArrowRight, Globe } from "lucide-re
 
 const SITE_URL = "https://checkmatenow.online";
 
+const WHATSAPP_MESSAGE =
+  "🔥 *CHECKMATE Jersey* — Player Edition World Cup 2026\n\n" +
+  "Home kit ₹1000 | Away kit ₹1100 | Free shipping all India 🚚\n" +
+  "Special: Argentina Messi #10 Player Version ₹1299\n\n" +
+  "*How to order:*\n" +
+  "1️⃣ Open link → browse 46+ jerseys\n" +
+  "2️⃣ Tap jersey → pick size, kit, qty\n" +
+  "3️⃣ Tap *Order on WhatsApp* → pay via UPI\n" +
+  "4️⃣ Send payment screenshot → we ship pan-India 📦\n\n" +
+  "🔗 " + SITE_URL + "\n\n" +
+  "No COD — UPI only | All sizes: S, M, L, XL, 2XL";
+
 export function ShareBanner() {
   const [copied, setCopied] = useState(false);
+  const [copiedMsg, setCopiedMsg] = useState(false);
 
   const copyLink = async () => {
     try {
@@ -25,15 +38,27 @@ export function ShareBanner() {
     }
   };
 
-  const shareText = encodeURIComponent(
-    "🔥 CHECKMATE Jersey — Player Edition World Cup 2026\n\n" +
-    "Home ₹1000 | Away ₹1100 | Free shipping all India\n" +
-    "Order on WhatsApp. No COD — UPI only.\n\n" +
-      SITE_URL
-  );
+  const shareText = encodeURIComponent(WHATSAPP_MESSAGE);
 
   const shareWhatsApp = () => {
     window.open(`https://wa.me/?text=${shareText}`, "_blank", "noopener,noreferrer");
+  };
+
+  const copyMessage = async () => {
+    try {
+      await navigator.clipboard.writeText(WHATSAPP_MESSAGE);
+      setCopiedMsg(true);
+      setTimeout(() => setCopiedMsg(false), 2500);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = WHATSAPP_MESSAGE;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      setCopiedMsg(true);
+      setTimeout(() => setCopiedMsg(false), 2500);
+    }
   };
 
   return (
@@ -101,6 +126,20 @@ export function ShareBanner() {
                   <div className="text-[11px] text-neutral-400">Pay via UPI — we ship pan-India</div>
                 </div>
               </div>
+            </div>
+
+            {/* WhatsApp copy-paste message */}
+            <div className="mt-6 rounded-xl bg-[#0a1228] border border-[#d4af37]/40 p-4 text-left">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#f4d77a]">Copy & paste in WhatsApp</span>
+                <button onClick={copyMessage}
+                  className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider transition hover:scale-[1.02]"
+                  style={{ background: copiedMsg ? "#25D366" : "var(--gradient-gold)", color: copiedMsg ? "#fff" : "#1a1a1a" }}>
+                  {copiedMsg ? <><Check className="size-3" /> Copied</> : <><Copy className="size-3" /> Copy Text</>}
+                </button>
+              </div>
+              <pre className="mt-3 whitespace-pre-wrap text-[12px] leading-relaxed text-neutral-200 font-sans"
+                style={{ wordBreak: "break-word" }}>{WHATSAPP_MESSAGE}</pre>
             </div>
           </div>
 
