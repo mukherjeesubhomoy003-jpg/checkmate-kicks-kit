@@ -3,6 +3,7 @@ import { ArrowRight, Truck, ShieldCheck, MapPin, Zap, MessageCircle, IndianRupee
 import { WorldCupSection } from "@/components/home/WorldCupSection";
 import { FeaturedDrop } from "@/components/home/FeaturedDrop";
 import { HappyCustomers } from "@/components/home/HappyCustomers";
+import { ShareBanner } from "@/components/home/ShareBanner";
 import { BRAND } from "@/components/order/OrderModal";
 import heroBg from "@/assets/hero-football-bg.jpg";
 
