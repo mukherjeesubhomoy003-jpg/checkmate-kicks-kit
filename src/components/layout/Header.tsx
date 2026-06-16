@@ -17,6 +17,7 @@ export function Header() {
           <Link to="/world-cup-2026" className="hover:text-[#8a6a14] whitespace-nowrap">World Cup '26</Link>
           <Link to="/" hash="how" className="hover:text-[#8a6a14] whitespace-nowrap">How to Order</Link>
           <a href={`https://wa.me/${BRAND.whatsappPrimary}`} target="_blank" rel="noopener noreferrer" className="hover:text-[#8a6a14] hidden md:inline">Contact</a>
+          <Link to="/jersey-admin" className="hover:text-[#8a6a14] whitespace-nowrap text-[#8a6a14]">Admin</Link>
         </nav>
 
         <div className="ml-auto flex items-center gap-1.5">

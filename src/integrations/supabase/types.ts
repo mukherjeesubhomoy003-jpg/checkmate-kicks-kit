@@ -205,6 +205,24 @@ export type Database = {
         }
         Relationships: []
       }
+      jersey_stock: {
+        Row: {
+          id: string
+          stock: number
+          updated_at: string
+        }
+        Insert: {
+          id: string
+          stock?: number
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          stock?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       order_items: {
         Row: {
           id: string

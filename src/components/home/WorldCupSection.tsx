@@ -4,6 +4,7 @@ import { ArrowRight, Trophy, Sparkles, ShoppingBag } from "lucide-react";
 import { OrderModal } from "@/components/order/OrderModal";
 import banner from "@/assets/wc-banner.jpg.asset.json";
 import { JERSEYS, type Jersey } from "@/lib/jerseys";
+import { useJerseyStock } from "@/lib/jersey-stock";
 
 type Props = {
   /** Show only the first N jerseys, with an "Explore more" CTA. */
@@ -16,6 +17,7 @@ type Props = {
 
 export function WorldCupSection({ preview, showBanner = true, heading }: Props) {
   const [active, setActive] = useState<Jersey | null>(null);
+  const { data: stockMap } = useJerseyStock();
   const list = preview ? JERSEYS.slice(0, preview) : JERSEYS;
 
   return (
@@ -65,34 +67,51 @@ export function WorldCupSection({ preview, showBanner = true, heading }: Props) 
         </div>
 
         <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4">
-          {list.map((j) => (
+          {list.map((j) => {
+            const stock = stockMap?.[j.id];
+            const out = stock === 0;
+            const low = typeof stock === "number" && stock > 0 && stock <= 3;
+            return (
             <article key={j.id} className="group relative overflow-hidden rounded-xl bg-white shadow-luxe transition hover:-translate-y-0.5" style={{ border: "1px solid #ecdcae" }}>
               <div className="absolute right-1.5 top-1.5 z-10 inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest"
                 style={{ background: "var(--gradient-gold)", color: "#1a1a1a", boxShadow: "0 4px 10px -6px rgba(184,134,43,0.6)" }}>
                 <Sparkles className="size-2.5" /> Player
               </div>
+              {out && (
+                <div className="absolute left-1.5 top-1.5 z-10 rounded-full bg-red-600 px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest text-white">
+                  Sold out
+                </div>
+              )}
+              {low && (
+                <div className="absolute left-1.5 top-1.5 z-10 rounded-full bg-amber-500 px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest text-white">
+                  Only {stock} left
+                </div>
+              )}
 
-              <button onClick={() => setActive(j)} className="block w-full" aria-label={`Order ${j.team}`}>
-                <div className="aspect-[4/5] w-full overflow-hidden bg-gold-soft">
+              <button onClick={() => !out && setActive(j)} disabled={out} className="block w-full disabled:cursor-not-allowed" aria-label={`Order ${j.team}`}>
+                <div className={`aspect-[4/5] w-full overflow-hidden bg-gold-soft ${out ? "opacity-60" : ""}`}>
                   <img src={j.image} alt={`${j.team} ${j.tag} jersey`} loading="lazy"
                     className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
                 </div>
               </button>
 
               <div className="px-2.5 py-2.5">
-                <div className="text-[9px] font-semibold uppercase tracking-[0.18em] text-neutral-500">{j.tag} · 2026</div>
+                <div className="flex items-center justify-between">
+                  <div className="text-[9px] font-semibold uppercase tracking-[0.18em] text-neutral-500">{j.tag} · 2026</div>
+                  <div className="text-[8px] font-mono text-neutral-400">#{j.id}</div>
+                </div>
                 <div className="mt-0.5 font-display text-sm font-semibold text-neutral-900 truncate">{j.team}</div>
                 <div className="mt-1 flex items-center justify-between">
                   <div className="text-[11px] text-[#8a6a14] font-bold">₹{j.tag === "Home" ? 1000 : 1100}</div>
-                  <button onClick={() => setActive(j)}
-                    className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-[9px] font-bold uppercase tracking-wider"
+                  <button onClick={() => !out && setActive(j)} disabled={out}
+                    className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-[9px] font-bold uppercase tracking-wider disabled:opacity-50"
                     style={{ background: "linear-gradient(135deg,#1a1a1a,#2b2b2b)", color: "#f4d77a", border: "1px solid #d4af37" }}>
-                    <ShoppingBag className="size-2.5" /> Order
+                    <ShoppingBag className="size-2.5" /> {out ? "Sold" : "Order"}
                   </button>
                 </div>
               </div>
             </article>
-          ))}
+          );})}
         </div>
 
         <div className="mt-12 flex flex-col items-center gap-4">
