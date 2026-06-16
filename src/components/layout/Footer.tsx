@@ -61,7 +61,7 @@ export function Footer() {
           <h4 className="text-sm font-bold uppercase tracking-widest text-[#8a6a14] mb-4">Shipping & Policy</h4>
           <ul className="space-y-2 text-sm text-neutral-700">
             <li>✓ Free standard shipping — all India</li>
-            <li>✓ Fast delivery available · charge up to ₹100 (varies by city)</li>
+            <li>✓ Delivered to your doorstep within 7 days</li>
             <li>✓ Order confirmed after UPI payment</li>
             <li>✓ Order updates directly on WhatsApp</li>
             <li>✗ No Cash-on-Delivery (safety policy)</li>

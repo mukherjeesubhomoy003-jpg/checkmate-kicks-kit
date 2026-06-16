@@ -72,7 +72,7 @@ function Home() {
         <div className="container-x grid grid-cols-2 md:grid-cols-4 gap-4 py-6 text-sm">
           {[
             { i: Truck, t: "Free shipping · all India" },
-            { i: Zap, t: "Fast delivery · up to ₹100" },
+            { i: Zap, t: "Within 7 days delivery" },
             { i: MapPin, t: "Delivered to your doorstep" },
             { i: ShieldCheck, t: "No COD — UPI only" },
           ].map((x, i) => (
