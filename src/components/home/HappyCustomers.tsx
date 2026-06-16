@@ -1,4 +1,7 @@
-import { Quote, Star } from "lucide-react";
+import { useState } from "react";
+import { Quote, Star, Send } from "lucide-react";
+
+const WHATSAPP_NUMBER = "917003369589";
 
 const REVIEWS: { text: string; name: string; tag?: string }[] = [
   { text: "Quality khub bhalo… ar ekdom perfect size. Visça Barca 💙❤️", name: "Subho", tag: "Barcelona Home" },
@@ -68,10 +71,123 @@ export function HappyCustomers() {
           ))}
         </div>
 
+        <AddReview />
+
         <div className="mt-10 text-center text-[11px] uppercase tracking-[0.25em] text-neutral-500">
           1000+ jerseys delivered · Pan-India
         </div>
       </div>
     </section>
+  );
+}
+
+function AddReview() {
+  const [name, setName] = useState("");
+  const [team, setTeam] = useState("");
+  const [rating, setRating] = useState(5);
+  const [text, setText] = useState("");
+  const [sent, setSent] = useState(false);
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim() || !text.trim()) return;
+    const stars = "⭐".repeat(rating);
+    const msg = [
+      "*New Customer Review for CHECKMATE* 👑",
+      "",
+      `*Name:* ${name}`,
+      team ? `*Jersey:* ${team}` : null,
+      `*Rating:* ${stars} (${rating}/5)`,
+      "",
+      `"${text}"`,
+      "",
+      "_Submitted from checkmatenow.online_",
+    ].filter(Boolean).join("\n");
+    const url = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(msg)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+    setSent(true);
+    setName(""); setTeam(""); setText(""); setRating(5);
+    setTimeout(() => setSent(false), 4000);
+  };
+
+  return (
+    <div className="mt-12">
+      <div className="mx-auto max-w-2xl rounded-3xl bg-white p-6 md:p-8 shadow-luxe border border-gold/40">
+        <div className="text-center">
+          <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-[#8a6a14]"
+            style={{ background: "linear-gradient(135deg,#fff8e1,#ffffff)", border: "1px solid #e6c976" }}>
+            <Star className="size-3 fill-[#d4af37] text-[#d4af37]" /> Share Your Experience
+          </div>
+          <h3 className="mt-3 font-display text-2xl md:text-3xl font-bold tracking-tight">
+            Loved your jersey? <span style={{ backgroundImage: "var(--gradient-gold)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>Drop a review</span>
+          </h3>
+          <p className="mt-2 text-xs text-neutral-600">
+            Your review goes straight to our WhatsApp — we'll feature it here.
+          </p>
+        </div>
+
+        <form onSubmit={submit} className="mt-6 grid gap-4">
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label className="text-[11px] font-semibold uppercase tracking-wider text-neutral-700">Your Name *</label>
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                placeholder="e.g. Rohit"
+                className="mt-1 w-full rounded-xl border border-neutral-300 bg-white px-3 py-2.5 text-sm focus:border-[#d4af37] focus:outline-none focus:ring-2 focus:ring-[#d4af37]/30"
+              />
+            </div>
+            <div>
+              <label className="text-[11px] font-semibold uppercase tracking-wider text-neutral-700">Jersey Bought</label>
+              <input
+                value={team}
+                onChange={(e) => setTeam(e.target.value)}
+                placeholder="e.g. Argentina Messi #10"
+                className="mt-1 w-full rounded-xl border border-neutral-300 bg-white px-3 py-2.5 text-sm focus:border-[#d4af37] focus:outline-none focus:ring-2 focus:ring-[#d4af37]/30"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="text-[11px] font-semibold uppercase tracking-wider text-neutral-700">Your Rating</label>
+            <div className="mt-2 flex items-center gap-1">
+              {[1, 2, 3, 4, 5].map((n) => (
+                <button
+                  key={n}
+                  type="button"
+                  onClick={() => setRating(n)}
+                  aria-label={`${n} star${n > 1 ? "s" : ""}`}
+                  className="p-1 transition-transform hover:scale-110"
+                >
+                  <Star className={`size-7 ${n <= rating ? "fill-[#d4af37] text-[#d4af37]" : "text-neutral-300"}`} />
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="text-[11px] font-semibold uppercase tracking-wider text-neutral-700">Your Review *</label>
+            <textarea
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              required
+              rows={4}
+              placeholder="How was the quality, fit & delivery?"
+              className="mt-1 w-full rounded-xl border border-neutral-300 bg-white px-3 py-2.5 text-sm focus:border-[#d4af37] focus:outline-none focus:ring-2 focus:ring-[#d4af37]/30 resize-none"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-bold text-black shadow-luxe transition-transform hover:scale-[1.01] active:scale-[0.99]"
+            style={{ background: "var(--gradient-gold)" }}
+          >
+            <Send className="size-4" />
+            {sent ? "Sent! Thank you 🙏" : "Send Review via WhatsApp"}
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }
