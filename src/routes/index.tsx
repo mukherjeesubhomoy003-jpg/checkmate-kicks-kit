@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Truck, ShieldCheck, MapPin, Zap, MessageCircle, IndianRupee, Banknote } from "lucide-react";
 import { WorldCupSection } from "@/components/home/WorldCupSection";
+import { FeaturedDrop } from "@/components/home/FeaturedDrop";
+import { HappyCustomers } from "@/components/home/HappyCustomers";
 import { BRAND } from "@/components/order/OrderModal";
 import heroBg from "@/assets/hero-football-bg.jpg";
 
@@ -80,8 +82,14 @@ function Home() {
         </div>
       </section>
 
+      {/* Special drop — Argentina Messi player version */}
+      <FeaturedDrop />
+
       {/* World Cup Collection — featured preview, full catalogue on /world-cup-2026 */}
       <WorldCupSection preview={8} showBanner={false} />
+
+      {/* Happy customers — real WhatsApp reviews */}
+      <HappyCustomers />
 
       {/* How to order */}
       <section id="how" className="container-x py-20">
