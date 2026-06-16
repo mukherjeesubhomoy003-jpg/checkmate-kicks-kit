@@ -4,6 +4,18 @@ import { Copy, Check, Share2, MessageCircle, ArrowRight, Globe } from "lucide-re
 
 const SITE_URL = "https://checkmatenow.online";
 
+const WHATSAPP_MESSAGE =
+  "🔥 *CHECKMATE Jersey* — Player Edition World Cup 2026\n\n" +
+  "Home kit ₹1000 | Away kit ₹1100 | Free shipping all India 🚚\n" +
+  "Special: Argentina Messi #10 Player Version ₹1299\n\n" +
+  "*How to order:*\n" +
+  "1️⃣ Open link → browse 46+ jerseys\n" +
+  "2️⃣ Tap jersey → pick size, kit, qty\n" +
+  "3️⃣ Tap *Order on WhatsApp* → pay via UPI\n" +
+  "4️⃣ Send payment screenshot → we ship pan-India 📦\n\n" +
+  "🔗 " + SITE_URL + "\n\n" +
+  "No COD — UPI only | All sizes: S, M, L, XL, 2XL";
+
 export function ShareBanner() {
   const [copied, setCopied] = useState(false);
 
