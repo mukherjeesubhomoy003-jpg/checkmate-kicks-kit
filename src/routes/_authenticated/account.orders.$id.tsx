@@ -1,9 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { inr } from "@/lib/format";
-import { createInvoiceLink } from "@/lib/account.functions";
+import { createInvoiceLink, myOrderDetail } from "@/lib/account.functions";
 
 export const Route = createFileRoute("/_authenticated/account/orders/$id")({
   head: () => ({ meta: [{ title: "Order — CHECKMATE" }] }),
@@ -23,17 +22,14 @@ function OrderDetail() {
   const [loading, setLoading] = useState(true);
   const [invoiceLoading, setInvoiceLoading] = useState(false);
   const getInvoiceLink = useServerFn(createInvoiceLink);
+  const getOrderDetail = useServerFn(myOrderDetail);
   useEffect(() => {
     (async () => {
-      const { data } = await supabase
-        .from("orders")
-        .select("*, order_items(*)")
-        .eq("id", id)
-        .maybeSingle();
+      const data = await getOrderDetail({ data: { orderId: id } });
       setOrder(data as unknown as Order);
       setLoading(false);
     })();
-  }, [id]);
+  }, [id, getOrderDetail]);
 
   if (loading) return <div className="py-10 text-muted-foreground">Loading…</div>;
   if (!order) return <div className="py-10">Order not found.</div>;
