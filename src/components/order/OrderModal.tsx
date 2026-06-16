@@ -27,7 +27,18 @@ type Props = {
   image: string;
   open: boolean;
   onClose: () => void;
+  /** Override per-jersey price (used for special drops like Argentina Messi). */
+  priceOverride?: number;
+  /** Restrict size options for this jersey. */
+  sizesOverride?: Size[];
+  /** Hide the Home/Away kit selector entirely. */
+  hideKitSelector?: boolean;
+  /** Pre-fill the back-printing fields. */
+  defaultPrintingName?: string;
+  defaultPrintingNumber?: string;
 };
+
+const PRINT_ADDON = 250;
 
 // Sequential order number — counter persisted in browser localStorage
 function nextOrderNumber(): string {
@@ -43,11 +54,19 @@ function nextOrderNumber(): string {
   return `CHKM-${String(n).padStart(4, "0")}`;
 }
 
-export function OrderModal({ team, image, open, onClose }: Props) {
+export function OrderModal({
+  team, image, open, onClose,
+  priceOverride, sizesOverride, hideKitSelector,
+  defaultPrintingName = "", defaultPrintingNumber = "",
+}: Props) {
+  const availableSizes = sizesOverride ?? (SIZES as readonly Size[] as Size[]);
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [kit, setKit] = useState<Kit>("Home");
-  const [size, setSize] = useState<Size>("L");
+  const [size, setSize] = useState<Size>(availableSizes[0] ?? "L");
   const [qty, setQty] = useState(1);
+  const [addPrint, setAddPrint] = useState(false);
+  const [printName, setPrintName] = useState(defaultPrintingName);
+  const [printNumber, setPrintNumber] = useState(defaultPrintingNumber);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
@@ -57,29 +76,36 @@ export function OrderModal({ team, image, open, onClose }: Props) {
 
   if (!open) return null;
 
-  const unit = PRICE[kit];
+  const unit = priceOverride ?? PRICE[kit];
   const subtotal = unit * qty;
+  const printingFee = addPrint ? PRINT_ADDON : 0;
   const shipping = 0;
-  const total = subtotal + shipping;
+  const total = subtotal + printingFee + shipping;
 
   const reset = () => {
-    setStep(1); setKit("Home"); setSize("L"); setQty(1);
+    setStep(1); setKit("Home"); setSize(availableSizes[0] ?? "L"); setQty(1);
+    setAddPrint(false); setPrintName(defaultPrintingName); setPrintNumber(defaultPrintingNumber);
     setName(""); setPhone(""); setAddress(""); setCity(""); setPincode(""); setOrderNo("");
   };
   const close = () => { onClose(); setTimeout(reset, 250); };
 
-  const validDetails = name.trim() && /^[6-9]\d{9}$/.test(phone.trim()) && address.trim() && city.trim() && /^\d{6}$/.test(pincode.trim());
+  const printingValid = !addPrint || (printName.trim().length > 0 && printNumber.trim().length > 0);
+  const validDetails = name.trim() && /^[6-9]\d{9}$/.test(phone.trim()) && address.trim() && city.trim() && /^\d{6}$/.test(pincode.trim()) && printingValid;
 
   const buildMessage = (paid: boolean, orderNumber: string) => {
+    const itemLine = hideKitSelector
+      ? `*Item:* ${team} (Player Edition)`
+      : `*Item:* ${team} — ${kit} Kit (Player Edition)`;
     return [
       `*New Order — CHECKMATE*`,
       `*Order #:* ${orderNumber}`,
       ``,
-      `*Item:* ${team} — ${kit} Kit (Player Edition)`,
+      itemLine,
       `*Size:* ${size}`,
       `*Qty:* ${qty}`,
       `*Unit:* ₹${unit}`,
       `*Subtotal:* ₹${subtotal}`,
+      ...(addPrint ? [`*Back Printing:* ${printName.toUpperCase()} #${printNumber} (+₹${PRINT_ADDON})`] : []),
       `*Shipping:* Free`,
       `*Total:* ₹${total}`,
       ``,
@@ -127,12 +153,8 @@ export function OrderModal({ team, image, open, onClose }: Props) {
     setStep(3);
   };
 
-  const sendOrderUnpaid = () => {
-    const num = orderNo || nextOrderNumber();
-    if (!orderNo) setOrderNo(num);
-    openWhatsApp(buildMessage(false, num));
-    setStep(3);
-  };
+
+
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6" role="dialog" aria-modal="true">
@@ -160,21 +182,28 @@ export function OrderModal({ team, image, open, onClose }: Props) {
                 <div className="font-display text-2xl font-semibold">{team}</div>
                 <div className="text-xs uppercase tracking-[0.22em] text-[#8a6a14] mt-1">Player Edition · 2026</div>
 
-                <div className="mt-4 grid grid-cols-2 gap-2">
-                  {(["Home", "Away"] as Kit[]).map((k) => (
-                    <button key={k} onClick={() => setKit(k)}
-                      className={`rounded-lg border px-3 py-2.5 text-sm font-semibold transition ${
-                        kit === k ? "border-[#b8862b] bg-[#fbf4dd] text-[#1a1a1a]" : "border-border hover:border-gold/60"
-                      }`}>
-                      <div>{k} Kit</div>
-                      <div className="text-xs font-normal text-muted-foreground">₹{PRICE[k]}</div>
-                    </button>
-                  ))}
-                </div>
+                {!hideKitSelector && (
+                  <div className="mt-4 grid grid-cols-2 gap-2">
+                    {(["Home", "Away"] as Kit[]).map((k) => (
+                      <button key={k} onClick={() => setKit(k)}
+                        className={`rounded-lg border px-3 py-2.5 text-sm font-semibold transition ${
+                          kit === k ? "border-[#b8862b] bg-[#fbf4dd] text-[#1a1a1a]" : "border-border hover:border-gold/60"
+                        }`}>
+                        <div>{k} Kit</div>
+                        <div className="text-xs font-normal text-muted-foreground">₹{PRICE[k]}</div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {hideKitSelector && (
+                  <div className="mt-4 rounded-lg border border-[#b8862b] bg-[#fbf4dd] px-3 py-2.5 text-sm font-semibold text-[#1a1a1a]">
+                    Special Drop · <span className="text-[#8a6a14]">₹{unit}</span>
+                  </div>
+                )}
 
                 <label className="mt-4 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Size</label>
                 <div className="mt-2 flex flex-wrap gap-2">
-                  {SIZES.map((s) => (
+                  {availableSizes.map((s) => (
                     <button key={s} onClick={() => setSize(s)}
                       className={`size-10 rounded-full border text-sm font-semibold transition ${
                         size === s ? "border-[#b8862b] bg-[#1a1a1a] text-[#f4d77a]" : "border-border hover:border-gold/60"
@@ -187,6 +216,35 @@ export function OrderModal({ team, image, open, onClose }: Props) {
                   <button onClick={() => setQty(Math.max(1, qty - 1))} className="px-3 py-1.5">−</button>
                   <span className="px-3 text-sm font-semibold">{qty}</span>
                   <button onClick={() => setQty(qty + 1)} className="px-3 py-1.5">+</button>
+                </div>
+
+                {/* Back-printing add-on */}
+                <div className="mt-5 rounded-xl border-2 border-dashed border-gold/60 bg-[#fffaeb] p-3">
+                  <label className="flex items-start gap-2.5 cursor-pointer">
+                    <input type="checkbox" checked={addPrint} onChange={(e) => setAddPrint(e.target.checked)}
+                      className="mt-1 size-4 accent-[#b8862b]" />
+                    <div className="flex-1">
+                      <div className="text-sm font-semibold text-[#1a1a1a]">Add back printing (Name + Number)</div>
+                      <div className="text-[11px] text-neutral-600">Optional · +₹{PRINT_ADDON} · heat-pressed on back</div>
+                    </div>
+                  </label>
+                  {addPrint && (
+                    <div className="mt-3 grid grid-cols-2 gap-2">
+                      <label className="block">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Name on back</span>
+                        <input value={printName} onChange={(e) => setPrintName(e.target.value.toUpperCase().slice(0, 14))}
+                          placeholder="MESSI" className="mt-1 w-full rounded-md border border-border bg-white px-2.5 py-2 text-sm font-bold tracking-wider focus:border-[#b8862b] focus:outline-none" />
+                      </label>
+                      <label className="block">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Number</span>
+                        <input value={printNumber} onChange={(e) => setPrintNumber(e.target.value.replace(/\D/g, "").slice(0, 3))}
+                          placeholder="10" className="mt-1 w-full rounded-md border border-border bg-white px-2.5 py-2 text-sm font-bold focus:border-[#b8862b] focus:outline-none" />
+                      </label>
+                      {!printingValid && (
+                        <div className="col-span-2 text-[11px] text-red-600">Fill both name and number, or uncheck add-on.</div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -201,7 +259,8 @@ export function OrderModal({ team, image, open, onClose }: Props) {
               </div>
 
               <div className="mt-5 rounded-xl border border-gold/40 bg-gold-soft p-4">
-                <Row label={`${kit} Kit × ${qty}`} value={`₹${subtotal}`} />
+                <Row label={`${hideKitSelector ? team : `${kit} Kit`} × ${qty}`} value={`₹${subtotal}`} />
+                {addPrint && <Row label={`Back printing · ${printName || "—"} #${printNumber || "—"}`} value={`₹${printingFee}`} />}
                 <Row label="Shipping" value="Free" />
                 <Row label="Fast delivery (optional)" value="up to ₹100 · billed on WhatsApp" muted />
                 <div className="my-2 h-px hairline-gold" />
@@ -264,17 +323,20 @@ export function OrderModal({ team, image, open, onClose }: Props) {
                 <div className="rounded-xl border border-border p-4">
                   <div className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">Order summary</div>
                   <div className="mt-2 text-sm">
-                    <div className="font-semibold">{team} — {kit} Kit</div>
+                    <div className="font-semibold">{team}{!hideKitSelector && ` — ${kit} Kit`}</div>
                     <div className="text-muted-foreground">Size {size} · Qty {qty}</div>
+                    {addPrint && <div className="text-muted-foreground">Back: <b>{printName}</b> #{printNumber}</div>}
                   </div>
                   <div className="mt-3 h-px hairline-gold" />
                   <Row label="Subtotal" value={`₹${subtotal}`} />
+                  {addPrint && <Row label="Back printing" value={`₹${printingFee}`} />}
                   <Row label="Shipping" value="Free" />
                   <Row label="Total" value={`₹${total}`} strong />
                   <div className="mt-3 text-[11px] text-muted-foreground leading-relaxed">
-                    1. Pay ₹{total} using the QR<br />
-                    2. Tap below — your order opens in WhatsApp<br />
-                    3. Attach payment screenshot · we confirm & ship
+                    1. Pay <b>₹{total}</b> using the QR<br />
+                    2. Tap below <b>only after payment</b><br />
+                    3. Order opens in WhatsApp · attach payment screenshot<br />
+                    4. We confirm & generate your invoice ✅
                   </div>
                 </div>
 
@@ -282,12 +344,11 @@ export function OrderModal({ team, image, open, onClose }: Props) {
                   <button onClick={confirmPaid}
                     className="w-full inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold uppercase tracking-[0.18em]"
                     style={{ background: "var(--gradient-gold)", color: "#1a1a1a", border: "1px solid #8a6a14" }}>
-                    <Check className="size-4" /> I've Paid — Send Order & Get Invoice
+                    <Check className="size-4" /> I've Paid — Send Screenshot & Get Invoice
                   </button>
-                  <button onClick={sendOrderUnpaid}
-                    className="w-full inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold border border-border hover:border-gold/60">
-                    Send Order First, Pay After
-                  </button>
+                  <div className="text-[11px] text-muted-foreground text-center px-2">
+                    ⚠️ Invoice is generated <b>only after</b> payment is confirmed. Please complete the UPI payment first.
+                  </div>
                   <button onClick={() => setStep(1)} className="text-xs text-muted-foreground hover:underline mt-1">
                     ← Edit details
                   </button>
@@ -300,8 +361,9 @@ export function OrderModal({ team, image, open, onClose }: Props) {
         {step === 3 && (
           <InvoiceView
             orderNo={orderNo}
-            team={team} kit={kit} size={size} qty={qty}
+            team={team} kit={hideKitSelector ? "" : kit} size={size} qty={qty}
             unit={unit} subtotal={subtotal} shipping={shipping} total={total}
+            printName={addPrint ? printName : ""} printNumber={addPrint ? printNumber : ""} printingFee={printingFee}
             name={name} phone={phone} address={address} city={city} pincode={pincode}
             onClose={close}
           />
@@ -314,10 +376,11 @@ export function OrderModal({ team, image, open, onClose }: Props) {
 function InvoiceView(props: {
   orderNo: string; team: string; kit: string; size: string; qty: number;
   unit: number; subtotal: number; shipping: number; total: number;
+  printName: string; printNumber: string; printingFee: number;
   name: string; phone: string; address: string; city: string; pincode: string;
   onClose: () => void;
 }) {
-  const { orderNo, team, kit, size, qty, unit, subtotal, shipping, total, name, phone, address, city, pincode, onClose } = props;
+  const { orderNo, team, kit, size, qty, unit, subtotal, shipping, total, printName, printNumber, printingFee, name, phone, address, city, pincode, onClose } = props;
   const date = useMemo(() => new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }), []);
 
   const estDelivery = useMemo(() => {
@@ -328,12 +391,14 @@ function InvoiceView(props: {
   }, []);
 
   const logoUrl = typeof window !== "undefined" ? new URL(logoAsset.url, window.location.origin).href : logoAsset.url;
+  const itemLine = kit ? `${team} — ${kit} Kit` : team;
 
   const sendOnWhatsApp = () => {
     const text = [
       `*Order Confirmation — CHECKMATE*`,
       `Order #: ${orderNo}`,
-      `${team} — ${kit} Kit · Size ${size} · Qty ${qty}`,
+      `${itemLine} · Size ${size} · Qty ${qty}`,
+      ...(printName ? [`Back Printing: ${printName} #${printNumber}`] : []),
       `Total Paid: ₹${total}`,
       `Ship to: ${name}, ${address}, ${city} - ${pincode}`,
       `Phone: +91 ${phone}`,
@@ -423,21 +488,35 @@ function InvoiceView(props: {
         <th style="text-align:right">Unit (₹)</th>
         <th style="text-align:right">Amount (₹)</th>
       </tr></thead>
-      <tbody><tr>
-        <td>
-          <b>${escapeHtml(team)} — ${kit} Kit</b><br/>
-          <span style="color:#888;font-size:11px">Player Edition · World Cup 2026 · Match-grade dri-fit fabric</span>
-        </td>
-        <td>6109</td>
-        <td>${size}</td>
-        <td style="text-align:center">${qty}</td>
-        <td style="text-align:right">${unit}</td>
-        <td style="text-align:right">${subtotal}</td>
-      </tr></tbody>
+      <tbody>
+        <tr>
+          <td>
+            <b>${escapeHtml(itemLine)}</b><br/>
+            <span style="color:#888;font-size:11px">Player Edition · Match-grade dri-fit fabric</span>
+          </td>
+          <td>6109</td>
+          <td>${size}</td>
+          <td style="text-align:center">${qty}</td>
+          <td style="text-align:right">${unit}</td>
+          <td style="text-align:right">${subtotal}</td>
+        </tr>
+        ${printName ? `<tr>
+          <td>
+            <b>Back Printing — ${escapeHtml(printName)} #${escapeHtml(printNumber)}</b><br/>
+            <span style="color:#888;font-size:11px">Heat-pressed custom name & number on back</span>
+          </td>
+          <td>6109</td>
+          <td>—</td>
+          <td style="text-align:center">1</td>
+          <td style="text-align:right">${printingFee}</td>
+          <td style="text-align:right">${printingFee}</td>
+        </tr>` : ""}
+      </tbody>
     </table>
 
     <div class="totals">
       <div class="ln"><span>Subtotal</span><span>₹${subtotal}</span></div>
+      ${printName ? `<div class="ln"><span>Back printing add-on</span><span>₹${printingFee}</span></div>` : ""}
       <div class="ln"><span>Shipping (All-India)</span><span>${shipping === 0 ? "FREE" : "₹" + shipping}</span></div>
       <div class="ln"><span>Discount</span><span>—</span></div>
       <div class="ln tot" style="border-top:1.5px solid #d4af37;margin-top:6px;padding-top:8px"><span>Grand Total</span><span>₹${total}</span></div>
@@ -503,7 +582,8 @@ function InvoiceView(props: {
 
       <div className="mt-5 rounded-xl border border-gold/40 bg-gold-soft p-4 max-w-md mx-auto">
         <div className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">Summary</div>
-        <Row label={`${team} — ${kit} · ${size} × ${qty}`} value={`₹${subtotal}`} />
+        <Row label={`${itemLine} · ${size} × ${qty}`} value={`₹${subtotal}`} />
+        {printName && <Row label={`Printing · ${printName} #${printNumber}`} value={`₹${printingFee}`} />}
         <Row label="Shipping" value="Free" />
         <Row label="Total Paid" value={`₹${total}`} strong />
         <div className="mt-2 text-[11px] text-muted-foreground leading-relaxed">

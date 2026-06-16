@@ -13,6 +13,7 @@ export function Header() {
         </Link>
 
         <nav className="hidden sm:flex ml-2 md:ml-6 items-center gap-3 md:gap-6 text-xs md:text-sm font-semibold text-neutral-700">
+          <Link to="/" className="hover:text-[#8a6a14] whitespace-nowrap">Home</Link>
           <Link to="/world-cup-2026" className="hover:text-[#8a6a14] whitespace-nowrap">World Cup '26</Link>
           <Link to="/" hash="how" className="hover:text-[#8a6a14] whitespace-nowrap">How to Order</Link>
           <a href={`https://wa.me/${BRAND.whatsappPrimary}`} target="_blank" rel="noopener noreferrer" className="hover:text-[#8a6a14] hidden md:inline">Contact</a>
