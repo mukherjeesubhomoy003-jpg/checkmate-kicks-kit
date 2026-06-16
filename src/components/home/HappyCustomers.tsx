@@ -1,4 +1,7 @@
-import { Quote, Star } from "lucide-react";
+import { useState } from "react";
+import { Quote, Star, Send } from "lucide-react";
+
+const WHATSAPP_NUMBER = "917003369589";
 
 const REVIEWS: { text: string; name: string; tag?: string }[] = [
   { text: "Quality khub bhalo… ar ekdom perfect size. Visça Barca 💙❤️", name: "Subho", tag: "Barcelona Home" },
