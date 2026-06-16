@@ -593,6 +593,16 @@ export type Database = {
         }
         Returns: boolean
       }
+      lookup_coupon: {
+        Args: { _code: string }
+        Returns: {
+          code: string
+          discount_type: string
+          discount_value: number
+          expires_at: string
+          min_order: number
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "customer"
