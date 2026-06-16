@@ -1,17 +1,17 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Minus, Plus, Save, LogOut, Lock } from "lucide-react";
 import { JERSEYS } from "@/lib/jerseys";
-import { supabase } from "@/integrations/supabase/client";
 import {
   useJerseyStock,
-  checkAdminCreds,
   setAdminSession,
   clearAdminSession,
-  isAdminSession,
+  getAdminSession,
 } from "@/lib/jersey-stock";
+import { loginJerseyAdmin, updateJerseyStock } from "@/lib/jersey-admin.functions";
 
 export const Route = createFileRoute("/jersey-admin")({
   head: () => ({ meta: [{ title: "Jersey Stock Admin — CHECKMATE" }, { name: "robots", content: "noindex" }] }),
@@ -19,22 +19,31 @@ export const Route = createFileRoute("/jersey-admin")({
 });
 
 function JerseyAdminPage() {
-  const [authed, setAuthed] = useState(false);
-  useEffect(() => setAuthed(isAdminSession()), []);
-  if (!authed) return <LoginGate onSuccess={() => setAuthed(true)} />;
-  return <StockEditor onLogout={() => setAuthed(false)} />;
+  const [token, setToken] = useState("");
+  useEffect(() => setToken(getAdminSession()), []);
+  if (!token) return <LoginGate onSuccess={(nextToken) => setToken(nextToken)} />;
+  return <StockEditor token={token} onLogout={() => setToken("")} />;
 }
 
-function LoginGate({ onSuccess }: { onSuccess: () => void }) {
+function LoginGate({ onSuccess }: { onSuccess: (token: string) => void }) {
+  const loginAdmin = useServerFn(loginJerseyAdmin);
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
   const [err, setErr] = useState("");
-  function submit(e: React.FormEvent) {
+  const [loading, setLoading] = useState(false);
+  async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (checkAdminCreds(id.trim(), pw)) {
-      setAdminSession();
-      onSuccess();
-    } else setErr("Invalid credentials");
+    setLoading(true);
+    setErr("");
+    try {
+      const { token } = await loginAdmin({ data: { id: id.trim(), password: pw } });
+      setAdminSession(token);
+      onSuccess(token);
+    } catch {
+      setErr("Invalid credentials");
+    } finally {
+      setLoading(false);
+    }
   }
   return (
     <div className="min-h-[70vh] grid place-items-center px-4">
@@ -48,18 +57,19 @@ function LoginGate({ onSuccess }: { onSuccess: () => void }) {
         <input type="password" value={pw} onChange={(e) => setPw(e.target.value)}
           className="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm" />
         {err && <div className="mt-3 text-xs text-red-600">{err}</div>}
-        <button type="submit"
+        <button type="submit" disabled={loading}
           className="mt-5 w-full rounded-full px-4 py-2.5 text-xs font-bold uppercase tracking-wider"
           style={{ background: "var(--gradient-gold)", color: "#1a1a1a", border: "1px solid #8a6a14" }}>
-          Enter Admin
+          {loading ? "Checking…" : "Enter Admin"}
         </button>
       </form>
     </div>
   );
 }
 
-function StockEditor({ onLogout }: { onLogout: () => void }) {
+function StockEditor({ token, onLogout }: { token: string; onLogout: () => void }) {
   const { data: stockMap, isLoading } = useJerseyStock();
+  const saveStock = useServerFn(updateJerseyStock);
   const qc = useQueryClient();
   const navigate = useNavigate();
   const [draft, setDraft] = useState<Record<string, number>>({});
@@ -84,13 +94,7 @@ function StockEditor({ onLogout }: { onLogout: () => void }) {
     if (!dirtyIds.length) { toast.info("No changes to save"); return; }
     setSaving(true);
     try {
-      for (const id of dirtyIds) {
-        const { error } = await supabase
-          .from("jersey_stock")
-          .update({ stock: draft[id], updated_at: new Date().toISOString() })
-          .eq("id", id);
-        if (error) throw error;
-      }
+      await saveStock({ data: { token, updates: dirtyIds.map((id) => ({ id, stock: draft[id] })) } });
       await qc.invalidateQueries({ queryKey: ["jersey-stock"] });
       toast.success(`Stock updated for ${dirtyIds.length} jersey${dirtyIds.length > 1 ? "s" : ""}`);
     } catch (e) {
