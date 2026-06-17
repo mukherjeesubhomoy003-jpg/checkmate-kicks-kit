@@ -7,7 +7,7 @@ const SITE_URL = "https://checkmatenow.online";
 const WHATSAPP_MESSAGE =
   "🔥 *CHECKMATE Jersey* — Player Edition World Cup 2026\n\n" +
   "Home kit ₹1000 | Away kit ₹1100 | Free shipping all India 🚚\n" +
-  "Special: Argentina Messi #10 Player Version ₹1299\n\n" +
+  "Special Editions: Argentina Messi #10 & Portugal Ronaldo #7 — ₹1299 each\n\n" +
   "*How to order:*\n" +
   "1️⃣ Open link → browse 46+ jerseys\n" +
   "2️⃣ Tap jersey → pick size, kit, qty\n" +
