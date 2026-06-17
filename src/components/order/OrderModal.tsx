@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
-import { X, Check, Phone, ShieldCheck, Printer, MessageCircle } from "lucide-react";
+import { X, Check, Phone, ShieldCheck, Printer, MessageCircle, Ruler } from "lucide-react";
 import qrAsset from "@/assets/payment-qr.png.asset.json";
 import logoAsset from "@/assets/checkmate-logo.asset.json";
+import { SizeChartModal } from "@/components/SizeChartModal";
 
 // === Brand contact / order routing =====================================
 export const BRAND = {
@@ -73,6 +74,7 @@ export function OrderModal({
   const [city, setCity] = useState("");
   const [pincode, setPincode] = useState("");
   const [orderNo, setOrderNo] = useState<string>("");
+  const [showSizeChart, setShowSizeChart] = useState(false);
 
   if (!open) return null;
 
@@ -201,7 +203,13 @@ export function OrderModal({
                   </div>
                 )}
 
-                <label className="mt-4 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Size</label>
+                <div className="mt-4 flex items-center justify-between">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Size</label>
+                  <button type="button" onClick={() => setShowSizeChart(true)}
+                    className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-[#8a6a14] hover:text-[#b8862b]">
+                    <Ruler className="size-3.5" /> Size Chart
+                  </button>
+                </div>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {availableSizes.map((s) => (
                     <button key={s} onClick={() => setSize(s)}
@@ -368,6 +376,7 @@ export function OrderModal({
           />
         )}
       </div>
+      <SizeChartModal open={showSizeChart} onClose={() => setShowSizeChart(false)} />
     </div>
   );
 }
