@@ -74,6 +74,7 @@ export function OrderModal({
   const [city, setCity] = useState("");
   const [pincode, setPincode] = useState("");
   const [orderNo, setOrderNo] = useState<string>("");
+  const [showSizeChart, setShowSizeChart] = useState(false);
 
   if (!open) return null;
 
