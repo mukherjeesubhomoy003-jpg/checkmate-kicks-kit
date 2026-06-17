@@ -49,7 +49,7 @@ export function FeaturedDrop() {
               className="group relative overflow-hidden rounded-xl bg-white shadow-luxe block w-full"
               style={{ border: "2px solid #d4af37" }}>
               <div className="aspect-[3/4] w-full overflow-hidden bg-gold-soft">
-                <img src={argentinaImg.url} alt="Argentina Home — Messi 10 player version"
+                <img src={argentinaImg.url} alt="Argentina Home — Messi 10 player version" loading="lazy" decoding="async"
                   className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
               </div>
             </button>
@@ -97,7 +97,7 @@ export function FeaturedDrop() {
               className="group relative overflow-hidden rounded-xl bg-white shadow-luxe block w-full"
               style={{ border: "2px solid #d4af37" }}>
               <div className="aspect-[3/4] w-full overflow-hidden bg-gold-soft">
-                <img src={portugalImg.url} alt="Portugal Away — Ronaldo 7 player version"
+                <img src={portugalImg.url} alt="Portugal Away — Ronaldo 7 player version" loading="lazy" decoding="async"
                   className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
               </div>
             </button>
