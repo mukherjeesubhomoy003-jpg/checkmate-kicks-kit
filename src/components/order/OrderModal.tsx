@@ -376,6 +376,7 @@ export function OrderModal({
           />
         )}
       </div>
+      <SizeChartModal open={showSizeChart} onClose={() => setShowSizeChart(false)} />
     </div>
   );
 }
