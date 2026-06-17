@@ -76,6 +76,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/jpeg", href: "/__l5e/assets-v1/95087f37-2c0c-4344-a5d8-014e5a83995b/checkmate-logo.jpeg" },
+      { rel: "apple-touch-icon", href: "/__l5e/assets-v1/95087f37-2c0c-4344-a5d8-014e5a83995b/checkmate-logo.jpeg" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" },

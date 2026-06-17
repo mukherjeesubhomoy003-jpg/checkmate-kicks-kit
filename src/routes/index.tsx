@@ -5,7 +5,7 @@ import { FeaturedDrop } from "@/components/home/FeaturedDrop";
 import { HappyCustomers } from "@/components/home/HappyCustomers";
 import { ShareBanner } from "@/components/home/ShareBanner";
 import { BRAND } from "@/components/order/OrderModal";
-import heroBg from "@/assets/hero-football-bg.jpg";
+import { HeroSlideshow } from "@/components/home/HeroSlideshow";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -24,13 +24,7 @@ function Home() {
     <div>
       {/* Hero — Football stadium backdrop with gold accents */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={heroBg} alt="" className="size-full object-cover" />
-          <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(10,8,4,0.75) 0%, rgba(10,8,4,0.55) 50%, rgba(10,8,4,0.85) 100%)" }} />
-        </div>
-        <div aria-hidden className="absolute inset-0 opacity-40" style={{
-          backgroundImage: "radial-gradient(circle at 15% 20%, #d4af37 0, transparent 40%), radial-gradient(circle at 85% 80%, #b8862b 0, transparent 45%)",
-        }} />
+        <HeroSlideshow />
         <div className="container-x relative py-20 sm:py-28 md:py-40 text-center">
           <div className="inline-flex items-center gap-2 rounded-full px-3 sm:px-4 py-1.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.18em] sm:tracking-[0.22em]"
             style={{ background: "rgba(255,248,225,0.12)", color: "#f4d77a", border: "1px solid #d4af37", backdropFilter: "blur(6px)" }}>
