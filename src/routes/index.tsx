@@ -83,7 +83,7 @@ function Home() {
         </div>
       </section>
 
-      {/* Special drop — Argentina Messi player version */}
+      {/* Special drops — Argentina Messi & Portugal Ronaldo player versions */}
       <FeaturedDrop />
 
       {/* World Cup Collection — featured preview, full catalogue on /world-cup-2026 */}
