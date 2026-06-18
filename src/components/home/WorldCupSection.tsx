@@ -132,6 +132,7 @@ export function WorldCupSection({ preview, showBanner = true, heading }: Props) 
         open={!!active}
         team={active?.team ?? ""}
         image={active?.image ?? ""}
+        jerseyId={active?.id}
         onClose={() => setActive(null)}
       />
     </section>

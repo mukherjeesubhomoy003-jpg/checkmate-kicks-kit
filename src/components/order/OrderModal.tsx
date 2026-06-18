@@ -1,8 +1,11 @@
 import { useMemo, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { X, Check, Phone, ShieldCheck, Printer, MessageCircle, Ruler } from "lucide-react";
 import qrAsset from "@/assets/payment-qr.png.asset.json";
 import logoAsset from "@/assets/checkmate-logo.asset.json";
 import { SizeChartModal } from "@/components/SizeChartModal";
+import { useJerseySizeStock, type SizeKey } from "@/lib/jersey-size-stock";
+import { createJerseyOrder } from "@/lib/jersey-admin.functions";
 
 // === Brand contact / order routing =====================================
 export const BRAND = {
@@ -37,6 +40,8 @@ type Props = {
   /** Pre-fill the back-printing fields. */
   defaultPrintingName?: string;
   defaultPrintingNumber?: string;
+  /** Jersey ID (e.g. "j07") — enables per-size stock display + decrement. */
+  jerseyId?: string;
 };
 
 const PRINT_ADDON = 250;
@@ -59,6 +64,7 @@ export function OrderModal({
   team, image, open, onClose,
   priceOverride, sizesOverride, hideKitSelector,
   defaultPrintingName = "", defaultPrintingNumber = "",
+  jerseyId,
 }: Props) {
   const availableSizes = sizesOverride ?? (SIZES as readonly Size[] as Size[]);
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -73,8 +79,16 @@ export function OrderModal({
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [pincode, setPincode] = useState("");
+  const [landmark, setLandmark] = useState("");
+  const [postOffice, setPostOffice] = useState("");
   const [orderNo, setOrderNo] = useState<string>("");
   const [showSizeChart, setShowSizeChart] = useState(false);
+  const [placing, setPlacing] = useState(false);
+
+  const { data: sizeStockMap } = useJerseySizeStock();
+  const placeOrder = useServerFn(createJerseyOrder);
+  const sizeStock: Partial<Record<SizeKey, number>> | undefined = jerseyId ? sizeStockMap?.[jerseyId] : undefined;
+  const currentSizeStock = sizeStock?.[size as SizeKey];
 
   if (!open) return null;
 
@@ -87,12 +101,15 @@ export function OrderModal({
   const reset = () => {
     setStep(1); setKit("Home"); setSize(availableSizes[0] ?? "L"); setQty(1);
     setAddPrint(false); setPrintName(defaultPrintingName); setPrintNumber(defaultPrintingNumber);
-    setName(""); setPhone(""); setAddress(""); setCity(""); setPincode(""); setOrderNo("");
+    setName(""); setPhone(""); setAddress(""); setCity(""); setPincode(""); setLandmark(""); setPostOffice(""); setOrderNo("");
   };
   const close = () => { onClose(); setTimeout(reset, 250); };
 
   const printingValid = !addPrint || (printName.trim().length > 0 && printNumber.trim().length > 0);
-  const validDetails = name.trim() && /^[6-9]\d{9}$/.test(phone.trim()) && address.trim() && city.trim() && /^\d{6}$/.test(pincode.trim()) && printingValid;
+  const stockOk = jerseyId ? (currentSizeStock ?? 0) >= qty : true;
+  const validDetails = name.trim() && /^[6-9]\d{9}$/.test(phone.trim()) && address.trim() && city.trim() && /^\d{6}$/.test(pincode.trim()) && printingValid && stockOk;
+
+  const postOfficeOut = postOffice.trim() || "NA";
 
   const buildMessage = (paid: boolean, orderNumber: string) => {
     const itemLine = hideKitSelector
@@ -115,44 +132,64 @@ export function OrderModal({
       `Name: ${name}`,
       `Phone: ${phone}`,
       `Address: ${address}`,
+      ...(landmark.trim() ? [`Landmark: ${landmark.trim()}`] : []),
+      `Post Office: ${postOfficeOut}`,
       `City: ${city}  Pin: ${pincode}`,
       ``,
       paid ? `✅ Payment done — sharing screenshot next.` : `🕒 Will pay shortly via UPI QR.`,
     ].join("\n");
   };
 
-  // Robust WhatsApp redirect — anchor-click works where window.open is blocked
-  // (in-app browsers, mobile Safari popup blocker). Falls back to location change.
   const openWhatsApp = (text: string) => {
     const number = BRAND.whatsappPrimary;
     const msg = encodeURIComponent(text);
-    // api.whatsapp.com/send is the most cross-platform endpoint (desktop + mobile + in-app browsers)
     const url = `https://api.whatsapp.com/send?phone=${number}&text=${msg}`;
     try {
       const a = document.createElement("a");
-      a.href = url;
-      a.target = "_blank";
-      a.rel = "noopener noreferrer";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    } catch {
-      window.location.href = url;
-    }
-    // Safety net: if nothing happened after 800ms, fall back to same-tab navigation
+      a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer";
+      document.body.appendChild(a); a.click(); a.remove();
+    } catch { window.location.href = url; }
     setTimeout(() => {
-      if (!document.hidden) {
-        // user may still be on the page (popup blocked) — navigate same tab
-        window.location.href = `https://wa.me/${number}?text=${msg}`;
-      }
+      if (!document.hidden) window.location.href = `https://wa.me/${number}?text=${msg}`;
     }, 800);
   };
 
-  const confirmPaid = () => {
-    const num = orderNo || nextOrderNumber();
-    if (!orderNo) setOrderNo(num);
+  const confirmPaid = async () => {
+    if (placing) return;
+    setPlacing(true);
+    let num = orderNo;
+    if (!num) {
+      try {
+        const res = await placeOrder({
+          data: {
+            buyer_name: name.trim(),
+            buyer_phone: phone.trim(),
+            address: address.trim(),
+            city: city.trim(),
+            pincode: pincode.trim(),
+            landmark: landmark.trim() || null,
+            post_office: postOfficeOut,
+            item_name: team,
+            kit: hideKitSelector ? null : kit,
+            size,
+            qty,
+            unit_price: unit,
+            printing_name: addPrint ? printName.trim().toUpperCase() : null,
+            printing_number: addPrint ? printNumber.trim() : null,
+            printing_fee: addPrint ? PRINT_ADDON : 0,
+            total,
+            jersey_id: jerseyId ?? null,
+          },
+        });
+        num = res.order_number;
+      } catch {
+        num = nextOrderNumber(); // local fallback so customer can still get an invoice
+      }
+      setOrderNo(num);
+    }
     openWhatsApp(buildMessage(true, num));
     setStep(3);
+    setPlacing(false);
   };
 
 
@@ -211,13 +248,41 @@ export function OrderModal({
                   </button>
                 </div>
                 <div className="mt-2 flex flex-wrap gap-2">
-                  {availableSizes.map((s) => (
-                    <button key={s} onClick={() => setSize(s)}
-                      className={`size-10 rounded-full border text-sm font-semibold transition ${
-                        size === s ? "border-[#b8862b] bg-[#1a1a1a] text-[#f4d77a]" : "border-border hover:border-gold/60"
-                      }`}>{s}</button>
-                  ))}
+                  {availableSizes.map((s) => {
+                    const left = jerseyId ? sizeStock?.[s as SizeKey] : undefined;
+                    const out = jerseyId !== undefined && (left ?? 0) <= 0;
+                    return (
+                      <button key={s} onClick={() => !out && setSize(s)} disabled={out}
+                        title={out ? "Out of stock" : left !== undefined ? `${left} left` : undefined}
+                        className={`relative flex flex-col items-center justify-center w-12 h-12 rounded-xl border text-sm font-semibold transition ${
+                          out
+                            ? "border-neutral-200 bg-neutral-100 text-neutral-400 cursor-not-allowed line-through"
+                            : size === s
+                              ? "border-[#b8862b] bg-[#1a1a1a] text-[#f4d77a]"
+                              : "border-border hover:border-gold/60"
+                        }`}>
+                        <span className="leading-none">{s}</span>
+                        {jerseyId && (
+                          <span className={`text-[8px] mt-0.5 leading-none font-bold uppercase tracking-wider ${
+                            out ? "text-red-500" : size === s ? "text-[#f4d77a]/80" : "text-neutral-500"
+                          }`}>
+                            {out ? "Out" : `${left} left`}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
+                {jerseyId && currentSizeStock !== undefined && currentSizeStock > 0 && currentSizeStock <= 3 && (
+                  <div className="mt-1.5 text-[11px] font-semibold text-amber-700">
+                    Only {currentSizeStock} left in size {size} — hurry!
+                  </div>
+                )}
+                {jerseyId && qty > (currentSizeStock ?? 0) && (
+                  <div className="mt-1.5 text-[11px] font-semibold text-red-600">
+                    Not enough stock for size {size} (max {currentSizeStock ?? 0}).
+                  </div>
+                )}
 
                 <label className="mt-4 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Quantity</label>
                 <div className="mt-2 inline-flex items-center rounded-full border border-border">
@@ -262,6 +327,8 @@ export function OrderModal({
                 <Field label="Full name" value={name} onChange={setName} placeholder="As per delivery" />
                 <Field label="Phone (10-digit)" value={phone} onChange={(v) => setPhone(v.replace(/\D/g, "").slice(0, 10))} placeholder="9XXXXXXXXX" />
                 <Field label="Address" value={address} onChange={setAddress} placeholder="House, street, area" className="sm:col-span-2" />
+                <Field label="Landmark (nearby)" value={landmark} onChange={setLandmark} placeholder="e.g. Near SBI ATM" className="sm:col-span-2" />
+                <Field label="Post office" value={postOffice} onChange={setPostOffice} placeholder="Leave blank if not available (NA)" />
                 <Field label="City" value={city} onChange={setCity} placeholder="City" />
                 <Field label="Pincode" value={pincode} onChange={(v) => setPincode(v.replace(/\D/g, "").slice(0, 6))} placeholder="6-digit" />
               </div>
@@ -348,10 +415,10 @@ export function OrderModal({
                 </div>
 
                 <div className="mt-4 flex flex-col gap-2">
-                  <button onClick={confirmPaid}
-                    className="w-full inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold uppercase tracking-[0.18em]"
+                  <button onClick={confirmPaid} disabled={placing}
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold uppercase tracking-[0.18em] disabled:opacity-60"
                     style={{ background: "var(--gradient-gold)", color: "#1a1a1a", border: "1px solid #8a6a14" }}>
-                    <Check className="size-4" /> I've Paid — Send Screenshot & Get Invoice
+                    <Check className="size-4" /> {placing ? "Saving order…" : "I've Paid — Send Screenshot & Get Invoice"}
                   </button>
                   <div className="text-[11px] text-muted-foreground text-center px-2">
                     ⚠️ Invoice is generated <b>only after</b> payment is confirmed. Please complete the UPI payment first.

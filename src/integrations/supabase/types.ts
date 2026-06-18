@@ -205,6 +205,105 @@ export type Database = {
         }
         Relationships: []
       }
+      jersey_orders: {
+        Row: {
+          address: string
+          buyer_name: string
+          buyer_phone: string
+          city: string
+          created_at: string
+          dispatch_status: string
+          id: string
+          item_name: string
+          kit: string | null
+          landmark: string | null
+          notes: string | null
+          order_number: string
+          payment_status: string
+          pincode: string
+          post_office: string | null
+          printing_fee: number
+          printing_name: string | null
+          printing_number: string | null
+          qty: number
+          size: string
+          total: number
+          unit_price: number
+          updated_at: string
+        }
+        Insert: {
+          address: string
+          buyer_name: string
+          buyer_phone: string
+          city: string
+          created_at?: string
+          dispatch_status?: string
+          id?: string
+          item_name: string
+          kit?: string | null
+          landmark?: string | null
+          notes?: string | null
+          order_number: string
+          payment_status?: string
+          pincode: string
+          post_office?: string | null
+          printing_fee?: number
+          printing_name?: string | null
+          printing_number?: string | null
+          qty?: number
+          size: string
+          total: number
+          unit_price: number
+          updated_at?: string
+        }
+        Update: {
+          address?: string
+          buyer_name?: string
+          buyer_phone?: string
+          city?: string
+          created_at?: string
+          dispatch_status?: string
+          id?: string
+          item_name?: string
+          kit?: string | null
+          landmark?: string | null
+          notes?: string | null
+          order_number?: string
+          payment_status?: string
+          pincode?: string
+          post_office?: string | null
+          printing_fee?: number
+          printing_name?: string | null
+          printing_number?: string | null
+          qty?: number
+          size?: string
+          total?: number
+          unit_price?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      jersey_size_stock: {
+        Row: {
+          jersey_id: string
+          size: string
+          stock: number
+          updated_at: string
+        }
+        Insert: {
+          jersey_id: string
+          size: string
+          stock?: number
+          updated_at?: string
+        }
+        Update: {
+          jersey_id?: string
+          size?: string
+          stock?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       jersey_stock: {
         Row: {
           id: string
@@ -621,6 +720,7 @@ export type Database = {
           min_order: number
         }[]
       }
+      next_jersey_order_number: { Args: never; Returns: string }
     }
     Enums: {
       app_role: "admin" | "customer"
