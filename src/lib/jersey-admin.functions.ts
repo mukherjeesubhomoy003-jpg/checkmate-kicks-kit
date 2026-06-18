@@ -82,21 +82,19 @@ export const createJerseyOrder = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-    // Reserve sequential order number
-    const { data: seqRow, error: seqErr } = await supabaseAdmin
-      .rpc("nextval", { seq: "jersey_order_seq" } as never)
-      .single<unknown>();
-    let n: number;
-    if (seqErr || !seqRow) {
-      // Fallback: raw SQL via REST not available; use count-based number
+    // Reserve sequential order number from DB sequence
+    const { data: nextNum, error: seqErr } = await supabaseAdmin.rpc(
+      "next_jersey_order_number",
+    );
+    let order_number: string;
+    if (seqErr || !nextNum) {
       const { count } = await supabaseAdmin
         .from("jersey_orders")
         .select("*", { count: "exact", head: true });
-      n = (count ?? 0) + 1;
+      order_number = `CHKM-${String((count ?? 0) + 1).padStart(4, "0")}`;
     } else {
-      n = Number((seqRow as { nextval?: number }).nextval ?? seqRow);
+      order_number = String(nextNum);
     }
-    const order_number = `CHKM-${String(n).padStart(4, "0")}`;
 
     const { error } = await supabaseAdmin.from("jersey_orders").insert({
       order_number,
