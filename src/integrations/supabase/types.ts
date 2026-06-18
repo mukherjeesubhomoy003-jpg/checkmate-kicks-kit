@@ -720,6 +720,7 @@ export type Database = {
           min_order: number
         }[]
       }
+      next_jersey_order_number: { Args: never; Returns: string }
     }
     Enums: {
       app_role: "admin" | "customer"
