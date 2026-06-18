@@ -1,8 +1,11 @@
 import { useMemo, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { X, Check, Phone, ShieldCheck, Printer, MessageCircle, Ruler } from "lucide-react";
 import qrAsset from "@/assets/payment-qr.png.asset.json";
 import logoAsset from "@/assets/checkmate-logo.asset.json";
 import { SizeChartModal } from "@/components/SizeChartModal";
+import { useJerseySizeStock, type SizeKey } from "@/lib/jersey-size-stock";
+import { createJerseyOrder } from "@/lib/jersey-admin.functions";
 
 // === Brand contact / order routing =====================================
 export const BRAND = {
