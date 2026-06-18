@@ -327,6 +327,8 @@ export function OrderModal({
                 <Field label="Full name" value={name} onChange={setName} placeholder="As per delivery" />
                 <Field label="Phone (10-digit)" value={phone} onChange={(v) => setPhone(v.replace(/\D/g, "").slice(0, 10))} placeholder="9XXXXXXXXX" />
                 <Field label="Address" value={address} onChange={setAddress} placeholder="House, street, area" className="sm:col-span-2" />
+                <Field label="Landmark (nearby)" value={landmark} onChange={setLandmark} placeholder="e.g. Near SBI ATM" className="sm:col-span-2" />
+                <Field label="Post office" value={postOffice} onChange={setPostOffice} placeholder="Leave blank if not available (NA)" />
                 <Field label="City" value={city} onChange={setCity} placeholder="City" />
                 <Field label="Pincode" value={pincode} onChange={(v) => setPincode(v.replace(/\D/g, "").slice(0, 6))} placeholder="6-digit" />
               </div>
