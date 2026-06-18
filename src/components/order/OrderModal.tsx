@@ -101,12 +101,15 @@ export function OrderModal({
   const reset = () => {
     setStep(1); setKit("Home"); setSize(availableSizes[0] ?? "L"); setQty(1);
     setAddPrint(false); setPrintName(defaultPrintingName); setPrintNumber(defaultPrintingNumber);
-    setName(""); setPhone(""); setAddress(""); setCity(""); setPincode(""); setOrderNo("");
+    setName(""); setPhone(""); setAddress(""); setCity(""); setPincode(""); setLandmark(""); setPostOffice(""); setOrderNo("");
   };
   const close = () => { onClose(); setTimeout(reset, 250); };
 
   const printingValid = !addPrint || (printName.trim().length > 0 && printNumber.trim().length > 0);
-  const validDetails = name.trim() && /^[6-9]\d{9}$/.test(phone.trim()) && address.trim() && city.trim() && /^\d{6}$/.test(pincode.trim()) && printingValid;
+  const stockOk = jerseyId ? (currentSizeStock ?? 0) >= qty : true;
+  const validDetails = name.trim() && /^[6-9]\d{9}$/.test(phone.trim()) && address.trim() && city.trim() && /^\d{6}$/.test(pincode.trim()) && printingValid && stockOk;
+
+  const postOfficeOut = postOffice.trim() || "NA";
 
   const buildMessage = (paid: boolean, orderNumber: string) => {
     const itemLine = hideKitSelector
@@ -129,44 +132,64 @@ export function OrderModal({
       `Name: ${name}`,
       `Phone: ${phone}`,
       `Address: ${address}`,
+      ...(landmark.trim() ? [`Landmark: ${landmark.trim()}`] : []),
+      `Post Office: ${postOfficeOut}`,
       `City: ${city}  Pin: ${pincode}`,
       ``,
       paid ? `✅ Payment done — sharing screenshot next.` : `🕒 Will pay shortly via UPI QR.`,
     ].join("\n");
   };
 
-  // Robust WhatsApp redirect — anchor-click works where window.open is blocked
-  // (in-app browsers, mobile Safari popup blocker). Falls back to location change.
   const openWhatsApp = (text: string) => {
     const number = BRAND.whatsappPrimary;
     const msg = encodeURIComponent(text);
-    // api.whatsapp.com/send is the most cross-platform endpoint (desktop + mobile + in-app browsers)
     const url = `https://api.whatsapp.com/send?phone=${number}&text=${msg}`;
     try {
       const a = document.createElement("a");
-      a.href = url;
-      a.target = "_blank";
-      a.rel = "noopener noreferrer";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    } catch {
-      window.location.href = url;
-    }
-    // Safety net: if nothing happened after 800ms, fall back to same-tab navigation
+      a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer";
+      document.body.appendChild(a); a.click(); a.remove();
+    } catch { window.location.href = url; }
     setTimeout(() => {
-      if (!document.hidden) {
-        // user may still be on the page (popup blocked) — navigate same tab
-        window.location.href = `https://wa.me/${number}?text=${msg}`;
-      }
+      if (!document.hidden) window.location.href = `https://wa.me/${number}?text=${msg}`;
     }, 800);
   };
 
-  const confirmPaid = () => {
-    const num = orderNo || nextOrderNumber();
-    if (!orderNo) setOrderNo(num);
+  const confirmPaid = async () => {
+    if (placing) return;
+    setPlacing(true);
+    let num = orderNo;
+    if (!num) {
+      try {
+        const res = await placeOrder({
+          data: {
+            buyer_name: name.trim(),
+            buyer_phone: phone.trim(),
+            address: address.trim(),
+            city: city.trim(),
+            pincode: pincode.trim(),
+            landmark: landmark.trim() || null,
+            post_office: postOfficeOut,
+            item_name: team,
+            kit: hideKitSelector ? null : kit,
+            size,
+            qty,
+            unit_price: unit,
+            printing_name: addPrint ? printName.trim().toUpperCase() : null,
+            printing_number: addPrint ? printNumber.trim() : null,
+            printing_fee: addPrint ? PRINT_ADDON : 0,
+            total,
+            jersey_id: jerseyId ?? null,
+          },
+        });
+        num = res.order_number;
+      } catch {
+        num = nextOrderNumber(); // local fallback so customer can still get an invoice
+      }
+      setOrderNo(num);
+    }
     openWhatsApp(buildMessage(true, num));
     setStep(3);
+    setPlacing(false);
   };
 
 
