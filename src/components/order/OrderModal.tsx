@@ -64,6 +64,7 @@ export function OrderModal({
   team, image, open, onClose,
   priceOverride, sizesOverride, hideKitSelector,
   defaultPrintingName = "", defaultPrintingNumber = "",
+  jerseyId,
 }: Props) {
   const availableSizes = sizesOverride ?? (SIZES as readonly Size[] as Size[]);
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -78,8 +79,16 @@ export function OrderModal({
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [pincode, setPincode] = useState("");
+  const [landmark, setLandmark] = useState("");
+  const [postOffice, setPostOffice] = useState("");
   const [orderNo, setOrderNo] = useState<string>("");
   const [showSizeChart, setShowSizeChart] = useState(false);
+  const [placing, setPlacing] = useState(false);
+
+  const { data: sizeStockMap } = useJerseySizeStock();
+  const placeOrder = useServerFn(createJerseyOrder);
+  const sizeStock: Partial<Record<SizeKey, number>> | undefined = jerseyId ? sizeStockMap?.[jerseyId] : undefined;
+  const currentSizeStock = sizeStock?.[size as SizeKey];
 
   if (!open) return null;
 
