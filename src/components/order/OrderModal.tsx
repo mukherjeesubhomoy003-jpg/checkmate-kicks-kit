@@ -248,13 +248,41 @@ export function OrderModal({
                   </button>
                 </div>
                 <div className="mt-2 flex flex-wrap gap-2">
-                  {availableSizes.map((s) => (
-                    <button key={s} onClick={() => setSize(s)}
-                      className={`size-10 rounded-full border text-sm font-semibold transition ${
-                        size === s ? "border-[#b8862b] bg-[#1a1a1a] text-[#f4d77a]" : "border-border hover:border-gold/60"
-                      }`}>{s}</button>
-                  ))}
+                  {availableSizes.map((s) => {
+                    const left = jerseyId ? sizeStock?.[s as SizeKey] : undefined;
+                    const out = jerseyId !== undefined && (left ?? 0) <= 0;
+                    return (
+                      <button key={s} onClick={() => !out && setSize(s)} disabled={out}
+                        title={out ? "Out of stock" : left !== undefined ? `${left} left` : undefined}
+                        className={`relative flex flex-col items-center justify-center w-12 h-12 rounded-xl border text-sm font-semibold transition ${
+                          out
+                            ? "border-neutral-200 bg-neutral-100 text-neutral-400 cursor-not-allowed line-through"
+                            : size === s
+                              ? "border-[#b8862b] bg-[#1a1a1a] text-[#f4d77a]"
+                              : "border-border hover:border-gold/60"
+                        }`}>
+                        <span className="leading-none">{s}</span>
+                        {jerseyId && (
+                          <span className={`text-[8px] mt-0.5 leading-none font-bold uppercase tracking-wider ${
+                            out ? "text-red-500" : size === s ? "text-[#f4d77a]/80" : "text-neutral-500"
+                          }`}>
+                            {out ? "Out" : `${left} left`}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
+                {jerseyId && currentSizeStock !== undefined && currentSizeStock > 0 && currentSizeStock <= 3 && (
+                  <div className="mt-1.5 text-[11px] font-semibold text-amber-700">
+                    Only {currentSizeStock} left in size {size} — hurry!
+                  </div>
+                )}
+                {jerseyId && qty > (currentSizeStock ?? 0) && (
+                  <div className="mt-1.5 text-[11px] font-semibold text-red-600">
+                    Not enough stock for size {size} (max {currentSizeStock ?? 0}).
+                  </div>
+                )}
 
                 <label className="mt-4 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Quantity</label>
                 <div className="mt-2 inline-flex items-center rounded-full border border-border">
