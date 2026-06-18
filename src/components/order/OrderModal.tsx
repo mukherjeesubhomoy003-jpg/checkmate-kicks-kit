@@ -415,10 +415,10 @@ export function OrderModal({
                 </div>
 
                 <div className="mt-4 flex flex-col gap-2">
-                  <button onClick={confirmPaid}
-                    className="w-full inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold uppercase tracking-[0.18em]"
+                  <button onClick={confirmPaid} disabled={placing}
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold uppercase tracking-[0.18em] disabled:opacity-60"
                     style={{ background: "var(--gradient-gold)", color: "#1a1a1a", border: "1px solid #8a6a14" }}>
-                    <Check className="size-4" /> I've Paid — Send Screenshot & Get Invoice
+                    <Check className="size-4" /> {placing ? "Saving order…" : "I've Paid — Send Screenshot & Get Invoice"}
                   </button>
                   <div className="text-[11px] text-muted-foreground text-center px-2">
                     ⚠️ Invoice is generated <b>only after</b> payment is confirmed. Please complete the UPI payment first.
