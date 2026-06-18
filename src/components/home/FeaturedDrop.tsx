@@ -118,7 +118,6 @@ export function FeaturedDrop() {
 
               <ul className="mt-3 space-y-1 text-sm text-neutral-200">
                 <li>✅ Authentic player version (slim-fit, breathable mesh)</li>
-                <li>✅ RONALDO 7 printing included on the back</li>
                 <li>✅ Official Portugal FPF crest + Puma badge</li>
                 <li>✅ Available in <b>L</b> and <b>XL</b> only</li>
               </ul>
