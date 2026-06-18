@@ -39,7 +39,6 @@ type Props = {
   hideKitSelector?: boolean;
   /** Pre-fill the back-printing fields. */
   defaultPrintingName?: string;
-  defaultPrintingName?: string;
   defaultPrintingNumber?: string;
   /** Jersey ID (e.g. "j07") — enables per-size stock display + decrement. */
   jerseyId?: string;
