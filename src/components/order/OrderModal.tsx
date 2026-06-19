@@ -24,7 +24,7 @@ const SIZES = ["S", "M", "L", "XL", "XXL"] as const;
 type Size = (typeof SIZES)[number];
 type Kit = "Home" | "Away";
 
-const PRICE: Record<Kit, number> = { Home: 1000, Away: 1100 };
+const PRICE: Record<Kit, number> = { Home: 1000, Away: 1299 };
 
 type Props = {
   team: string;
@@ -76,6 +76,7 @@ export function OrderModal({
   const [printNumber, setPrintNumber] = useState(defaultPrintingNumber);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [altPhone, setAltPhone] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [pincode, setPincode] = useState("");
@@ -84,6 +85,7 @@ export function OrderModal({
   const [orderNo, setOrderNo] = useState<string>("");
   const [showSizeChart, setShowSizeChart] = useState(false);
   const [placing, setPlacing] = useState(false);
+
 
   const { data: sizeStockMap } = useJerseySizeStock();
   const placeOrder = useServerFn(createJerseyOrder);
@@ -101,13 +103,15 @@ export function OrderModal({
   const reset = () => {
     setStep(1); setKit("Home"); setSize(availableSizes[0] ?? "L"); setQty(1);
     setAddPrint(false); setPrintName(defaultPrintingName); setPrintNumber(defaultPrintingNumber);
-    setName(""); setPhone(""); setAddress(""); setCity(""); setPincode(""); setLandmark(""); setPostOffice(""); setOrderNo("");
+    setName(""); setPhone(""); setAltPhone(""); setAddress(""); setCity(""); setPincode(""); setLandmark(""); setPostOffice(""); setOrderNo("");
   };
   const close = () => { onClose(); setTimeout(reset, 250); };
 
   const printingValid = !addPrint || (printName.trim().length > 0 && printNumber.trim().length > 0);
   const stockOk = jerseyId ? (currentSizeStock ?? 0) >= qty : true;
-  const validDetails = name.trim() && /^[6-9]\d{9}$/.test(phone.trim()) && address.trim() && city.trim() && /^\d{6}$/.test(pincode.trim()) && printingValid && stockOk;
+  const altPhoneValid = /^[6-9]\d{9}$/.test(altPhone.trim()) && altPhone.trim() !== phone.trim();
+  const validDetails = name.trim() && /^[6-9]\d{9}$/.test(phone.trim()) && altPhoneValid && address.trim() && city.trim() && /^\d{6}$/.test(pincode.trim()) && printingValid && stockOk;
+
 
   const postOfficeOut = postOffice.trim() || "NA";
 
@@ -131,6 +135,7 @@ export function OrderModal({
       `*Buyer*`,
       `Name: ${name}`,
       `Phone: ${phone}`,
+      `Alt Phone: ${altPhone}`,
       `Address: ${address}`,
       ...(landmark.trim() ? [`Landmark: ${landmark.trim()}`] : []),
       `Post Office: ${postOfficeOut}`,
@@ -139,6 +144,7 @@ export function OrderModal({
       paid ? `✅ Payment done — sharing screenshot next.` : `🕒 Will pay shortly via UPI QR.`,
     ].join("\n");
   };
+
 
   const openWhatsApp = (text: string) => {
     const number = BRAND.whatsappPrimary;
