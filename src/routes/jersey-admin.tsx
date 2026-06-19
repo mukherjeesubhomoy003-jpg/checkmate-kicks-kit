@@ -16,7 +16,9 @@ import {
   updateJerseySizeStock,
   adminListJerseyOrders,
   updateJerseyOrderDispatch,
+  deleteJerseyOrder,
 } from "@/lib/jersey-admin.functions";
+
 import { useQuery } from "@tanstack/react-query";
 
 const SIZES: SizeKey[] = ["S", "M", "L", "XL", "XXL"];
@@ -138,6 +140,7 @@ type DispatchState = typeof DISPATCH_STATES[number];
 function OrdersPanel({ token }: { token: string }) {
   const list = useServerFn(adminListJerseyOrders);
   const updateDispatch = useServerFn(updateJerseyOrderDispatch);
+  const deleteOrder = useServerFn(deleteJerseyOrder);
   const qc = useQueryClient();
   const { data, isLoading } = useQuery({
     queryKey: ["jersey-orders", token],
@@ -146,33 +149,42 @@ function OrdersPanel({ token }: { token: string }) {
   });
   const [filter, setFilter] = useState<"today" | "all" | "pending">("today");
 
+  // Exclude cancelled from every count/view (they're also deleted on cancel)
+  const visible = useMemo(() => (data ?? []).filter((r) => r.dispatch_status !== "cancelled"), [data]);
+
   const rows = useMemo(() => {
-    const all = (data ?? []) as OrderRow[];
     if (filter === "today") {
       const today = new Date(); today.setHours(0, 0, 0, 0);
-      return all.filter((r) => new Date(r.created_at) >= today);
+      return visible.filter((r) => new Date(r.created_at) >= today);
     }
-    if (filter === "pending") return all.filter((r) => r.dispatch_status === "pending" || r.dispatch_status === "ready");
-    return all;
-  }, [data, filter]);
+    if (filter === "pending") return visible.filter((r) => r.dispatch_status === "pending" || r.dispatch_status === "ready");
+    return visible;
+  }, [visible, filter]);
 
   const todaysCount = useMemo(() => {
     const t = new Date(); t.setHours(0, 0, 0, 0);
-    return (data ?? []).filter((r) => new Date(r.created_at) >= t).length;
-  }, [data]);
+    return visible.filter((r) => new Date(r.created_at) >= t).length;
+  }, [visible]);
   const todaysRevenue = useMemo(() => {
     const t = new Date(); t.setHours(0, 0, 0, 0);
-    return (data ?? []).filter((r) => new Date(r.created_at) >= t).reduce((s, r) => s + r.total, 0);
-  }, [data]);
-  const pendingCount = useMemo(() => (data ?? []).filter((r) => r.dispatch_status === "pending").length, [data]);
+    return visible.filter((r) => new Date(r.created_at) >= t).reduce((s, r) => s + r.total, 0);
+  }, [visible]);
+  const pendingCount = useMemo(() => visible.filter((r) => r.dispatch_status === "pending").length, [visible]);
 
   async function setStatus(id: string, dispatch_status: DispatchState) {
     try {
-      await updateDispatch({ data: { token, id, dispatch_status } });
+      if (dispatch_status === "cancelled") {
+        if (!confirm("Cancel and permanently delete this order? It will be removed from all stats.")) return;
+        await deleteOrder({ data: { token, id } });
+        toast.success("Order cancelled & removed");
+      } else {
+        await updateDispatch({ data: { token, id, dispatch_status } });
+        toast.success(`Marked ${dispatch_status}`);
+      }
       qc.invalidateQueries({ queryKey: ["jersey-orders"] });
-      toast.success(`Marked ${dispatch_status}`);
     } catch (e) { toast.error((e as Error).message); }
   }
+
 
   return (
     <div>

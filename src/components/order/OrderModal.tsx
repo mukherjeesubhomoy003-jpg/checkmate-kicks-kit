@@ -24,7 +24,7 @@ const SIZES = ["S", "M", "L", "XL", "XXL"] as const;
 type Size = (typeof SIZES)[number];
 type Kit = "Home" | "Away";
 
-const PRICE: Record<Kit, number> = { Home: 1000, Away: 1100 };
+const PRICE: Record<Kit, number> = { Home: 1000, Away: 1299 };
 
 type Props = {
   team: string;
@@ -76,6 +76,7 @@ export function OrderModal({
   const [printNumber, setPrintNumber] = useState(defaultPrintingNumber);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [altPhone, setAltPhone] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [pincode, setPincode] = useState("");
@@ -84,6 +85,7 @@ export function OrderModal({
   const [orderNo, setOrderNo] = useState<string>("");
   const [showSizeChart, setShowSizeChart] = useState(false);
   const [placing, setPlacing] = useState(false);
+
 
   const { data: sizeStockMap } = useJerseySizeStock();
   const placeOrder = useServerFn(createJerseyOrder);
@@ -101,13 +103,15 @@ export function OrderModal({
   const reset = () => {
     setStep(1); setKit("Home"); setSize(availableSizes[0] ?? "L"); setQty(1);
     setAddPrint(false); setPrintName(defaultPrintingName); setPrintNumber(defaultPrintingNumber);
-    setName(""); setPhone(""); setAddress(""); setCity(""); setPincode(""); setLandmark(""); setPostOffice(""); setOrderNo("");
+    setName(""); setPhone(""); setAltPhone(""); setAddress(""); setCity(""); setPincode(""); setLandmark(""); setPostOffice(""); setOrderNo("");
   };
   const close = () => { onClose(); setTimeout(reset, 250); };
 
   const printingValid = !addPrint || (printName.trim().length > 0 && printNumber.trim().length > 0);
   const stockOk = jerseyId ? (currentSizeStock ?? 0) >= qty : true;
-  const validDetails = name.trim() && /^[6-9]\d{9}$/.test(phone.trim()) && address.trim() && city.trim() && /^\d{6}$/.test(pincode.trim()) && printingValid && stockOk;
+  const altPhoneValid = /^[6-9]\d{9}$/.test(altPhone.trim()) && altPhone.trim() !== phone.trim();
+  const validDetails = name.trim() && /^[6-9]\d{9}$/.test(phone.trim()) && altPhoneValid && address.trim() && city.trim() && /^\d{6}$/.test(pincode.trim()) && printingValid && stockOk;
+
 
   const postOfficeOut = postOffice.trim() || "NA";
 
@@ -131,6 +135,7 @@ export function OrderModal({
       `*Buyer*`,
       `Name: ${name}`,
       `Phone: ${phone}`,
+      `Alt Phone: ${altPhone}`,
       `Address: ${address}`,
       ...(landmark.trim() ? [`Landmark: ${landmark.trim()}`] : []),
       `Post Office: ${postOfficeOut}`,
@@ -139,6 +144,7 @@ export function OrderModal({
       paid ? `✅ Payment done — sharing screenshot next.` : `🕒 Will pay shortly via UPI QR.`,
     ].join("\n");
   };
+
 
   const openWhatsApp = (text: string) => {
     const number = BRAND.whatsappPrimary;
@@ -202,10 +208,11 @@ export function OrderModal({
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-white/95 backdrop-blur px-5 py-3">
           <div className="flex items-center gap-3">
             <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#8a6a14]">
-              {step === 1 ? "Order Details" : step === 2 ? "Payment" : "Invoice"}
+              {step === 1 ? "Order Details" : step === 2 ? "Payment" : "Awaiting Verification"}
             </div>
             <div className="text-xs text-muted-foreground hidden sm:block">Step {step} of 3</div>
           </div>
+
           <button onClick={close} className="p-2 rounded-full hover:bg-muted" aria-label="Close">
             <X className="size-4" />
           </button>
@@ -326,12 +333,17 @@ export function OrderModal({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <Field label="Full name" value={name} onChange={setName} placeholder="As per delivery" />
                 <Field label="Phone (10-digit)" value={phone} onChange={(v) => setPhone(v.replace(/\D/g, "").slice(0, 10))} placeholder="9XXXXXXXXX" />
+                <Field label="Alternative phone* (required)" value={altPhone} onChange={(v) => setAltPhone(v.replace(/\D/g, "").slice(0, 10))} placeholder="Different from main number" className="sm:col-span-2" />
                 <Field label="Address" value={address} onChange={setAddress} placeholder="House, street, area" className="sm:col-span-2" />
                 <Field label="Landmark (nearby)" value={landmark} onChange={setLandmark} placeholder="e.g. Near SBI ATM" className="sm:col-span-2" />
                 <Field label="Post office" value={postOffice} onChange={setPostOffice} placeholder="Leave blank if not available (NA)" />
                 <Field label="City" value={city} onChange={setCity} placeholder="City" />
                 <Field label="Pincode" value={pincode} onChange={(v) => setPincode(v.replace(/\D/g, "").slice(0, 6))} placeholder="6-digit" />
               </div>
+              {altPhone && !altPhoneValid && (
+                <div className="mt-1 text-[11px] text-red-600">Alternative number must be a different valid 10-digit Indian mobile.</div>
+              )}
+
 
               <div className="mt-5 rounded-xl border border-gold/40 bg-gold-soft p-4">
                 <Row label={`${hideKitSelector ? team : `${kit} Kit`} × ${qty}`} value={`₹${subtotal}`} />
@@ -391,7 +403,14 @@ export function OrderModal({
                 <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
                   <ShieldCheck className="size-4 text-[#8a6a14]" /> No COD — for buyer & seller safety.
                 </div>
+
+                <div className="mt-4 rounded-xl border border-[#d4af37] bg-[#fffaeb] p-3 text-[12px] leading-relaxed text-neutral-800">
+                  <div className="font-bold text-[#8a6a14] uppercase tracking-wider text-[10px] mb-1">How to pay</div>
+                  📸 <b>Take a screenshot of this QR</b>, pay the amount, then share the payment screenshot with us on WhatsApp to confirm your order — and enjoy your jersey! 🎉<br/>
+                  <span className="block mt-1.5 text-neutral-600">Feel free to ask on WhatsApp if you face any problem or have any questions — we're here to help.</span>
+                </div>
               </div>
+
 
               <div>
                 <div className="rounded-xl border border-border p-4">
@@ -409,19 +428,20 @@ export function OrderModal({
                   <div className="mt-3 text-[11px] text-muted-foreground leading-relaxed">
                     1. Pay <b>₹{total}</b> using the QR<br />
                     2. Tap below <b>only after payment</b><br />
-                    3. Order opens in WhatsApp · attach payment screenshot<br />
-                    4. We confirm & generate your invoice ✅
+                    3. Send the payment screenshot on WhatsApp<br />
+                    4. Once we verify the payment, we send your invoice on WhatsApp ✅
                   </div>
                 </div>
+
 
                 <div className="mt-4 flex flex-col gap-2">
                   <button onClick={confirmPaid} disabled={placing}
                     className="w-full inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold uppercase tracking-[0.18em] disabled:opacity-60"
                     style={{ background: "var(--gradient-gold)", color: "#1a1a1a", border: "1px solid #8a6a14" }}>
-                    <Check className="size-4" /> {placing ? "Saving order…" : "I've Paid — Send Screenshot & Get Invoice"}
+                    <Check className="size-4" /> {placing ? "Saving order…" : "I've Paid — Send Screenshot on WhatsApp"}
                   </button>
                   <div className="text-[11px] text-muted-foreground text-center px-2">
-                    ⚠️ Invoice is generated <b>only after</b> payment is confirmed. Please complete the UPI payment first.
+                    ⚠️ Your invoice is sent on WhatsApp <b>only after we verify your payment</b>. No invoice is generated automatically.
                   </div>
                   <button onClick={() => setStep(1)} className="text-xs text-muted-foreground hover:underline mt-1">
                     ← Edit details
@@ -432,21 +452,78 @@ export function OrderModal({
           </div>
         )}
 
+
         {step === 3 && (
-          <InvoiceView
+          <PendingVerification
             orderNo={orderNo}
-            team={team} kit={hideKitSelector ? "" : kit} size={size} qty={qty}
-            unit={unit} subtotal={subtotal} shipping={shipping} total={total}
-            printName={addPrint ? printName : ""} printNumber={addPrint ? printNumber : ""} printingFee={printingFee}
-            name={name} phone={phone} address={address} city={city} pincode={pincode}
+            team={team} kit={hideKitSelector ? "" : kit} size={size} qty={qty} total={total}
+            phone={phone} altPhone={altPhone}
+            onResend={() => openWhatsApp(buildMessage(true, orderNo))}
             onClose={close}
           />
         )}
+
       </div>
       <SizeChartModal open={showSizeChart} onClose={() => setShowSizeChart(false)} />
     </div>
   );
 }
+
+function PendingVerification(props: {
+  orderNo: string; team: string; kit: string; size: string; qty: number; total: number;
+  phone: string; altPhone: string;
+  onResend: () => void; onClose: () => void;
+}) {
+  const { orderNo, team, kit, size, qty, total, phone, altPhone, onResend, onClose } = props;
+  const itemLine = kit ? `${team} — ${kit} Kit` : team;
+  return (
+    <div className="p-5 sm:p-6">
+      <div className="text-center">
+        <div className="mx-auto size-14 rounded-full bg-amber-100 grid place-items-center text-amber-700">
+          <ShieldCheck className="size-7" />
+        </div>
+        <div className="mt-3 font-display text-2xl font-semibold">Payment Under Verification</div>
+        <div className="mt-1 text-sm text-muted-foreground">Order number</div>
+        <div className="mt-1 text-xl font-bold tracking-[0.18em] text-[#8a6a14]">{orderNo || "—"}</div>
+      </div>
+
+      <div className="mt-5 rounded-xl border-2 border-amber-300 bg-amber-50 p-4 max-w-md mx-auto text-[12.5px] text-neutral-800 leading-relaxed">
+        <div className="font-bold text-amber-800 uppercase tracking-wider text-[10px] mb-1.5">⏳ Important — please read</div>
+        <ol className="list-decimal pl-5 space-y-1.5">
+          <li>Your order has been <b>placed</b> but the invoice is <b>not yet issued</b>.</li>
+          <li>Send your <b>payment screenshot on WhatsApp</b> to confirm.</li>
+          <li>Once our team <b>verifies your payment</b>, we will send your official invoice on WhatsApp.</li>
+          <li>Until then, no payment receipt or invoice is generated automatically.</li>
+        </ol>
+      </div>
+
+      <div className="mt-4 rounded-xl border border-gold/40 bg-gold-soft p-4 max-w-md mx-auto text-sm">
+        <div className="font-semibold">{itemLine}</div>
+        <div className="text-muted-foreground">Size {size} · Qty {qty}</div>
+        <Row label="Amount to pay" value={`₹${total}`} strong />
+        <div className="mt-1 text-[11px] text-muted-foreground">📱 {phone} · Alt: {altPhone}</div>
+      </div>
+
+      <div className="mt-5 flex flex-col sm:flex-row gap-2 justify-center max-w-md mx-auto">
+        <button onClick={onResend}
+          className="flex-1 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white"
+          style={{ background: "#25D366", border: "1px solid #128C7E" }}>
+          <MessageCircle className="size-4" /> Send Screenshot on WhatsApp
+        </button>
+        <button onClick={onClose}
+          className="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold border border-border hover:border-gold/60">
+          Close
+        </button>
+      </div>
+
+      <div className="mt-4 text-center text-[11px] text-muted-foreground px-4">
+        Feel free to ask on WhatsApp if you face any problem — we're here to help. 💛
+      </div>
+    </div>
+  );
+}
+
+
 
 function InvoiceView(props: {
   orderNo: string; team: string; kit: string; size: string; qty: number;

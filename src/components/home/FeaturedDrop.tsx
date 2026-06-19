@@ -108,7 +108,7 @@ export function FeaturedDrop() {
                 <span className="ml-2 text-xs text-neutral-300">New Arrival</span>
               </div>
               <div className="mt-2 font-display text-xl md:text-2xl font-bold">Portugal Away · Ronaldo #7</div>
-              <div className="mt-1 text-sm text-neutral-300">RONALDO 7 printing included · Official Portugal crest</div>
+              <div className="mt-1 text-sm text-neutral-300">Official Portugal FPF crest · Player-edition slim fit</div>
 
               <div className="mt-3 flex items-baseline gap-3">
                 <div className="text-3xl font-extrabold" style={{ color: "#f4d77a" }}>₹1,299</div>
@@ -121,6 +121,7 @@ export function FeaturedDrop() {
                 <li>✅ Official Portugal FPF crest + Puma badge</li>
                 <li>✅ Available in <b>L</b> and <b>XL</b> only</li>
               </ul>
+
 
               <button onClick={() => setOpenRonaldo(true)}
                 className="mt-4 inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-bold uppercase tracking-[0.18em]"

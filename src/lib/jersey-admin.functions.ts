@@ -168,3 +168,13 @@ export const updateJerseyOrderDispatch = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
+export const deleteJerseyOrder = createServerFn({ method: "POST" })
+  .inputValidator(z.object({ token: z.string().min(1).max(200), id: z.string().uuid() }))
+  .handler(async ({ data }) => {
+    if (data.token !== ADMIN_TOKEN) throw new Error("Admin session expired");
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.from("jersey_orders").delete().eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
