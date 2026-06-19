@@ -208,10 +208,11 @@ export function OrderModal({
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-white/95 backdrop-blur px-5 py-3">
           <div className="flex items-center gap-3">
             <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#8a6a14]">
-              {step === 1 ? "Order Details" : step === 2 ? "Payment" : "Invoice"}
+              {step === 1 ? "Order Details" : step === 2 ? "Payment" : "Awaiting Verification"}
             </div>
             <div className="text-xs text-muted-foreground hidden sm:block">Step {step} of 3</div>
           </div>
+
           <button onClick={close} className="p-2 rounded-full hover:bg-muted" aria-label="Close">
             <X className="size-4" />
           </button>
@@ -453,15 +454,15 @@ export function OrderModal({
 
 
         {step === 3 && (
-          <InvoiceView
+          <PendingVerification
             orderNo={orderNo}
-            team={team} kit={hideKitSelector ? "" : kit} size={size} qty={qty}
-            unit={unit} subtotal={subtotal} shipping={shipping} total={total}
-            printName={addPrint ? printName : ""} printNumber={addPrint ? printNumber : ""} printingFee={printingFee}
-            name={name} phone={phone} address={address} city={city} pincode={pincode}
+            team={team} kit={hideKitSelector ? "" : kit} size={size} qty={qty} total={total}
+            phone={phone} altPhone={altPhone}
+            onResend={() => openWhatsApp(buildMessage(true, orderNo))}
             onClose={close}
           />
         )}
+
       </div>
       <SizeChartModal open={showSizeChart} onClose={() => setShowSizeChart(false)} />
     </div>
