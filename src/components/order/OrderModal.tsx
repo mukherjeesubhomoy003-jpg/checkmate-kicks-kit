@@ -469,6 +469,62 @@ export function OrderModal({
   );
 }
 
+function PendingVerification(props: {
+  orderNo: string; team: string; kit: string; size: string; qty: number; total: number;
+  phone: string; altPhone: string;
+  onResend: () => void; onClose: () => void;
+}) {
+  const { orderNo, team, kit, size, qty, total, phone, altPhone, onResend, onClose } = props;
+  const itemLine = kit ? `${team} — ${kit} Kit` : team;
+  return (
+    <div className="p-5 sm:p-6">
+      <div className="text-center">
+        <div className="mx-auto size-14 rounded-full bg-amber-100 grid place-items-center text-amber-700">
+          <ShieldCheck className="size-7" />
+        </div>
+        <div className="mt-3 font-display text-2xl font-semibold">Payment Under Verification</div>
+        <div className="mt-1 text-sm text-muted-foreground">Order number</div>
+        <div className="mt-1 text-xl font-bold tracking-[0.18em] text-[#8a6a14]">{orderNo || "—"}</div>
+      </div>
+
+      <div className="mt-5 rounded-xl border-2 border-amber-300 bg-amber-50 p-4 max-w-md mx-auto text-[12.5px] text-neutral-800 leading-relaxed">
+        <div className="font-bold text-amber-800 uppercase tracking-wider text-[10px] mb-1.5">⏳ Important — please read</div>
+        <ol className="list-decimal pl-5 space-y-1.5">
+          <li>Your order has been <b>placed</b> but the invoice is <b>not yet issued</b>.</li>
+          <li>Send your <b>payment screenshot on WhatsApp</b> to confirm.</li>
+          <li>Once our team <b>verifies your payment</b>, we will send your official invoice on WhatsApp.</li>
+          <li>Until then, no payment receipt or invoice is generated automatically.</li>
+        </ol>
+      </div>
+
+      <div className="mt-4 rounded-xl border border-gold/40 bg-gold-soft p-4 max-w-md mx-auto text-sm">
+        <div className="font-semibold">{itemLine}</div>
+        <div className="text-muted-foreground">Size {size} · Qty {qty}</div>
+        <Row label="Amount to pay" value={`₹${total}`} strong />
+        <div className="mt-1 text-[11px] text-muted-foreground">📱 {phone} · Alt: {altPhone}</div>
+      </div>
+
+      <div className="mt-5 flex flex-col sm:flex-row gap-2 justify-center max-w-md mx-auto">
+        <button onClick={onResend}
+          className="flex-1 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white"
+          style={{ background: "#25D366", border: "1px solid #128C7E" }}>
+          <MessageCircle className="size-4" /> Send Screenshot on WhatsApp
+        </button>
+        <button onClick={onClose}
+          className="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold border border-border hover:border-gold/60">
+          Close
+        </button>
+      </div>
+
+      <div className="mt-4 text-center text-[11px] text-muted-foreground px-4">
+        Feel free to ask on WhatsApp if you face any problem — we're here to help. 💛
+      </div>
+    </div>
+  );
+}
+
+
+
 function InvoiceView(props: {
   orderNo: string; team: string; kit: string; size: string; qty: number;
   unit: number; subtotal: number; shipping: number; total: number;
