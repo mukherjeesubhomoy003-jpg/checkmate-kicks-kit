@@ -427,18 +427,11 @@ export function OrderModal({
                   <div className="mt-3 text-[11px] text-muted-foreground leading-relaxed">
                     1. Pay <b>₹{total}</b> using the QR<br />
                     2. Tap below <b>only after payment</b><br />
-                    3. Order opens in WhatsApp · attach payment screenshot<br />
-                    4. We confirm & generate your invoice ✅
-                  </div>
-                </div>
-
-                  <div className="mt-3 text-[11px] text-muted-foreground leading-relaxed">
-                    1. Pay <b>₹{total}</b> using the QR<br />
-                    2. Tap below <b>only after payment</b><br />
                     3. Send the payment screenshot on WhatsApp<br />
                     4. Once we verify the payment, we send your invoice on WhatsApp ✅
                   </div>
                 </div>
+
 
                 <div className="mt-4 flex flex-col gap-2">
                   <button onClick={confirmPaid} disabled={placing}
