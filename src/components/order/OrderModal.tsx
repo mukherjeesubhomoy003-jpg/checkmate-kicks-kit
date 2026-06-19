@@ -332,12 +332,17 @@ export function OrderModal({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <Field label="Full name" value={name} onChange={setName} placeholder="As per delivery" />
                 <Field label="Phone (10-digit)" value={phone} onChange={(v) => setPhone(v.replace(/\D/g, "").slice(0, 10))} placeholder="9XXXXXXXXX" />
+                <Field label="Alternative phone* (required)" value={altPhone} onChange={(v) => setAltPhone(v.replace(/\D/g, "").slice(0, 10))} placeholder="Different from main number" className="sm:col-span-2" />
                 <Field label="Address" value={address} onChange={setAddress} placeholder="House, street, area" className="sm:col-span-2" />
                 <Field label="Landmark (nearby)" value={landmark} onChange={setLandmark} placeholder="e.g. Near SBI ATM" className="sm:col-span-2" />
                 <Field label="Post office" value={postOffice} onChange={setPostOffice} placeholder="Leave blank if not available (NA)" />
                 <Field label="City" value={city} onChange={setCity} placeholder="City" />
                 <Field label="Pincode" value={pincode} onChange={(v) => setPincode(v.replace(/\D/g, "").slice(0, 6))} placeholder="6-digit" />
               </div>
+              {altPhone && !altPhoneValid && (
+                <div className="mt-1 text-[11px] text-red-600">Alternative number must be a different valid 10-digit Indian mobile.</div>
+              )}
+
 
               <div className="mt-5 rounded-xl border border-gold/40 bg-gold-soft p-4">
                 <Row label={`${hideKitSelector ? team : `${kit} Kit`} × ${qty}`} value={`₹${subtotal}`} />
