@@ -402,7 +402,14 @@ export function OrderModal({
                 <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
                   <ShieldCheck className="size-4 text-[#8a6a14]" /> No COD — for buyer & seller safety.
                 </div>
+
+                <div className="mt-4 rounded-xl border border-[#d4af37] bg-[#fffaeb] p-3 text-[12px] leading-relaxed text-neutral-800">
+                  <div className="font-bold text-[#8a6a14] uppercase tracking-wider text-[10px] mb-1">How to pay</div>
+                  📸 <b>Take a screenshot of this QR</b>, pay the amount, then share the payment screenshot with us on WhatsApp to confirm your order — and enjoy your jersey! 🎉<br/>
+                  <span className="block mt-1.5 text-neutral-600">Feel free to ask on WhatsApp if you face any problem or have any questions — we're here to help.</span>
+                </div>
               </div>
+
 
               <div>
                 <div className="rounded-xl border border-border p-4">
@@ -425,14 +432,22 @@ export function OrderModal({
                   </div>
                 </div>
 
+                  <div className="mt-3 text-[11px] text-muted-foreground leading-relaxed">
+                    1. Pay <b>₹{total}</b> using the QR<br />
+                    2. Tap below <b>only after payment</b><br />
+                    3. Send the payment screenshot on WhatsApp<br />
+                    4. Once we verify the payment, we send your invoice on WhatsApp ✅
+                  </div>
+                </div>
+
                 <div className="mt-4 flex flex-col gap-2">
                   <button onClick={confirmPaid} disabled={placing}
                     className="w-full inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold uppercase tracking-[0.18em] disabled:opacity-60"
                     style={{ background: "var(--gradient-gold)", color: "#1a1a1a", border: "1px solid #8a6a14" }}>
-                    <Check className="size-4" /> {placing ? "Saving order…" : "I've Paid — Send Screenshot & Get Invoice"}
+                    <Check className="size-4" /> {placing ? "Saving order…" : "I've Paid — Send Screenshot on WhatsApp"}
                   </button>
                   <div className="text-[11px] text-muted-foreground text-center px-2">
-                    ⚠️ Invoice is generated <b>only after</b> payment is confirmed. Please complete the UPI payment first.
+                    ⚠️ Your invoice is sent on WhatsApp <b>only after we verify your payment</b>. No invoice is generated automatically.
                   </div>
                   <button onClick={() => setStep(1)} className="text-xs text-muted-foreground hover:underline mt-1">
                     ← Edit details
@@ -442,6 +457,7 @@ export function OrderModal({
             </div>
           </div>
         )}
+
 
         {step === 3 && (
           <InvoiceView
