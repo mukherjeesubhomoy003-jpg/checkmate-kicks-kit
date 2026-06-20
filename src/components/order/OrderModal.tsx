@@ -24,7 +24,12 @@ const SIZES = ["S", "M", "L", "XL", "XXL"] as const;
 type Size = (typeof SIZES)[number];
 type Kit = "Home" | "Away";
 
-const PRICE: Record<Kit, number> = { Home: 1000, Away: 1299 };
+const PRICE: Record<Kit, number> = { Home: 1000, Away: 1100 };
+
+function getKitPrice(team: string, kit: Kit): number {
+  if (team === "Portugal" && kit === "Away") return 1299;
+  return PRICE[kit];
+}
 
 type Props = {
   team: string;
@@ -94,7 +99,7 @@ export function OrderModal({
 
   if (!open) return null;
 
-  const unit = priceOverride ?? PRICE[kit];
+  const unit = priceOverride ?? getKitPrice(team, kit);
   const subtotal = unit * qty;
   const printingFee = addPrint ? PRINT_ADDON : 0;
   const shipping = 0;
@@ -236,7 +241,7 @@ export function OrderModal({
                           kit === k ? "border-[#b8862b] bg-[#fbf4dd] text-[#1a1a1a]" : "border-border hover:border-gold/60"
                         }`}>
                         <div>{k} Kit</div>
-                        <div className="text-xs font-normal text-muted-foreground">₹{PRICE[k]}</div>
+                        <div className="text-xs font-normal text-muted-foreground">₹{getKitPrice(team, k)}</div>
                       </button>
                     ))}
                   </div>
