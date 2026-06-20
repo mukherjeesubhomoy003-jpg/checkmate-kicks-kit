@@ -341,7 +341,13 @@ function StockPanel({ token }: { token: string }) {
         <div className="mt-6 text-sm text-neutral-500">Loading stock…</div>
       ) : (
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
-          {JERSEYS.map((j) => (
+          {JERSEYS.map((j) => {
+            const jerseyTotal = SIZES.reduce((s, k) => s + (draft[j.id]?.[k] ?? 0), 0);
+            const stockOut = () => setDraft((d) => ({
+              ...d,
+              [j.id]: { S: 0, M: 0, L: 0, XL: 0, XXL: 0 },
+            }));
+            return (
             <div key={j.id} className="rounded-xl border border-neutral-200 bg-white p-3">
               <div className="flex items-center gap-3">
                 <img src={j.image} alt={j.team} className="size-12 rounded-md object-cover bg-gold-soft" />
@@ -349,6 +355,13 @@ function StockPanel({ token }: { token: string }) {
                   <div className="text-[10px] font-mono text-neutral-500">#{j.id}</div>
                   <div className="font-semibold text-sm truncate">{j.team}</div>
                 </div>
+                <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${jerseyTotal === 0 ? "bg-red-100 text-red-700" : "bg-emerald-50 text-emerald-700 border border-emerald-200"}`}>
+                  {jerseyTotal === 0 ? "Sold out" : `${jerseyTotal} total`}
+                </span>
+                <button onClick={stockOut} disabled={jerseyTotal === 0}
+                  className="rounded-md border border-red-300 bg-white px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-red-700 hover:bg-red-50 disabled:opacity-40">
+                  Stock out
+                </button>
               </div>
               <div className="mt-3 grid grid-cols-5 gap-2">
                 {SIZES.map((s) => {
