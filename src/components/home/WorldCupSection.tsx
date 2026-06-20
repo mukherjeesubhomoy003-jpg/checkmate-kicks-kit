@@ -73,6 +73,7 @@ export function WorldCupSection({ preview, showBanner = true, heading }: Props) 
             const total = totalStock(stockMap, j.id);
             const out = total === 0;
             const low = typeof total === "number" && total > 0 && total <= 3;
+            const price = j.tag === "Away" && j.team === "Portugal" ? 1299 : j.tag === "Away" ? 1100 : 1000;
             return (
             <article key={j.id} className="group relative cursor-pointer" onClick={() => !out && setActive(j)}>
               <div className="relative overflow-hidden rounded-md bg-[#f1f1f1]">
@@ -96,12 +97,16 @@ export function WorldCupSection({ preview, showBanner = true, heading }: Props) 
                     className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
                 </div>
               </div>
-              <div className="pt-3">
-                <div className="font-display text-[15px] font-semibold text-neutral-900 leading-tight">{j.team}</div>
-                <div className="mt-0.5 text-[12px] text-neutral-500">{j.tag} · Player Edition</div>
+              <div className="pt-3 flex items-start justify-between gap-2">
+                <div className="min-w-0">
+                  <div className="font-display text-[15px] font-semibold text-neutral-900 leading-tight truncate">{j.team}</div>
+                  <div className="mt-0.5 text-[12px] text-neutral-500">{j.tag} · Player Edition</div>
+                </div>
+                <div className="text-[14px] font-bold text-neutral-900 whitespace-nowrap">₹{price}</div>
               </div>
             </article>
           );})}
+
         </div>
 
         <div className="mt-12 flex flex-col items-center gap-4">
