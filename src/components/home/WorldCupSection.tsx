@@ -1,10 +1,17 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Trophy, Sparkles, ShoppingBag } from "lucide-react";
+import { ArrowRight, Trophy } from "lucide-react";
 import { OrderModal } from "@/components/order/OrderModal";
 import banner from "@/assets/wc-banner.jpg.asset.json";
 import { JERSEYS, type Jersey } from "@/lib/jerseys";
-import { useJerseyStock } from "@/lib/jersey-stock";
+import { useJerseySizeStock, type SizeKey } from "@/lib/jersey-size-stock";
+
+const SIZES: SizeKey[] = ["S", "M", "L", "XL", "XXL"];
+function totalStock(map: Record<string, Partial<Record<SizeKey, number>>> | undefined, id: string) {
+  const row = map?.[id];
+  if (!row) return undefined;
+  return SIZES.reduce((s, k) => s + (row[k] ?? 0), 0);
+}
 
 type Props = {
   /** Show only the first N jerseys, with an "Explore more" CTA. */
