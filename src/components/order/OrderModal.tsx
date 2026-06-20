@@ -24,7 +24,12 @@ const SIZES = ["S", "M", "L", "XL", "XXL"] as const;
 type Size = (typeof SIZES)[number];
 type Kit = "Home" | "Away";
 
-const PRICE: Record<Kit, number> = { Home: 1000, Away: 1299 };
+const PRICE: Record<Kit, number> = { Home: 1000, Away: 1100 };
+
+function getKitPrice(team: string, kit: Kit): number {
+  if (team === "Portugal" && kit === "Away") return 1299;
+  return PRICE[kit];
+}
 
 type Props = {
   team: string;
