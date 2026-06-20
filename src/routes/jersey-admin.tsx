@@ -378,7 +378,6 @@ function StockPanel({ token }: { token: string }) {
                 })}
               </div>
             </div>
-            </div>
           );})}
         </div>
       )}
