@@ -1,10 +1,17 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Trophy, Sparkles, ShoppingBag } from "lucide-react";
+import { ArrowRight, Trophy } from "lucide-react";
 import { OrderModal } from "@/components/order/OrderModal";
 import banner from "@/assets/wc-banner.jpg.asset.json";
 import { JERSEYS, type Jersey } from "@/lib/jerseys";
-import { useJerseyStock } from "@/lib/jersey-stock";
+import { useJerseySizeStock, type SizeKey } from "@/lib/jersey-size-stock";
+
+const SIZES: SizeKey[] = ["S", "M", "L", "XL", "XXL"];
+function totalStock(map: Record<string, Partial<Record<SizeKey, number>>> | undefined, id: string) {
+  const row = map?.[id];
+  if (!row) return undefined;
+  return SIZES.reduce((s, k) => s + (row[k] ?? 0), 0);
+}
 
 type Props = {
   /** Show only the first N jerseys, with an "Explore more" CTA. */
@@ -17,7 +24,7 @@ type Props = {
 
 export function WorldCupSection({ preview, showBanner = true, heading }: Props) {
   const [active, setActive] = useState<Jersey | null>(null);
-  const { data: stockMap } = useJerseyStock();
+  const { data: stockMap } = useJerseySizeStock();
   const list = preview ? JERSEYS.slice(0, preview) : JERSEYS;
 
   return (
@@ -58,57 +65,40 @@ export function WorldCupSection({ preview, showBanner = true, heading }: Props) 
               : "The complete player-edition catalogue — match-grade fabric, federation badges, heat-pressed numbers."}
           </p>
 
-          <div className="mt-5 flex items-center gap-6 text-sm">
-            <div className="flex items-center gap-2"><span className="text-[#8a6a14] font-bold">Home</span> <span className="text-neutral-500">₹1000</span></div>
-            <div className="h-4 w-px bg-gold/40" />
-            <div className="flex items-center gap-2"><span className="text-[#8a6a14] font-bold">Away</span> <span className="text-neutral-500">₹1100</span></div>
-          </div>
           <div className="mt-5 h-px w-24 hairline-gold" />
         </div>
 
-        <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4">
+        <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
           {list.map((j) => {
-            const stock = stockMap?.[j.id];
-            const out = stock === 0;
-            const low = typeof stock === "number" && stock > 0 && stock <= 3;
+            const total = totalStock(stockMap, j.id);
+            const out = total === 0;
+            const low = typeof total === "number" && total > 0 && total <= 3;
             return (
-            <article key={j.id} className="group relative overflow-hidden rounded-xl bg-white shadow-luxe transition hover:-translate-y-0.5" style={{ border: "1px solid #ecdcae" }}>
-              <div className="absolute right-1.5 top-1.5 z-10 inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest"
-                style={{ background: "var(--gradient-gold)", color: "#1a1a1a", boxShadow: "0 4px 10px -6px rgba(184,134,43,0.6)" }}>
-                <Sparkles className="size-2.5" /> Player
-              </div>
-              {out && (
-                <div className="absolute left-1.5 top-1.5 z-10 rounded-full bg-red-600 px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest text-white">
-                  Sold out
-                </div>
-              )}
-              {low && (
-                <div className="absolute left-1.5 top-1.5 z-10 rounded-full bg-amber-500 px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest text-white">
-                  Only {stock} left
-                </div>
-              )}
-
-              <button onClick={() => !out && setActive(j)} disabled={out} className="block w-full disabled:cursor-not-allowed" aria-label={`Order ${j.team}`}>
-                <div className={`aspect-[4/5] w-full overflow-hidden bg-gold-soft ${out ? "opacity-60" : ""}`}>
+            <article key={j.id} className="group relative cursor-pointer" onClick={() => !out && setActive(j)}>
+              <div className="relative overflow-hidden rounded-md bg-[#f1f1f1]">
+                {out && (
+                  <div className="absolute left-2 top-2 z-10 rounded-sm bg-black px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                    Sold out
+                  </div>
+                )}
+                {low && (
+                  <div className="absolute left-2 top-2 z-10 rounded-sm bg-[#d4af37] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-black">
+                    Only {total} left
+                  </div>
+                )}
+                {!out && !low && typeof total === "number" && (
+                  <div className="absolute left-2 top-2 z-10 rounded-sm bg-white/90 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-neutral-700">
+                    {total} in stock
+                  </div>
+                )}
+                <div className={`aspect-[4/5] w-full overflow-hidden ${out ? "opacity-50" : ""}`}>
                   <img src={j.image} alt={`${j.team} ${j.tag} jersey`} loading="lazy"
-                    className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+                    className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
                 </div>
-              </button>
-
-              <div className="px-2.5 py-2.5">
-                <div className="flex items-center justify-between">
-                  <div className="text-[9px] font-semibold uppercase tracking-[0.18em] text-neutral-500">{j.tag} · 2026</div>
-                  <div className="text-[8px] font-mono text-neutral-400">#{j.id}</div>
-                </div>
-                <div className="mt-0.5 font-display text-sm font-semibold text-neutral-900 truncate">{j.team}</div>
-                <div className="mt-1 flex items-center justify-between">
-                  <div className="text-[11px] text-[#8a6a14] font-bold">₹{j.tag === "Home" ? 1000 : 1100}</div>
-                  <button onClick={() => !out && setActive(j)} disabled={out}
-                    className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-[9px] font-bold uppercase tracking-wider disabled:opacity-50"
-                    style={{ background: "linear-gradient(135deg,#1a1a1a,#2b2b2b)", color: "#f4d77a", border: "1px solid #d4af37" }}>
-                    <ShoppingBag className="size-2.5" /> {out ? "Sold" : "Order"}
-                  </button>
-                </div>
+              </div>
+              <div className="pt-3">
+                <div className="font-display text-[15px] font-semibold text-neutral-900 leading-tight">{j.team}</div>
+                <div className="mt-0.5 text-[12px] text-neutral-500">{j.tag} · Player Edition</div>
               </div>
             </article>
           );})}
