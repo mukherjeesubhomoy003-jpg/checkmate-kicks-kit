@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Truck, ShieldCheck, MapPin, Zap, MessageCircle, IndianRupee, Banknote } from "lucide-react";
 import { WorldCupSection } from "@/components/home/WorldCupSection";
 import { FeaturedDrop } from "@/components/home/FeaturedDrop";
+import { PosterDrop } from "@/components/home/PosterDrop";
 import { HappyCustomers } from "@/components/home/HappyCustomers";
 import { ShareBanner } from "@/components/home/ShareBanner";
 import { BRAND } from "@/components/order/OrderModal";
@@ -82,6 +83,9 @@ function Home() {
 
       {/* World Cup Collection — featured preview, full catalogue on /world-cup-2026 */}
       <WorldCupSection preview={8} showBanner={false} />
+
+      {/* NEW: Wall Poster merchandise drop */}
+      <PosterDrop />
 
       {/* Happy customers — real WhatsApp reviews */}
       <HappyCustomers />
