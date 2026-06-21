@@ -55,6 +55,9 @@ export function PosterDrop() {
                 <div className="absolute right-3 top-3 z-10 rounded-sm bg-black px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#f4d77a]">
                   NEW
                 </div>
+                <div className="absolute left-3 top-3 z-10 rounded-sm bg-[#d4322a] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white animate-pulse">
+                  Only 1 left
+                </div>
                 <div className="aspect-[3/4] overflow-hidden rounded-md">
                   <img src={p.image} alt={`${p.name} wall poster`} loading="lazy"
                     className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
