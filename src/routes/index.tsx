@@ -67,15 +67,14 @@ function Home() {
 
           {/* Right — visual stack */}
           <div className="relative hidden lg:block">
-            <div className="relative z-10 w-full aspect-square border-2 border-[#d4af37]/25 p-6 rotate-3 backdrop-blur-[2px]">
-              <div className="relative size-full overflow-hidden bg-black/40 group">
+            <div className="relative z-10 w-full aspect-square border-2 border-[#d4af37]/35 p-5 rotate-3 bg-black/30">
+              <div className="relative size-full overflow-hidden bg-neutral-200 group">
                 <img
                   src={heroJersey.url}
-                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
                   alt="CHECKMATE player edition jersey detail"
-                  className="size-full object-cover opacity-85 scale-110 transition-transform duration-[1200ms] group-hover:scale-[1.18]"
+                  className="size-full object-cover scale-105 transition-transform duration-[1200ms] group-hover:scale-[1.12]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
                 <div className="absolute bottom-6 right-0 bg-[#d4af37] text-black px-5 py-3 pr-10 clip-slant-tag shadow-[0_10px_30px_-10px_rgba(212,175,55,0.6)]">
                   <p className="text-[10px] font-bold uppercase tracking-[0.18em] opacity-75">Limited Drop</p>
                   <p className="font-bebas text-2xl tracking-[0.12em] leading-none mt-0.5">₹1000 · ₹1100</p>
