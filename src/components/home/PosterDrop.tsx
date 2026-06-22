@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Sparkles, X, MessageCircle, Truck } from "lucide-react";
+import { Sparkles, X, MessageCircle, Truck, ShieldCheck, Check, QrCode, ArrowLeft } from "lucide-react";
 import ronaldo from "@/assets/posters/ronaldo.jpg.asset.json";
 import mbappe from "@/assets/posters/mbappe.jpg.asset.json";
 import neymar from "@/assets/posters/neymar.jpg.asset.json";
-import { BRAND } from "@/components/order/OrderModal";
+import { BRAND, PAYMENT_QR_URL, UPI_ID, UPI_NAME } from "@/components/order/OrderModal";
 
 type Poster = { id: string; name: string; subtitle: string; image: string; accent: string };
 
@@ -84,6 +84,7 @@ export function PosterDrop() {
 }
 
 function PosterOrderModal({ poster, onClose }: { poster: Poster; onClose: () => void }) {
+  const [step, setStep] = useState<1 | 2 | 3>(1);
   const [qty, setQty] = useState(1);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -93,6 +94,9 @@ function PosterOrderModal({ poster, onClose }: { poster: Poster; onClose: () => 
   const [pincode, setPincode] = useState("");
   const [landmark, setLandmark] = useState("");
   const [postOffice, setPostOffice] = useState("");
+  const [orderNo] = useState(
+    () => "CMP" + Math.random().toString(36).slice(2, 6).toUpperCase() + Date.now().toString().slice(-4)
+  );
 
   const subtotal = PRICE * qty;
   const total = subtotal + SHIPPING;
@@ -106,9 +110,10 @@ function PosterOrderModal({ poster, onClose }: { poster: Poster; onClose: () => 
     city.trim() &&
     /^\d{6}$/.test(pincode);
 
-  const send = () => {
-    const msg = [
+  const buildMsg = (paid: boolean) =>
+    [
       `*New Order — CHECKMATE Wall Poster*`,
+      `*Order #:* ${orderNo}`,
       ``,
       `*Item:* ${poster.name} Wall Poster`,
       `*Qty:* ${qty}`,
@@ -126,60 +131,201 @@ function PosterOrderModal({ poster, onClose }: { poster: Poster; onClose: () => 
       `Post Office: ${postOffice.trim() || "NA"}`,
       `City: ${city}  Pin: ${pincode}`,
       ``,
-      `🕒 Will pay via UPI QR — please share details.`,
+      `*Payment*`,
+      `UPI: ${UPI_ID}`,
+      `Payee: ${UPI_NAME}`,
+      ``,
+      paid
+        ? `✅ Payment done — sharing screenshot now.`
+        : `🕒 Will pay shortly via UPI QR.`,
     ].join("\n");
-    window.open(`https://api.whatsapp.com/send?phone=${BRAND.whatsappPrimary}&text=${encodeURIComponent(msg)}`, "_blank");
+
+  const openWA = (paid: boolean) => {
+    window.open(
+      `https://api.whatsapp.com/send?phone=${BRAND.whatsappPrimary}&text=${encodeURIComponent(buildMsg(paid))}`,
+      "_blank"
+    );
+  };
+
+  const confirmPaid = () => {
+    openWA(true);
+    setStep(3);
   };
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6">
-      <button onClick={onClose} className="absolute inset-0 bg-black/60 backdrop-blur-sm" aria-label="Close" />
-      <div className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-2xl bg-white text-neutral-900 shadow-2xl border border-gold/40">
-        <div className="sticky top-0 z-10 flex items-center justify-between border-b bg-white/95 backdrop-blur px-5 py-3">
-          <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#8a6a14]">Wall Poster · Order</div>
-          <button onClick={onClose} className="p-2 rounded-full hover:bg-neutral-100"><X className="size-4" /></button>
-        </div>
-        <div className="grid md:grid-cols-[1fr_1.3fr] gap-6 p-5 sm:p-6">
-          <div>
-            <div className="rounded-xl overflow-hidden bg-neutral-100 border border-neutral-200 p-3">
-              <img src={poster.image} alt={poster.name} className="aspect-[3/4] w-full object-cover rounded" />
+      <button onClick={onClose} className="absolute inset-0 bg-black/70 backdrop-blur-sm" aria-label="Close" />
+      <div className="relative w-full max-w-3xl max-h-[94vh] overflow-y-auto rounded-2xl bg-white text-neutral-900 shadow-2xl border border-gold/40">
+        {/* Header — gold band + step indicator */}
+        <div className="sticky top-0 z-10 border-b border-gold/30 bg-white/95 backdrop-blur">
+          <div className="flex items-center justify-between px-5 py-3">
+            <div className="flex items-center gap-3">
+              <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#8a6a14]">
+                Wall Poster · {step === 1 ? "Order Details" : step === 2 ? "Payment" : "Awaiting Verification"}
+              </div>
+              <div className="hidden sm:flex items-center gap-1 text-[10px] font-semibold text-neutral-400">
+                {[1, 2, 3].map((s) => (
+                  <span key={s} className={`px-2 py-0.5 rounded-full border ${step === s ? "bg-[#fffaeb] border-[#d4af37] text-[#8a6a14]" : "border-neutral-200"}`}>
+                    0{s}
+                  </span>
+                ))}
+              </div>
             </div>
-            <div className="mt-3 font-display text-xl font-semibold">{poster.name}</div>
-            <div className="text-[11px] uppercase tracking-[0.2em] text-[#8a6a14]">{poster.subtitle}</div>
-            <label className="mt-4 block text-xs font-semibold uppercase tracking-wider text-neutral-500">Quantity</label>
-            <div className="mt-2 inline-flex items-center rounded-full border">
-              <button onClick={() => setQty(Math.max(1, qty - 1))} className="px-3 py-1.5">−</button>
-              <span className="px-3 text-sm font-semibold">{qty}</span>
-              <button onClick={() => setQty(qty + 1)} className="px-3 py-1.5">+</button>
+            <button onClick={onClose} className="p-2 rounded-full hover:bg-neutral-100"><X className="size-4" /></button>
+          </div>
+          <div className="h-0.5" style={{ background: "linear-gradient(90deg, transparent, #d4af37, transparent)" }} />
+        </div>
+
+        {/* STEP 1 — Details */}
+        {step === 1 && (
+          <div className="grid md:grid-cols-[1fr_1.3fr] gap-6 p-5 sm:p-6">
+            <div>
+              <div className="rounded-xl overflow-hidden bg-neutral-100 border border-neutral-200 p-3">
+                <img src={poster.image} alt={poster.name} className="aspect-[3/4] w-full object-cover rounded" />
+              </div>
+              <div className="mt-3 font-display text-xl font-semibold">{poster.name}</div>
+              <div className="text-[11px] uppercase tracking-[0.2em] text-[#8a6a14]">{poster.subtitle}</div>
+              <label className="mt-4 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Quantity</label>
+              <div className="mt-2 inline-flex items-center rounded-full border border-neutral-300">
+                <button onClick={() => setQty(Math.max(1, qty - 1))} className="px-3 py-1.5 hover:bg-neutral-50">−</button>
+                <span className="px-3 text-sm font-semibold">{qty}</span>
+                <button onClick={() => setQty(qty + 1)} className="px-3 py-1.5 hover:bg-neutral-50">+</button>
+              </div>
+            </div>
+            <div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <Inp label="Full name" v={name} on={setName} ph="As per delivery" full />
+                <Inp label="Phone (10-digit)" v={phone} on={(v) => setPhone(v.replace(/\D/g, "").slice(0, 10))} ph="9XXXXXXXXX" />
+                <Inp label="Alternative phone" v={altPhone} on={(v) => setAltPhone(v.replace(/\D/g, "").slice(0, 10))} ph="Different number" />
+                <Inp label="Address" v={address} on={setAddress} ph="House, street, area" full />
+                <Inp label="Landmark (optional)" v={landmark} on={setLandmark} ph="Near…" full />
+                <Inp label="Post office (NA if none)" v={postOffice} on={setPostOffice} ph="Post office" />
+                <Inp label="City" v={city} on={setCity} ph="City" />
+                <Inp label="Pincode" v={pincode} on={(v) => setPincode(v.replace(/\D/g, "").slice(0, 6))} ph="6-digit" />
+              </div>
+              <div className="mt-4 rounded-xl border border-gold/40 bg-[#fffaeb] p-4 text-sm">
+                <Row l={`${poster.name} × ${qty}`} v={`₹${subtotal}`} />
+                <Row l="Delivery" v={`₹${SHIPPING}`} />
+                <div className="my-2 h-px" style={{ background: "linear-gradient(90deg, transparent, #d4af37, transparent)" }} />
+                <Row l="Total" v={`₹${total}`} strong />
+              </div>
+              <button
+                disabled={!valid}
+                onClick={() => setStep(2)}
+                className="mt-4 w-full inline-flex items-center justify-center gap-2 rounded-full px-5 py-3.5 text-sm font-bold uppercase tracking-[0.18em] disabled:opacity-50 transition-transform hover:-translate-y-0.5"
+                style={{ background: "var(--gradient-gold)", color: "#1a1a1a", border: "1px solid #8a6a14", boxShadow: "0 14px 30px -14px rgba(184,134,43,0.7)" }}
+              >
+                Continue to Payment →
+              </button>
+              <div className="mt-2 text-[11px] text-neutral-500 text-center">
+                All-India delivery · No COD · Pay via UPI QR on next step
+              </div>
             </div>
           </div>
-          <div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <Inp label="Full name" v={name} on={setName} ph="As per delivery" full />
-              <Inp label="Phone (10-digit)" v={phone} on={(v) => setPhone(v.replace(/\D/g, "").slice(0, 10))} ph="9XXXXXXXXX" />
-              <Inp label="Alternative phone" v={altPhone} on={(v) => setAltPhone(v.replace(/\D/g, "").slice(0, 10))} ph="Different number" />
-              <Inp label="Address" v={address} on={setAddress} ph="House, street, area" full />
-              <Inp label="Landmark (optional)" v={landmark} on={setLandmark} ph="Near…" full />
-              <Inp label="Post office (NA if none)" v={postOffice} on={setPostOffice} ph="Post office" />
-              <Inp label="City" v={city} on={setCity} ph="City" />
-              <Inp label="Pincode" v={pincode} on={(v) => setPincode(v.replace(/\D/g, "").slice(0, 6))} ph="6-digit" />
+        )}
+
+        {/* STEP 2 — Payment */}
+        {step === 2 && (
+          <div className="p-5 sm:p-6 grid md:grid-cols-2 gap-6">
+            <div>
+              <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.22em] text-[#8a6a14]">
+                <QrCode className="size-4" /> Scan & Pay
+              </div>
+              <div className="mt-1 font-display text-2xl font-semibold">₹{total}</div>
+              <div className="text-sm text-neutral-600">UPI · GPay · PhonePe · Paytm · BHIM</div>
+
+              <div className="mt-4 rounded-2xl border-2 border-[#d4af37] bg-white p-3 max-w-xs shadow-luxe">
+                <img src={PAYMENT_QR_URL} alt="Scan to pay" className="w-full h-auto" />
+              </div>
+
+              <div className="mt-3 text-xs text-neutral-700">
+                <div className="font-semibold">{UPI_NAME}</div>
+                <div className="text-neutral-500">UPI ID: {UPI_ID}</div>
+              </div>
+
+              <div className="mt-4 flex items-center gap-2 text-xs text-neutral-500">
+                <ShieldCheck className="size-4 text-[#8a6a14]" /> No COD — for buyer & seller safety
+              </div>
             </div>
-            <div className="mt-4 rounded-xl border border-gold/40 bg-[#fffaeb] p-4 text-sm">
-              <Row l={`${poster.name} × ${qty}`} v={`₹${subtotal}`} />
-              <Row l="Delivery" v={`₹${SHIPPING}`} />
-              <div className="my-2 h-px bg-gold/40" />
-              <Row l="Total" v={`₹${total}`} strong />
-            </div>
-            <button disabled={!valid} onClick={send}
-              className="mt-4 w-full inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold uppercase tracking-[0.18em] disabled:opacity-50"
-              style={{ background: "var(--gradient-gold)", color: "#1a1a1a", border: "1px solid #8a6a14" }}>
-              <MessageCircle className="size-4" /> Send order on WhatsApp
-            </button>
-            <div className="mt-2 text-[11px] text-neutral-500 text-center">
-              UPI/GPay/PhonePe/Paytm · Share screenshot to confirm · Feel free to ask any questions on WhatsApp.
+
+            <div>
+              <div className="rounded-xl border border-gold/40 bg-[#fffaeb] p-4 text-sm">
+                <div className="text-[10px] font-bold uppercase tracking-wider text-[#8a6a14]">Order summary</div>
+                <div className="mt-2 font-semibold">{poster.name} Wall Poster</div>
+                <div className="text-neutral-500 text-xs">Qty {qty} · Order # {orderNo}</div>
+                <div className="my-3 h-px" style={{ background: "linear-gradient(90deg, transparent, #d4af37, transparent)" }} />
+                <Row l="Subtotal" v={`₹${subtotal}`} />
+                <Row l="Delivery" v={`₹${SHIPPING}`} />
+                <Row l="Total" v={`₹${total}`} strong />
+              </div>
+
+              <div className="mt-4 rounded-xl border border-[#d4af37] bg-white p-3 text-[12px] leading-relaxed text-neutral-800">
+                <div className="font-bold text-[#8a6a14] uppercase tracking-wider text-[10px] mb-1.5">How to pay</div>
+                <ol className="list-decimal pl-5 space-y-1">
+                  <li>Pay <b>₹{total}</b> by scanning the QR.</li>
+                  <li>Take a <b>screenshot</b> of the payment success page.</li>
+                  <li>Tap the button below — WhatsApp opens.</li>
+                  <li>Share the screenshot. We verify and dispatch ✅</li>
+                </ol>
+              </div>
+
+              <button
+                onClick={confirmPaid}
+                className="mt-4 w-full inline-flex items-center justify-center gap-2 rounded-full px-5 py-3.5 text-sm font-bold uppercase tracking-[0.18em] transition-transform hover:-translate-y-0.5"
+                style={{ background: "var(--gradient-gold)", color: "#1a1a1a", border: "1px solid #8a6a14", boxShadow: "0 14px 30px -14px rgba(184,134,43,0.7)" }}
+              >
+                <Check className="size-4" /> I've Paid — Send Screenshot
+              </button>
+              <div className="mt-2 text-[11px] text-neutral-500 text-center px-2">
+                ⚠️ Order is confirmed only after we verify your payment on WhatsApp.
+              </div>
+              <button onClick={() => setStep(1)} className="mt-2 inline-flex items-center gap-1 text-xs text-neutral-500 hover:underline">
+                <ArrowLeft className="size-3" /> Edit details
+              </button>
             </div>
           </div>
-        </div>
+        )}
+
+        {/* STEP 3 — Awaiting verification */}
+        {step === 3 && (
+          <div className="p-6 sm:p-8 text-center">
+            <div className="mx-auto size-14 rounded-full bg-amber-100 grid place-items-center text-amber-700">
+              <ShieldCheck className="size-7" />
+            </div>
+            <div className="mt-3 font-display text-2xl font-semibold">Payment Under Verification</div>
+            <div className="mt-1 text-sm text-neutral-500">Order number</div>
+            <div className="mt-1 text-xl font-bold tracking-[0.18em] text-[#8a6a14]">{orderNo}</div>
+
+            <div className="mt-5 max-w-md mx-auto rounded-xl border-2 border-amber-300 bg-amber-50 p-4 text-left text-[12.5px] text-neutral-800 leading-relaxed">
+              <div className="font-bold text-amber-800 uppercase tracking-wider text-[10px] mb-1.5">⏳ Important — please read</div>
+              <ol className="list-decimal pl-5 space-y-1.5">
+                <li>Your order has been <b>placed</b> but is <b>not yet confirmed</b>.</li>
+                <li>Send the <b>payment screenshot on WhatsApp</b> to confirm.</li>
+                <li>Once verified, we <b>dispatch your poster</b> and share tracking on WhatsApp.</li>
+              </ol>
+            </div>
+
+            <div className="mt-4 max-w-md mx-auto rounded-xl border border-gold/40 bg-[#fffaeb] p-4 text-sm text-left">
+              <div className="font-semibold">{poster.name} Wall Poster</div>
+              <div className="text-neutral-500 text-xs">Qty {qty}</div>
+              <Row l="Amount paid" v={`₹${total}`} strong />
+              <div className="mt-1 text-[11px] text-neutral-500">📱 {phone} · Alt: {altPhone}</div>
+            </div>
+
+            <div className="mt-5 flex flex-col sm:flex-row gap-2 justify-center">
+              <button
+                onClick={() => openWA(true)}
+                className="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold uppercase tracking-[0.18em]"
+                style={{ background: "var(--gradient-gold)", color: "#1a1a1a", border: "1px solid #8a6a14" }}
+              >
+                <MessageCircle className="size-4" /> Re-open WhatsApp
+              </button>
+              <button onClick={onClose} className="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold border border-neutral-300 hover:border-[#d4af37]">
+                Done
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -190,7 +336,7 @@ function Inp({ label, v, on, ph, full }: { label: string; v: string; on: (s: str
     <label className={`block ${full ? "sm:col-span-2" : ""}`}>
       <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">{label}</span>
       <input value={v} onChange={(e) => on(e.target.value)} placeholder={ph}
-        className="mt-1 w-full rounded-md border border-neutral-300 bg-white px-2.5 py-2 text-sm focus:border-[#b8862b] focus:outline-none" />
+        className="mt-1 w-full rounded-md border border-neutral-300 bg-white px-2.5 py-2 text-sm focus:border-[#b8862b] focus:ring-1 focus:ring-[#d4af37]/40 focus:outline-none" />
     </label>
   );
 }
