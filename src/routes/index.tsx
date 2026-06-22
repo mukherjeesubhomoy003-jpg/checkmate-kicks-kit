@@ -70,7 +70,7 @@ function Home() {
             <div className="relative z-10 w-full aspect-square border-2 border-[#d4af37]/25 p-6 rotate-3 backdrop-blur-[2px]">
               <div className="relative size-full overflow-hidden bg-black/40 group">
                 <img
-                  src="/__l5e/assets-v1/95087f37-2c0c-4344-a5d8-014e5a83995b/argentina-messi.jpg"
+                  src={heroJersey.url}
                   onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
                   alt="CHECKMATE player edition jersey detail"
                   className="size-full object-cover opacity-85 scale-110 transition-transform duration-[1200ms] group-hover:scale-[1.18]"
