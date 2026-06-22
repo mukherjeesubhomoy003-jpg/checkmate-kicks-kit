@@ -112,3 +112,16 @@
 @utility gradient-indigo {
   background-image: var(--gradient-gold);
 }
+
+@keyframes hero-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-hero-marquee {
+  display: flex;
+  width: max-content;
+  animation: hero-marquee 28s linear infinite;
+}
+.font-bebas { font-family: "Bebas Neue", "Bebas", Impact, sans-serif; letter-spacing: 0; }
+.font-outfit { font-family: "Outfit", "Manrope", ui-sans-serif, system-ui, sans-serif; }
+.clip-slant-tag { clip-path: polygon(0 0, 100% 0, 88% 100%, 0% 100%); }
