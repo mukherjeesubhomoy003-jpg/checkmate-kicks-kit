@@ -7,6 +7,7 @@ import { HappyCustomers } from "@/components/home/HappyCustomers";
 import { ShareBanner } from "@/components/home/ShareBanner";
 import { BRAND } from "@/components/order/OrderModal";
 import { HeroSlideshow } from "@/components/home/HeroSlideshow";
+import heroJersey from "@/assets/argentina-messi.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -23,41 +24,86 @@ export const Route = createFileRoute("/")({
 function Home() {
   return (
     <div>
-      {/* Hero — Football stadium backdrop with gold accents */}
-      <section className="relative overflow-hidden">
+      {/* Hero — Asymmetric cinematic luxury */}
+      <section className="relative overflow-hidden bg-[#0a0a0a] font-outfit">
         <HeroSlideshow />
-        <div className="container-x relative py-20 sm:py-28 md:py-40 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full px-3 sm:px-4 py-1.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.18em] sm:tracking-[0.22em]"
-            style={{ background: "rgba(255,248,225,0.12)", color: "#f4d77a", border: "1px solid #d4af37", backdropFilter: "blur(6px)" }}>
-            <Zap className="size-3" /> World Cup 2026 · Player Edition
+        {/* extra cinematic veils on top of slideshow */}
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/70 to-transparent z-[1]" />
+        <div aria-hidden className="absolute inset-0 z-[1]" style={{ background: "radial-gradient(circle at 72% 50%, rgba(212,175,55,0.18), transparent 55%)" }} />
+
+        <div className="container-x relative z-[2] grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-center py-20 sm:py-24 md:py-28">
+          {/* Left — copy */}
+          <div className="space-y-7 text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#d4af37]/40 bg-[#d4af37]/10 backdrop-blur-md">
+              <span className="flex h-2 w-2 rounded-full bg-[#f4d77a] animate-pulse" />
+              <span className="text-[#f4d77a] text-[10px] sm:text-xs font-bold uppercase tracking-[0.22em]">World Cup 2026 · Player Edition</span>
+            </div>
+
+            <div className="space-y-3">
+              <h1 className="font-bebas text-white leading-[0.88] tracking-tight text-[64px] sm:text-7xl md:text-8xl lg:text-[128px]">
+                WEAR YOUR
+                <br />
+                <span className="text-transparent bg-clip-text" style={{ backgroundImage: "linear-gradient(180deg,#fff7d6 0%,#f4d77a 45%,#d4af37 100%)" }}>
+                  PASSION
+                </span>
+              </h1>
+              <p className="max-w-md text-zinc-300/90 text-base sm:text-lg leading-relaxed">
+                Engineered for the elite. The CHECKMATE signature series brings
+                championship-grade jerseys to your doorstep across India.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+              <a href="#collection"
+                className="px-7 sm:px-8 py-3.5 sm:py-4 bg-[#d4af37] text-black font-bold uppercase tracking-[0.18em] text-xs sm:text-sm transition-all duration-300 hover:bg-[#f4d77a] hover:-translate-y-0.5 shadow-[0_18px_40px_-12px_rgba(212,175,55,0.55)] inline-flex items-center gap-2">
+                View Collection <ArrowRight className="size-4" />
+              </a>
+              <a href={`https://wa.me/${BRAND.whatsappPrimary}`} target="_blank" rel="noopener noreferrer"
+                className="group px-7 sm:px-8 py-3.5 sm:py-4 border border-[#d4af37]/50 text-[#f4d77a] font-bold uppercase tracking-[0.18em] text-xs sm:text-sm hover:bg-[#d4af37]/10 transition-all inline-flex items-center gap-2">
+                <MessageCircle className="size-4 transition-transform group-hover:translate-x-0.5" /> WhatsApp
+              </a>
+            </div>
           </div>
-          <h1 className="mt-5 sm:mt-6 font-display text-5xl sm:text-6xl md:text-8xl font-bold leading-[0.92] tracking-tight">
-            <span style={{ backgroundImage: "linear-gradient(180deg,#ffffff 0%,#fff7d6 60%,#e6c976 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent", textShadow: "0 2px 24px rgba(0,0,0,0.4)" }}>
-              Wear Your
-            </span>
-            <br />
-            <span style={{ backgroundImage: "var(--gradient-gold)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
-              Passion.
-            </span>
-          </h1>
-          <p className="mt-6 max-w-xl mx-auto text-neutral-200">
-            Authentic player-edition jerseys from the world's top federations.
-            Hand-picked, shipped across India, delivered with care.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <a href="#collection" className="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-bold uppercase tracking-[0.18em] transition-transform hover:-translate-y-0.5"
-              style={{ background: "var(--gradient-gold)", color: "#1a1a1a", border: "1px solid #8a6a14", boxShadow: "0 18px 40px -16px rgba(184,134,43,0.8)" }}>
-              View Collection <ArrowRight className="size-4" />
-            </a>
-            <a href={`https://wa.me/${BRAND.whatsappPrimary}`} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold border border-gold/60 bg-white/10 text-white backdrop-blur hover:bg-white/20">
-              <MessageCircle className="size-4 text-[#f4d77a]" /> Chat on WhatsApp
-            </a>
+
+          {/* Right — visual stack */}
+          <div className="relative hidden lg:block">
+            <div className="relative z-10 w-full aspect-square border-2 border-[#d4af37]/35 p-5 rotate-3 bg-black/30">
+              <div className="relative size-full overflow-hidden bg-neutral-200 group">
+                <img
+                  src={heroJersey.url}
+                  alt="CHECKMATE player edition jersey detail"
+                  className="size-full object-cover scale-105 transition-transform duration-[1200ms] group-hover:scale-[1.12]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                <div className="absolute bottom-6 right-0 bg-[#d4af37] text-black px-5 py-3 pr-10 clip-slant-tag shadow-[0_10px_30px_-10px_rgba(212,175,55,0.6)]">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] opacity-75">Limited Drop</p>
+                  <p className="font-bebas text-2xl tracking-[0.12em] leading-none mt-0.5">₹1000 · ₹1100</p>
+                </div>
+              </div>
+            </div>
+            <div aria-hidden className="absolute -top-10 -right-10 w-64 h-64 border border-[#d4af37]/15 rounded-full" />
+            <div aria-hidden className="absolute -bottom-24 -left-12 w-96 h-96 bg-[#d4af37]/10 blur-3xl rounded-full" />
           </div>
-          <div className="mt-10 inline-flex items-center gap-5 rounded-full bg-black/40 border border-gold/50 px-5 py-2.5 backdrop-blur">
-            <div className="text-xs"><span className="text-[#f4d77a] font-bold uppercase tracking-wider">Home</span> <span className="text-neutral-100 font-semibold">₹1000</span></div>
-            <span className="h-4 w-px bg-gold/50" />
-            <div className="text-xs"><span className="text-[#f4d77a] font-bold uppercase tracking-wider">Away</span> <span className="text-neutral-100 font-semibold">₹1100</span></div>
+        </div>
+
+        {/* Ticker / pricing band */}
+        <div className="relative z-[3] w-full border-y border-[#d4af37]/25 bg-black/70 backdrop-blur-md overflow-hidden">
+          <div className="animate-hero-marquee py-3.5">
+            {Array.from({ length: 2 }).flatMap((_, loop) => [
+              { k: "AUTHENTIC PLAYER EDITION", v: "₹1100" },
+              { k: "HOME KIT", v: "₹1000" },
+              { k: "FREE SHIPPING · ALL INDIA", v: "7 DAYS" },
+              { k: "AWAY KIT", v: "₹1100" },
+              { k: "ORDER ON WHATSAPP", v: "INSTANT" },
+              { k: "NEW · WALL POSTERS", v: "₹150" },
+            ].map((it, i) => (
+              <span key={`${loop}-${i}`} className="inline-flex items-center gap-4 px-8 whitespace-nowrap">
+                <span className="text-[#d4af37] font-bold text-[11px] sm:text-xs uppercase tracking-[0.22em]">{it.k}</span>
+                <span className="text-zinc-600">/</span>
+                <span className="text-white font-bebas tracking-[0.14em] text-lg">{it.v}</span>
+                <span className="text-[#d4af37]/40 pl-4">◆</span>
+              </span>
+            )))}
           </div>
         </div>
       </section>
