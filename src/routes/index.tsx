@@ -40,7 +40,7 @@ function Home() {
             </div>
 
             <div className="space-y-3">
-              <h1 className="font-bebas text-white leading-[0.88] tracking-tight text-[64px] sm:text-7xl md:text-8xl lg:text-[128px]">
+              <h1 className="font-bebas text-white leading-[0.88] tracking-tight text-[44px] xs:text-5xl sm:text-7xl md:text-8xl lg:text-[128px]">
                 WEAR YOUR
                 <br />
                 <span className="text-transparent bg-clip-text" style={{ backgroundImage: "linear-gradient(180deg,#fff7d6 0%,#f4d77a 45%,#d4af37 100%)" }}>
@@ -65,9 +65,9 @@ function Home() {
             </div>
           </div>
 
-          {/* Right — visual stack */}
-          <div className="relative hidden lg:block">
-            <div className="relative z-10 w-full aspect-square border-2 border-[#d4af37]/35 p-5 rotate-3 bg-black/30">
+          {/* Right — visual stack (visible on mobile too) */}
+          <div className="relative order-first lg:order-last mx-auto w-full max-w-xs sm:max-w-sm lg:max-w-none">
+            <div className="relative z-10 w-full aspect-square border-2 border-[#d4af37]/35 p-3 sm:p-5 rotate-2 lg:rotate-3 bg-black/30">
               <div className="relative size-full overflow-hidden bg-neutral-200 group">
                 <img
                   src={heroJersey.url}
@@ -75,14 +75,14 @@ function Home() {
                   className="size-full object-cover scale-105 transition-transform duration-[1200ms] group-hover:scale-[1.12]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
-                <div className="absolute bottom-6 right-0 bg-[#d4af37] text-black px-5 py-3 pr-10 clip-slant-tag shadow-[0_10px_30px_-10px_rgba(212,175,55,0.6)]">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] opacity-75">Limited Drop</p>
-                  <p className="font-bebas text-2xl tracking-[0.12em] leading-none mt-0.5">₹1000 · ₹1100</p>
+                <div className="absolute bottom-4 sm:bottom-6 right-0 bg-[#d4af37] text-black px-3 sm:px-5 py-2 sm:py-3 pr-7 sm:pr-10 clip-slant-tag shadow-[0_10px_30px_-10px_rgba(212,175,55,0.6)]">
+                  <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.18em] opacity-75">Limited Drop</p>
+                  <p className="font-bebas text-lg sm:text-2xl tracking-[0.12em] leading-none mt-0.5">₹1000 · ₹1100</p>
                 </div>
               </div>
             </div>
-            <div aria-hidden className="absolute -top-10 -right-10 w-64 h-64 border border-[#d4af37]/15 rounded-full" />
-            <div aria-hidden className="absolute -bottom-24 -left-12 w-96 h-96 bg-[#d4af37]/10 blur-3xl rounded-full" />
+            <div aria-hidden className="hidden lg:block absolute -top-10 -right-10 w-64 h-64 border border-[#d4af37]/15 rounded-full" />
+            <div aria-hidden className="hidden lg:block absolute -bottom-24 -left-12 w-96 h-96 bg-[#d4af37]/10 blur-3xl rounded-full" />
           </div>
         </div>
 
