@@ -40,7 +40,7 @@ function Home() {
             </div>
 
             <div className="space-y-3">
-              <h1 className="font-bebas text-white leading-[0.88] tracking-tight text-[64px] sm:text-7xl md:text-8xl lg:text-[128px]">
+              <h1 className="font-bebas text-white leading-[0.88] tracking-tight text-[44px] xs:text-5xl sm:text-7xl md:text-8xl lg:text-[128px]">
                 WEAR YOUR
                 <br />
                 <span className="text-transparent bg-clip-text" style={{ backgroundImage: "linear-gradient(180deg,#fff7d6 0%,#f4d77a 45%,#d4af37 100%)" }}>
