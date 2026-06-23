@@ -31,16 +31,16 @@ function Home() {
         <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/70 to-transparent z-[1]" />
         <div aria-hidden className="absolute inset-0 z-[1]" style={{ background: "radial-gradient(circle at 72% 50%, rgba(212,175,55,0.18), transparent 55%)" }} />
 
-        <div className="container-x relative z-[2] grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-center py-20 sm:py-24 md:py-28">
+        <div className="container-x relative z-[2] grid grid-cols-5 lg:grid-cols-2 gap-4 sm:gap-8 lg:gap-12 items-center py-16 sm:py-24 md:py-28">
           {/* Left — copy */}
-          <div className="space-y-7 text-left">
+          <div className="col-span-3 lg:col-span-1 space-y-5 sm:space-y-7 text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#d4af37]/40 bg-[#d4af37]/10 backdrop-blur-md">
               <span className="flex h-2 w-2 rounded-full bg-[#f4d77a] animate-pulse" />
               <span className="text-[#f4d77a] text-[10px] sm:text-xs font-bold uppercase tracking-[0.22em]">World Cup 2026 · Player Edition</span>
             </div>
 
             <div className="space-y-3">
-              <h1 className="font-bebas text-white leading-[0.88] tracking-tight text-[44px] xs:text-5xl sm:text-7xl md:text-8xl lg:text-[128px]">
+              <h1 className="font-bebas text-white leading-[0.88] tracking-tight text-[32px] xs:text-5xl sm:text-7xl md:text-8xl lg:text-[128px]">
                 WEAR YOUR
                 <br />
                 <span className="text-transparent bg-clip-text" style={{ backgroundImage: "linear-gradient(180deg,#fff7d6 0%,#f4d77a 45%,#d4af37 100%)" }}>
@@ -66,7 +66,7 @@ function Home() {
           </div>
 
           {/* Right — visual stack (visible on mobile too) */}
-          <div className="relative order-first lg:order-last mx-auto w-full max-w-xs sm:max-w-sm lg:max-w-none">
+          <div className="relative col-span-2 lg:col-span-1 lg:order-last mx-auto w-full max-w-xs sm:max-w-sm lg:max-w-none">
             <div className="relative z-10 w-full aspect-square border-2 border-[#d4af37]/35 p-3 sm:p-5 rotate-2 lg:rotate-3 bg-black/30">
               <div className="relative size-full overflow-hidden bg-neutral-200 group">
                 <img
