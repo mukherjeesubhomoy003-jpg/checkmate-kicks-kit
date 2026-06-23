@@ -66,7 +66,7 @@ function Home() {
           </div>
 
           {/* Right — visual stack (visible on mobile too) */}
-          <div className="relative order-first lg:order-last mx-auto w-full max-w-xs sm:max-w-sm lg:max-w-none">
+          <div className="relative col-span-2 lg:col-span-1 lg:order-last mx-auto w-full max-w-xs sm:max-w-sm lg:max-w-none">
             <div className="relative z-10 w-full aspect-square border-2 border-[#d4af37]/35 p-3 sm:p-5 rotate-2 lg:rotate-3 bg-black/30">
               <div className="relative size-full overflow-hidden bg-neutral-200 group">
                 <img
