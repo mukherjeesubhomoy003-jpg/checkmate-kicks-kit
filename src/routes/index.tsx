@@ -33,7 +33,7 @@ function Home() {
 
         <div className="container-x relative z-[2] grid grid-cols-5 lg:grid-cols-2 gap-4 sm:gap-8 lg:gap-12 items-center py-16 sm:py-24 md:py-28">
           {/* Left — copy */}
-          <div className="space-y-7 text-left">
+          <div className="col-span-3 lg:col-span-1 space-y-5 sm:space-y-7 text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#d4af37]/40 bg-[#d4af37]/10 backdrop-blur-md">
               <span className="flex h-2 w-2 rounded-full bg-[#f4d77a] animate-pulse" />
               <span className="text-[#f4d77a] text-[10px] sm:text-xs font-bold uppercase tracking-[0.22em]">World Cup 2026 · Player Edition</span>
