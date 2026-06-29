@@ -22,7 +22,7 @@ export function Header() {
           <Logo className="h-8 sm:h-10 w-auto rounded-md" />
         </Link>
 
-        <nav className="flex ml-2 sm:ml-6 items-center gap-3 sm:gap-6 text-[12px] sm:text-sm font-semibold text-neutral-700 overflow-x-auto no-scrollbar">
+        <nav className="flex ml-2 sm:ml-6 items-center gap-3 sm:gap-6 text-[12px] sm:text-sm font-semibold text-neutral-700 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {navLinks}
         </nav>
 
