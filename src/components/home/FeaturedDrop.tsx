@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { Flame, Sparkles, ShoppingBag, Star } from "lucide-react";
 import { OrderModal } from "@/components/order/OrderModal";
-import argentinaImg from "@/assets/argentina-messi.jpg.asset.json";
 import portugalImg from "@/assets/portugal-special.jpg.asset.json";
 
 export function FeaturedDrop() {
-  const [openMessi, setOpenMessi] = useState(false);
   const [openRonaldo, setOpenRonaldo] = useState(false);
 
   return (
