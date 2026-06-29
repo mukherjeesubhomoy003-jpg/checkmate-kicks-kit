@@ -25,7 +25,14 @@ type Props = {
 export function WorldCupSection({ preview, showBanner = true, heading }: Props) {
   const [active, setActive] = useState<Jersey | null>(null);
   const { data: stockMap } = useJerseySizeStock();
-  const list = preview ? JERSEYS.slice(0, preview) : JERSEYS;
+  // Hide jerseys that are explicitly sold out (total stock == 0).
+  // Jerseys with unknown stock (no row yet) stay visible.
+  const available = JERSEYS.filter((j) => {
+    const t = totalStock(stockMap, j.id);
+    return t === undefined || t > 0;
+  });
+  const list = preview ? available.slice(0, preview) : available;
+
 
   return (
     <section className="relative overflow-hidden" id="collection">
