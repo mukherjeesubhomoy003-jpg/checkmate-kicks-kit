@@ -1,16 +1,44 @@
 import promo from "@/assets/hero-promo.mp4.asset.json";
+import poster from "@/assets/argentina-messi.jpg.asset.json";
+import { useEffect, useRef, useState } from "react";
 
 export function HeroSlideshow() {
+  const ref = useRef<HTMLVideoElement | null>(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    const onCanPlay = () => setReady(true);
+    v.addEventListener("canplay", onCanPlay);
+    // Kick off playback once idle to keep initial paint fast
+    const idle = (window as any).requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 300));
+    idle(() => {
+      v.load();
+      v.play().catch(() => {});
+    });
+    return () => v.removeEventListener("canplay", onCanPlay);
+  }, []);
+
   return (
     <div className="absolute inset-0">
+      {/* Instant poster paint — video fades in when ready */}
+      <img
+        src={poster.url}
+        alt=""
+        aria-hidden
+        className={`absolute inset-0 size-full object-cover transition-opacity duration-700 ${ready ? "opacity-0" : "opacity-100"}`}
+      />
       <video
+        ref={ref}
         src={promo.url}
+        poster={poster.url}
         autoPlay
         loop
         muted
         playsInline
-        preload="auto"
-        className="absolute inset-0 size-full object-cover"
+        preload="none"
+        className={`absolute inset-0 size-full object-cover transition-opacity duration-700 ${ready ? "opacity-100" : "opacity-0"}`}
       />
       <div
         className="absolute inset-0"
