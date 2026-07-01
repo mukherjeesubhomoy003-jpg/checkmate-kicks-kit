@@ -75,41 +75,63 @@ export function WorldCupSection({ preview, showBanner = true, heading }: Props) 
           <div className="mt-5 h-px w-24 hairline-gold" />
         </div>
 
-        <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
+        <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
           {list.map((j) => {
             const total = totalStock(stockMap, j.id);
             const out = total === 0;
             const low = typeof total === "number" && total > 0 && total <= 3;
             const price = j.tag === "Away" && j.team === "Portugal" ? 1299 : j.tag === "Away" ? 1100 : 1000;
+            const mrp = 1999;
             return (
-            <article key={j.id} className="group relative cursor-pointer" onClick={() => !out && setActive(j)}>
-              <div className="relative overflow-hidden rounded-md bg-[#f1f1f1]">
+            <article
+              key={j.id}
+              className={`group relative overflow-hidden rounded-2xl bg-white transition-all duration-300 ${out ? "cursor-not-allowed" : "cursor-pointer hover:-translate-y-1"}`}
+              style={{ border: "1px solid #efe7d1", boxShadow: "0 6px 22px -12px rgba(0,0,0,0.18)" }}
+              onClick={() => !out && setActive(j)}
+            >
+              <div className="relative overflow-hidden bg-gradient-to-br from-[#f7f4ec] to-[#efe7d1]">
                 {out && (
-                  <div className="absolute left-2 top-2 z-10 rounded-sm bg-black px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                  <div className="absolute left-3 top-3 z-10 rounded-full bg-black px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
                     Sold out
                   </div>
                 )}
                 {low && (
-                  <div className="absolute left-2 top-2 z-10 rounded-sm bg-[#d4af37] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-black">
+                  <div className="absolute left-3 top-3 z-10 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-black shadow" style={{ background: "var(--gradient-gold)" }}>
                     Only {total} left
                   </div>
                 )}
                 {!out && !low && typeof total === "number" && (
-                  <div className="absolute left-2 top-2 z-10 rounded-sm bg-white/90 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-neutral-700">
+                  <div className="absolute left-3 top-3 z-10 rounded-full bg-white/95 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-neutral-700 shadow-sm">
                     {total} in stock
                   </div>
                 )}
-                <div className={`aspect-[4/5] w-full overflow-hidden ${out ? "opacity-50" : ""}`}>
-                  <img src={j.image} alt={`${j.team} ${j.tag} jersey`} loading="lazy"
-                    className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+                <div className="absolute right-3 top-3 z-10 rounded-full bg-[#e11d48] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow">
+                  -50%
+                </div>
+                <div className={`aspect-[4/5] w-full ${out ? "opacity-50" : ""}`}>
+                  <img
+                    src={j.image}
+                    alt={`${j.team} ${j.tag} player edition jersey`}
+                    loading="lazy"
+                    decoding="async"
+                    className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                  />
                 </div>
               </div>
-              <div className="pt-3 flex items-start justify-between gap-2">
-                <div className="min-w-0">
-                  <div className="font-display text-[15px] font-semibold text-neutral-900 leading-tight truncate">{j.team}</div>
-                  <div className="mt-0.5 text-[12px] text-neutral-500">{j.tag} · Player Edition</div>
+              <div className="px-3 pt-3 pb-4 text-center">
+                <h3 className="font-display text-[13px] md:text-sm font-semibold text-neutral-900 leading-tight line-clamp-2 min-h-[2.4em]">
+                  {j.team} {j.tag} World Cup 2026 – Player Version Jersey
+                </h3>
+                <div className="mt-2 flex items-center justify-center gap-2">
+                  <span className="text-[12px] text-neutral-400 line-through">₹{mrp.toLocaleString("en-IN")}</span>
+                  <span className="text-[15px] md:text-base font-extrabold text-[#e11d48]">₹{price.toLocaleString("en-IN")}</span>
                 </div>
-                <div className="text-[14px] font-bold text-neutral-900 whitespace-nowrap">₹{price}</div>
+                {!out && (
+                  <div className="mt-3 inline-flex w-full items-center justify-center rounded-full px-3 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-white transition-opacity"
+                    style={{ background: "linear-gradient(135deg,#111,#2b2b2b)" }}>
+                    Shop Now
+                  </div>
+                )}
               </div>
             </article>
           );})}
