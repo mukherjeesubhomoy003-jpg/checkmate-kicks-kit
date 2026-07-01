@@ -45,10 +45,34 @@ export function WorldCupSection({ preview, showBanner = true, heading }: Props) 
 
       <div className="container-x relative py-16 md:py-24 text-neutral-900">
         {showBanner && (
-          <div className="relative mb-12 overflow-hidden rounded-2xl shadow-luxe" style={{ border: "1px solid #e6c976" }}>
-            <img src={banner.url} alt="Checkmate Player Edition World Cup 2026" loading="lazy"
-                 className="w-full h-[180px] md:h-[280px] object-cover" />
-          </div>
+          <a
+            href="#jersey-grid"
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById("jersey-grid")?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }}
+            className="group relative mb-12 block overflow-hidden rounded-2xl shadow-luxe cursor-pointer"
+            style={{ border: "1px solid #e6c976" }}
+            aria-label="Tap to view the World Cup 2026 jersey collection"
+          >
+            <img
+              src={banner.url}
+              alt="Checkmate Player Edition World Cup 2026"
+              loading="eager"
+              className="w-full h-[140px] md:h-[220px] object-cover object-[center_35%] transition-transform duration-700 group-hover:scale-[1.03]"
+            />
+            <div aria-hidden className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.55) 100%)" }} />
+            <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 px-4 py-3 md:px-6 md:py-4">
+              <div className="text-white">
+                <div className="text-[10px] md:text-xs font-bold uppercase tracking-[0.24em]" style={{ color: "#f4d77a" }}>World Cup 2026</div>
+                <div className="font-display text-base md:text-2xl font-bold leading-tight drop-shadow">Tap to shop the collection</div>
+              </div>
+              <span className="hidden sm:inline-flex items-center gap-2 rounded-full px-4 py-2 text-[11px] font-bold uppercase tracking-[0.18em] transition-transform group-hover:-translate-y-0.5"
+                style={{ background: "var(--gradient-gold)", color: "#1a1a1a", border: "1px solid #8a6a14" }}>
+                Shop Now <ArrowRight className="size-3.5" />
+              </span>
+            </div>
+          </a>
         )}
 
         <div className="flex flex-col items-center text-center">
