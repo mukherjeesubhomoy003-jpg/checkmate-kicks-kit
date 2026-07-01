@@ -99,7 +99,7 @@ export function WorldCupSection({ preview, showBanner = true, heading }: Props) 
           <div className="mt-5 h-px w-24 hairline-gold" />
         </div>
 
-        <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+        <div id="jersey-grid" className="mt-10 scroll-mt-24 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
           {list.map((j) => {
             const total = totalStock(stockMap, j.id);
             const out = total === 0;
