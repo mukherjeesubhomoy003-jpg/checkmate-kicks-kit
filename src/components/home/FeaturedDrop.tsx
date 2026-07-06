@@ -18,17 +18,18 @@ export function FeaturedDrop() {
       <div className="container-x relative py-14 md:py-20">
         {/* Section Header */}
         <div className="flex flex-col items-center text-center mb-10">
-          <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.22em]"
-            style={{ background: "linear-gradient(135deg,#e94560,#b8862b)", color: "#fff", border: "1px solid #d4af37", boxShadow: "0 10px 30px -10px rgba(233,69,96,0.6)" }}>
+          <div className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em] bg-[#fa5400] text-white">
             <Flame className="size-3.5" /> Special Drops · Limited Edition
           </div>
-          <h2 className="mt-4 font-display text-3xl md:text-5xl font-bold leading-tight tracking-tight text-white">
-            Player Version <span style={{ backgroundImage: "var(--gradient-gold)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>Special Editions</span>
+          <h2 className="mt-4 font-bebas text-4xl md:text-6xl leading-[0.9] tracking-tight uppercase text-white">
+            Player Version<br />
+            <span className="text-[#f4d77a]">Special Editions.</span>
           </h2>
           <p className="mt-2 max-w-xl text-sm text-neutral-300">
             Authentic player-version jerseys with official printing included
           </p>
         </div>
+
 
         {/* Special Drop */}
         <div className="grid gap-8 max-w-2xl mx-auto">
