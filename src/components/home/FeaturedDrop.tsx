@@ -18,17 +18,18 @@ export function FeaturedDrop() {
       <div className="container-x relative py-14 md:py-20">
         {/* Section Header */}
         <div className="flex flex-col items-center text-center mb-10">
-          <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.22em]"
-            style={{ background: "linear-gradient(135deg,#e94560,#b8862b)", color: "#fff", border: "1px solid #d4af37", boxShadow: "0 10px 30px -10px rgba(233,69,96,0.6)" }}>
+          <div className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em] bg-[#fa5400] text-white">
             <Flame className="size-3.5" /> Special Drops · Limited Edition
           </div>
-          <h2 className="mt-4 font-display text-3xl md:text-5xl font-bold leading-tight tracking-tight text-white">
-            Player Version <span style={{ backgroundImage: "var(--gradient-gold)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>Special Editions</span>
+          <h2 className="mt-4 font-bebas text-4xl md:text-6xl leading-[0.9] tracking-tight uppercase text-white">
+            Player Version<br />
+            <span className="text-[#f4d77a]">Special Editions.</span>
           </h2>
           <p className="mt-2 max-w-xl text-sm text-neutral-300">
             Authentic player-version jerseys with official printing included
           </p>
         </div>
+
 
         {/* Special Drop */}
         <div className="grid gap-8 max-w-2xl mx-auto">
@@ -57,13 +58,13 @@ export function FeaturedDrop() {
                 {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="size-4 fill-current" />)}
                 <span className="ml-2 text-xs text-neutral-300">New Arrival</span>
               </div>
-              <div className="mt-2 font-display text-xl md:text-2xl font-bold">Portugal Away · Ronaldo #7</div>
+              <div className="mt-2 font-bebas text-2xl md:text-3xl uppercase tracking-wide">Portugal Away · Ronaldo #7</div>
               <div className="mt-1 text-sm text-neutral-300">Official Portugal FPF crest · Player-edition slim fit</div>
 
               <div className="mt-3 flex items-baseline gap-3">
-                <div className="text-3xl font-extrabold" style={{ color: "#f4d77a" }}>₹1,299</div>
-                <div className="text-sm line-through text-neutral-400">₹1,599</div>
-                <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-300">Save ₹300</div>
+                <div className="font-bebas text-4xl tracking-wide text-white">MRP ₹1,299</div>
+                <div className="text-sm line-through text-neutral-500">₹1,599</div>
+                <div className="text-[11px] font-bold uppercase tracking-wider text-[#fa5400]">Save ₹300</div>
               </div>
 
               <ul className="mt-3 space-y-1 text-sm text-neutral-200">
@@ -74,12 +75,12 @@ export function FeaturedDrop() {
 
 
               <button onClick={() => setOpenRonaldo(true)}
-                className="mt-4 inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-bold uppercase tracking-[0.18em]"
-                style={{ background: "var(--gradient-gold)", color: "#1a1a1a", border: "1px solid #8a6a14", boxShadow: "0 18px 40px -16px rgba(184,134,43,0.9)" }}>
+                className="mt-4 inline-flex items-center gap-2 px-7 py-3 text-xs font-bold uppercase tracking-[0.2em] bg-white text-black hover:bg-[#fa5400] hover:text-white transition-colors">
                 <ShoppingBag className="size-4" /> Order Now
               </button>
             </div>
           </div>
+
 
         </div>
       </div>

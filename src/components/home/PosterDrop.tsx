@@ -25,51 +25,46 @@ export function PosterDrop() {
       }} />
       <div className="container-x relative py-16 md:py-24">
         <div className="flex flex-col items-center text-center">
-          <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.22em] animate-pulse"
-            style={{ background: "linear-gradient(135deg,#d4af37,#8a6a14)", color: "#0a0a0a", border: "1px solid #f4d77a" }}>
+          <div className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em] bg-[#fa5400] text-white">
             <Sparkles className="size-3.5" /> New Launch · CHECKMATE Merch
           </div>
-          <h2 className="mt-5 font-display text-4xl md:text-6xl font-bold leading-[0.95] tracking-tight">
-            <span style={{ backgroundImage: "linear-gradient(180deg,#ffffff 0%,#fff7d6 60%,#e6c976 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
-              Wall Poster
-            </span>{" "}
-            <span style={{ backgroundImage: "var(--gradient-gold)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
-              Series
-            </span>
+          <h2 className="mt-5 font-bebas text-5xl md:text-7xl leading-[0.88] tracking-tight uppercase text-white">
+            Wall Poster<br />
+            <span className="text-neutral-500">Series.</span>
           </h2>
           <p className="mt-4 max-w-xl text-sm md:text-base text-neutral-300">
             Premium HD-printed wall posters of your favourite stars. Thick matte cardstock, sharp colours, made to inspire every match-day.
           </p>
-          <div className="mt-4 inline-flex items-center gap-4 rounded-full bg-white/5 border border-gold/40 px-5 py-2 text-xs">
-            <span><span className="font-bold text-[#f4d77a]">₹{PRICE}</span> / poster</span>
-            <span className="h-3 w-px bg-gold/40" />
-            <span className="flex items-center gap-1.5 text-neutral-300"><Truck className="size-3.5 text-[#f4d77a]" /> +₹{SHIPPING} delivery</span>
+          <div className="mt-4 inline-flex items-center gap-4 border border-white/20 px-5 py-2 text-xs">
+            <span><span className="font-bold text-white">₹{PRICE}</span> / poster</span>
+            <span className="h-3 w-px bg-white/30" />
+            <span className="flex items-center gap-1.5 text-neutral-300"><Truck className="size-3.5" /> +₹{SHIPPING} delivery</span>
           </div>
         </div>
 
-        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
           {POSTERS.map((p) => (
             <article key={p.id} className="group relative cursor-pointer" onClick={() => setActive(p)}>
-              <div className="relative overflow-hidden rounded-xl bg-white p-4 shadow-2xl transition-transform group-hover:-translate-y-1"
-                style={{ boxShadow: `0 30px 60px -30px ${p.accent}80, 0 0 0 1px rgba(212,175,55,0.3)` }}>
-                <div className="absolute right-3 top-3 z-10 rounded-sm bg-black px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#f4d77a]">
+              <div className="relative overflow-hidden bg-[#f5f5f5] transition-transform group-hover:-translate-y-1">
+                <div className="absolute right-2 top-2 z-10 bg-black px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
                   NEW
                 </div>
-                <div className="absolute left-3 top-3 z-10 rounded-sm bg-[#d4322a] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white animate-pulse">
+                <div className="absolute left-2 top-2 z-10 bg-[#fa5400] px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
                   Only 1 left
                 </div>
-                <div className="aspect-[3/4] overflow-hidden rounded-md">
+                <div className="aspect-[3/4] overflow-hidden">
                   <img src={p.image} alt={`${p.name} wall poster`} loading="lazy"
-                    className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+                    className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.04]" />
                 </div>
               </div>
-              <div className="pt-4 flex items-start justify-between gap-3">
+              <div className="pt-3 flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <div className="font-display text-lg font-semibold text-white truncate">{p.name}</div>
-                  <div className="mt-0.5 text-[11px] uppercase tracking-[0.2em] text-neutral-400">{p.subtitle}</div>
+                  <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#fa5400]">Legend Series</div>
+                  <div className="mt-0.5 font-bebas text-xl uppercase tracking-wide text-white truncate">{p.name}</div>
+                  <div className="mt-0.5 text-[11px] uppercase tracking-[0.16em] text-neutral-400">{p.subtitle}</div>
                 </div>
                 <div className="text-right whitespace-nowrap">
-                  <div className="text-base font-bold text-[#f4d77a]">₹{PRICE}</div>
+                  <div className="font-bebas text-xl tracking-wide text-white">MRP ₹{PRICE}</div>
                   <div className="text-[10px] text-neutral-500">+₹{SHIPPING} ship</div>
                 </div>
               </div>
@@ -77,6 +72,7 @@ export function PosterDrop() {
           ))}
         </div>
       </div>
+
 
       {active && <PosterOrderModal poster={active} onClose={() => setActive(null)} />}
     </section>
