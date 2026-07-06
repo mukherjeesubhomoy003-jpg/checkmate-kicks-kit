@@ -81,13 +81,9 @@ export function WorldCupSection({ preview, showBanner = true, heading }: Props) 
             <Trophy className="size-3.5" /> {preview ? `Featured · ${preview} of ${JERSEYS.length}` : `${JERSEYS.length} Player-Edition Jerseys`}
           </div>
 
-          <h2 className="mt-5 font-display text-4xl md:text-6xl font-bold leading-[0.95] tracking-tight">
-            <span style={{ backgroundImage: "linear-gradient(180deg,#1a1a1a 0%,#1a1a1a 55%,#8a6a14 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
-              {heading ?? "World Cup"}
-            </span>{" "}
-            <span style={{ backgroundImage: "var(--gradient-gold)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
-              Collection 2026
-            </span>
+          <h2 className="mt-5 font-bebas text-5xl md:text-7xl lg:text-8xl font-normal leading-[0.88] tracking-[-0.01em] uppercase text-black">
+            {heading ?? "World Cup"} Collection<br />
+            <span className="text-neutral-400">2026.</span>
           </h2>
 
           <p className="mt-4 max-w-xl text-sm md:text-base text-neutral-600">
@@ -95,11 +91,9 @@ export function WorldCupSection({ preview, showBanner = true, heading }: Props) 
               ? "A taste of our drop — tap Explore for the complete catalogue."
               : "The complete player-edition catalogue — match-grade fabric, federation badges, heat-pressed numbers."}
           </p>
-
-          <div className="mt-5 h-px w-24 hairline-gold" />
         </div>
 
-        <div id="jersey-grid" className="mt-10 scroll-mt-24 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+        <div id="jersey-grid" className="mt-10 scroll-mt-24 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5">
           {list.map((j) => {
             const total = totalStock(stockMap, j.id);
             const out = total === 0;
@@ -109,53 +103,52 @@ export function WorldCupSection({ preview, showBanner = true, heading }: Props) 
             return (
             <article
               key={j.id}
-              className={`group relative overflow-hidden rounded-2xl bg-white transition-all duration-300 ${out ? "cursor-not-allowed" : "cursor-pointer hover:-translate-y-1"}`}
-              style={{ border: "1px solid #efe7d1", boxShadow: "0 6px 22px -12px rgba(0,0,0,0.18)" }}
+              className={`group relative bg-[#f5f5f5] transition-all duration-200 ${out ? "cursor-not-allowed" : "cursor-pointer"}`}
               onClick={() => !out && setActive(j)}
             >
-              <div className="relative overflow-hidden bg-gradient-to-br from-[#f7f4ec] to-[#efe7d1]">
+              <div className="relative overflow-hidden bg-[#f5f5f5]">
                 {out && (
-                  <div className="absolute left-3 top-3 z-10 rounded-full bg-black px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+                  <div className="absolute left-2 top-2 z-10 bg-black px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
                     Sold out
                   </div>
                 )}
                 {low && (
-                  <div className="absolute left-3 top-3 z-10 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-black shadow" style={{ background: "var(--gradient-gold)" }}>
+                  <div className="absolute left-2 top-2 z-10 bg-[#fa5400] px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
                     Only {total} left
                   </div>
                 )}
                 {!out && !low && typeof total === "number" && (
-                  <div className="absolute left-3 top-3 z-10 rounded-full bg-white/95 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-neutral-700 shadow-sm">
+                  <div className="absolute left-2 top-2 z-10 bg-white px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-black">
                     {total} in stock
                   </div>
                 )}
-                <div className="absolute right-3 top-3 z-10 rounded-full bg-[#e11d48] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow">
+                <div className="absolute right-2 top-2 z-10 bg-black px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
                   -50%
                 </div>
-                <div className={`aspect-[4/5] w-full ${out ? "opacity-50" : ""}`}>
+                <div className={`aspect-[4/5] w-full ${out ? "opacity-40" : ""}`}>
                   <img
                     src={j.image}
                     alt={`${j.team} ${j.tag} player edition jersey`}
                     loading="lazy"
                     decoding="async"
-                    className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                    className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                   />
                 </div>
               </div>
-              <div className="px-3 pt-3 pb-4 text-center">
-                <h3 className="font-display text-[13px] md:text-sm font-semibold text-neutral-900 leading-tight line-clamp-2 min-h-[2.4em]">
-                  {j.team} {j.tag} World Cup 2026 – Player Version Jersey
-                </h3>
-                <div className="mt-2 flex items-center justify-center gap-2">
-                  <span className="text-[12px] text-neutral-400 line-through">₹{mrp.toLocaleString("en-IN")}</span>
-                  <span className="text-[15px] md:text-base font-extrabold text-[#e11d48]">₹{price.toLocaleString("en-IN")}</span>
+              <div className="px-1 pt-3 pb-4">
+                <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#fa5400]">
+                  Player Edition
                 </div>
-                {!out && (
-                  <div className="mt-3 inline-flex w-full items-center justify-center rounded-full px-3 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-white transition-opacity"
-                    style={{ background: "linear-gradient(135deg,#111,#2b2b2b)" }}>
-                    Shop Now
-                  </div>
-                )}
+                <h3 className="mt-1 font-bebas text-lg md:text-xl leading-tight tracking-wide uppercase text-black line-clamp-2 min-h-[2.4em]">
+                  {j.team} {j.tag} · WC 2026
+                </h3>
+                <div className="mt-1 text-[11px] text-neutral-500 uppercase tracking-wider">
+                  Match-grade jersey
+                </div>
+                <div className="mt-2 flex items-baseline gap-2">
+                  <span className="font-bebas text-lg tracking-wide text-black">MRP ₹{price.toLocaleString("en-IN")}</span>
+                  <span className="text-[11px] text-neutral-400 line-through">₹{mrp.toLocaleString("en-IN")}</span>
+                </div>
               </div>
             </article>
           );})}
