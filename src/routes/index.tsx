@@ -142,28 +142,29 @@ function Home() {
       {/* How to order */}
       <section id="how" className="container-x py-20">
         <div className="text-center">
-          <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#8a6a14]">How it works</div>
-          <h2 className="mt-3 font-display text-4xl md:text-5xl font-bold">Order in three steps</h2>
+          <div className="inline-block bg-[#fa5400] text-white px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em]">How it works</div>
+          <h2 className="mt-4 font-bebas text-5xl md:text-7xl uppercase leading-[0.9] tracking-tight">Order in three steps.</h2>
         </div>
-        <div className="mt-12 grid md:grid-cols-3 gap-6">
+        <div className="mt-12 grid md:grid-cols-3 gap-4">
           {[
             { n: "01", t: "Pick your jersey", d: "Choose team, Home or Away kit, size and quantity. Optional name & number on back.", icon: ShieldCheck },
             { n: "02", t: "Pay via UPI QR", d: "Scan the QR shown after order details. UPI/GPay/PhonePe/Paytm. No COD — for safety.", icon: IndianRupee },
             { n: "03", t: "Confirm on WhatsApp", d: "Tap the WhatsApp button — your order details are sent automatically. Share payment screenshot. We ship.", icon: MessageCircle },
           ].map((s) => (
-            <div key={s.n} className="relative rounded-2xl bg-white border border-gold/40 p-6 shadow-luxe">
-              <div className="text-[10px] font-bold tracking-[0.3em] text-[#8a6a14]">STEP {s.n}</div>
-              <s.icon className="mt-3 size-7 text-[#8a6a14]" />
-              <div className="mt-4 font-display text-2xl font-semibold">{s.t}</div>
+            <div key={s.n} className="relative bg-[#f5f5f5] p-6 border-t-2 border-black">
+              <div className="font-bebas text-6xl leading-none text-[#fa5400]">{s.n}</div>
+              <s.icon className="mt-3 size-6 text-black" />
+              <div className="mt-3 font-bebas text-2xl uppercase tracking-wide">{s.t}</div>
               <p className="mt-2 text-sm text-neutral-600">{s.d}</p>
             </div>
           ))}
         </div>
         <div className="mt-8 text-center text-xs text-neutral-500">
-          <Banknote className="inline size-3.5 mr-1 text-[#8a6a14]" />
+          <Banknote className="inline size-3.5 mr-1" />
           After payment, your order is dispatched and tracked directly via our business WhatsApp.
         </div>
       </section>
+
     </div>
   );
 }
