@@ -13,9 +13,9 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "CHECKMATE Jersey — Player Edition World Cup 2026 Collection" },
-      { name: "description", content: "Authentic player-edition football jerseys. World Cup 2026 collection. Home ₹1000 / Away ₹1100. Free shipping across India. Order on WhatsApp." },
+      { name: "description", content: "Authentic player-edition football jerseys. World Cup 2026 collection. ₹850 flat · All teams. Free shipping across India. Order on WhatsApp." },
       { property: "og:title", content: "CHECKMATE — Player Edition World Cup 2026" },
-      { property: "og:description", content: "Player-edition jerseys · Home ₹1000 · Away ₹1100 · Free all-India shipping · Order on WhatsApp." },
+      { property: "og:description", content: "Player-edition jerseys · All jerseys ₹850 flat · Free all-India shipping · Order on WhatsApp." },
     ],
   }),
   component: Home,
