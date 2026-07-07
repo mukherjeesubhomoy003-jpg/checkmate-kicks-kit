@@ -102,6 +102,13 @@ const RAW: [string, "Home" | "Away", string][] = [
   ["Mexico", "Home", j44.url],
   ["Netherlands", "Home", j45.url],
   ["Germany", "Home", j46.url],
+  ["Portugal", "Away", j47.url],
+  ["Spain", "Home", j48.url],
+  ["Germany", "Away", j49.url],
+  ["Germany", "Home", j50.url],
+  ["Belgium", "Home", j51.url],
+  ["Portugal", "Home", j52.url],
+  ["France", "Away", j53.url],
 ];
 
 export const JERSEYS: Jersey[] = RAW.map(([team, tag, image], i) => ({
