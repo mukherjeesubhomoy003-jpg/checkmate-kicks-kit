@@ -1,102 +1,139 @@
 import { useState } from "react";
-import { Flame, Sparkles, ShoppingBag, Star } from "lucide-react";
+import { Flame, ShoppingBag, Star } from "lucide-react";
 import { OrderModal } from "@/components/order/OrderModal";
-import portugalImg from "@/assets/portugal-special.jpg.asset.json";
+import argFs from "@/assets/specials/argentina-fs.jpg.asset.json";
+import porFs from "@/assets/specials/portugal-fs.jpg.asset.json";
+import argPractice from "@/assets/specials/argentina-practice.jpg.asset.json";
+
+type Drop = {
+  key: string;
+  team: string;
+  title: string;
+  subtitle: string;
+  eyebrow: string;
+  image: string;
+  price: number;
+  mrp: number;
+  sizes: ("S" | "M" | "L" | "XL" | "XXL")[];
+};
+
+const DROPS: Drop[] = [
+  {
+    key: "arg-fs",
+    team: "Argentina · Home Full Sleeve",
+    title: "Argentina Home",
+    subtitle: "Full-Sleeve · Champions Badge · Player Edition",
+    eyebrow: "Special Edition · Full Sleeve",
+    image: argFs.url,
+    price: 1200,
+    mrp: 1799,
+    sizes: ["S", "M", "L", "XL", "XXL"],
+  },
+  {
+    key: "por-fs",
+    team: "Portugal · Blackout Full Sleeve",
+    title: "Portugal Blackout",
+    subtitle: "Full-Sleeve · Ultraweave · Special Edition Collar",
+    eyebrow: "Special Edition · Full Sleeve",
+    image: porFs.url,
+    price: 1200,
+    mrp: 1799,
+    sizes: ["S", "M", "L", "XL"],
+  },
+  {
+    key: "arg-practice",
+    team: "Argentina · Pre-Match Practice PV",
+    title: "Argentina Practice",
+    subtitle: "Sunburst Pre-Match · Player Version",
+    eyebrow: "Player Version · New Drop",
+    image: argPractice.url,
+    price: 999,
+    mrp: 1599,
+    sizes: ["S", "M", "L", "XL"],
+  },
+];
 
 export function FeaturedDrop() {
-  const [openRonaldo, setOpenRonaldo] = useState(false);
+  const [active, setActive] = useState<Drop | null>(null);
 
   return (
-    <section className="relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0b1733] via-[#0a1228] to-[#0b1733]" />
-      <div aria-hidden className="absolute inset-0 opacity-[0.18]" style={{
-        backgroundImage: "radial-gradient(circle at 15% 20%, #75aadb 0, transparent 45%), radial-gradient(circle at 85% 80%, #d4af37 0, transparent 50%)",
-      }} />
-      <div aria-hidden className="absolute inset-x-0 top-0 h-px hairline-gold" />
-      <div aria-hidden className="absolute inset-x-0 bottom-0 h-px hairline-gold" />
-
+    <section className="relative overflow-hidden bg-black">
       <div className="container-x relative py-14 md:py-20">
         {/* Section Header */}
         <div className="flex flex-col items-center text-center mb-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em] bg-[#fa5400] text-white">
-            <Flame className="size-3.5" /> Special Drops · Limited Edition
+            <Flame className="size-3.5" /> Special Drops · Limited Stock
           </div>
           <h2 className="mt-4 font-bebas text-4xl md:text-6xl leading-[0.9] tracking-tight uppercase text-white">
-            Player Version<br />
-            <span className="text-[#f4d77a]">Special Editions.</span>
+            Player Version
+            <br />
+            <span className="text-[#fa5400]">Special Editions.</span>
           </h2>
           <p className="mt-2 max-w-xl text-sm text-neutral-300">
-            Authentic player-version jerseys with official printing included
+            Authentic player-version drops with official printing — full-sleeve editions and pre-match practice kits.
           </p>
         </div>
 
-
-        {/* Special Drop */}
-        <div className="grid gap-8 max-w-2xl mx-auto">
-
-          {/* Portugal Ronaldo */}
-          <div className="rounded-2xl border border-[#d4af37]/30 bg-[#0d1a30]/80 p-5 md:p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest"
-                style={{ background: "linear-gradient(135deg,#e94560,#8a1e30)", color: "#fff", boxShadow: "0 6px 16px -6px rgba(233,69,96,0.7)" }}>
-                <Sparkles className="size-3" /> ₹1299 only
+        <div className="grid gap-4 md:gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {DROPS.map((d) => (
+            <button
+              key={d.key}
+              onClick={() => setActive(d)}
+              className="group text-left bg-[#f5f5f5] transition-transform duration-200 hover:-translate-y-1"
+            >
+              <div className="relative overflow-hidden">
+                <div className="absolute left-2 top-2 z-10 bg-[#fa5400] px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+                  {d.eyebrow}
+                </div>
+                <div className="absolute right-2 top-2 z-10 bg-black px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+                  New
+                </div>
+                <div className="aspect-[4/5] w-full bg-[#f5f5f5]">
+                  <img
+                    src={d.image}
+                    alt={d.team}
+                    loading="lazy"
+                    decoding="async"
+                    className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  />
+                </div>
               </div>
-              <span className="text-[10px] uppercase tracking-widest text-neutral-400">GOAT Edition</span>
-            </div>
-
-            <button onClick={() => setOpenRonaldo(true)}
-              className="group relative overflow-hidden rounded-xl bg-white shadow-luxe block w-full"
-              style={{ border: "2px solid #d4af37" }}>
-              <div className="aspect-[3/4] w-full overflow-hidden bg-gold-soft">
-                <img src={portugalImg.url} alt="Portugal Away — Ronaldo 7 player version" loading="lazy" decoding="async"
-                  className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+              <div className="px-3 pt-3 pb-4">
+                <div className="flex items-center gap-1 text-[#fa5400]">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className="size-3 fill-current" />
+                  ))}
+                </div>
+                <h3 className="mt-1 font-bebas text-2xl md:text-3xl uppercase tracking-wide text-black leading-tight">
+                  {d.title}
+                </h3>
+                <div className="mt-1 text-[11px] text-neutral-500 uppercase tracking-wider line-clamp-1">
+                  {d.subtitle}
+                </div>
+                <div className="mt-2 flex items-baseline gap-2">
+                  <span className="font-bebas text-3xl tracking-wide text-black">MRP ₹{d.price}</span>
+                  <span className="text-[11px] text-neutral-500 line-through">₹{d.mrp}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#fa5400]">
+                    Save ₹{d.mrp - d.price}
+                  </span>
+                </div>
+                <div className="mt-3 inline-flex items-center gap-2 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] bg-black text-white group-hover:bg-[#fa5400] transition-colors">
+                  <ShoppingBag className="size-3.5" /> Order Now
+                </div>
               </div>
             </button>
-
-            <div className="mt-4 text-white">
-              <div className="flex items-center gap-1 text-[#f4d77a]">
-                {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="size-4 fill-current" />)}
-                <span className="ml-2 text-xs text-neutral-300">New Arrival</span>
-              </div>
-              <div className="mt-2 font-bebas text-2xl md:text-3xl uppercase tracking-wide">Portugal Away · Ronaldo #7</div>
-              <div className="mt-1 text-sm text-neutral-300">Official Portugal FPF crest · Player-edition slim fit</div>
-
-              <div className="mt-3 flex items-baseline gap-3">
-                <div className="font-bebas text-4xl tracking-wide text-white">MRP ₹1,299</div>
-                <div className="text-sm line-through text-neutral-500">₹1,599</div>
-                <div className="text-[11px] font-bold uppercase tracking-wider text-[#fa5400]">Save ₹300</div>
-              </div>
-
-              <ul className="mt-3 space-y-1 text-sm text-neutral-200">
-                <li>✅ Authentic player version (slim-fit, breathable mesh)</li>
-                <li>✅ Official Portugal FPF crest + Puma badge</li>
-                <li>✅ Available in <b>L</b> and <b>XL</b> only</li>
-              </ul>
-
-
-              <button onClick={() => setOpenRonaldo(true)}
-                className="mt-4 inline-flex items-center gap-2 px-7 py-3 text-xs font-bold uppercase tracking-[0.2em] bg-white text-black hover:bg-[#fa5400] hover:text-white transition-colors">
-                <ShoppingBag className="size-4" /> Order Now
-              </button>
-            </div>
-          </div>
-
-
+          ))}
         </div>
       </div>
 
-
-      {/* Ronaldo Order Modal */}
       <OrderModal
-        open={openRonaldo}
-        team="Portugal · Ronaldo 7"
-        image={portugalImg.url}
-        priceOverride={1299}
-        sizesOverride={["L", "XL"]}
+        open={!!active}
+        team={active?.team ?? ""}
+        image={active?.image ?? ""}
+        priceOverride={active?.price}
+        sizesOverride={active?.sizes}
         hideKitSelector
-        defaultPrintingName="RONALDO"
-        defaultPrintingNumber="7"
-        onClose={() => setOpenRonaldo(false)}
+        onClose={() => setActive(null)}
       />
     </section>
   );
