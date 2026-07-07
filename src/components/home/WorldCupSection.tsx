@@ -98,7 +98,7 @@ export function WorldCupSection({ preview, showBanner = true, heading }: Props) 
             const total = totalStock(stockMap, j.id);
             const out = total === 0;
             const low = typeof total === "number" && total > 0 && total <= 3;
-            const price = j.tag === "Away" && j.team === "Portugal" ? 1299 : j.tag === "Away" ? 1100 : 1000;
+            const price = 850;
             const mrp = 1999;
             return (
             <article
