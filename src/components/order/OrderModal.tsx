@@ -24,10 +24,9 @@ const SIZES = ["S", "M", "L", "XL", "XXL"] as const;
 type Size = (typeof SIZES)[number];
 type Kit = "Home" | "Away";
 
-const PRICE: Record<Kit, number> = { Home: 1000, Away: 1100 };
+const PRICE: Record<Kit, number> = { Home: 850, Away: 850 };
 
-function getKitPrice(team: string, kit: Kit): number {
-  if (team === "Portugal" && kit === "Away") return 1299;
+function getKitPrice(_team: string, kit: Kit): number {
   return PRICE[kit];
 }
 
@@ -209,10 +208,10 @@ export function OrderModal({
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6" role="dialog" aria-modal="true">
       <button onClick={close} className="absolute inset-0 bg-black/50 backdrop-blur-sm" aria-label="Close" />
-      <div className="relative w-full max-w-3xl max-h-[92vh] overflow-y-auto rounded-2xl bg-white shadow-luxe border border-gold/40">
+      <div className="relative w-full max-w-3xl max-h-[92vh] overflow-y-auto rounded-2xl bg-white shadow-luxe border border-black/10">
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-white/95 backdrop-blur px-5 py-3">
           <div className="flex items-center gap-3">
-            <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#8a6a14]">
+            <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#fa5400]">
               {step === 1 ? "Order Details" : step === 2 ? "Payment" : "Awaiting Verification"}
             </div>
             <div className="text-xs text-muted-foreground hidden sm:block">Step {step} of 3</div>
@@ -226,19 +225,19 @@ export function OrderModal({
         {step === 1 && (
           <div className="grid md:grid-cols-[1fr_1.2fr] gap-6 p-5 sm:p-6">
             <div>
-              <div className="rounded-xl overflow-hidden bg-gold-soft border border-gold/30">
+              <div className="rounded-xl overflow-hidden bg-[#f5f5f5] border border-black/10">
                 <img src={image} alt={team} className="aspect-[4/5] w-full object-cover" />
               </div>
               <div className="mt-4">
                 <div className="font-display text-2xl font-semibold">{team}</div>
-                <div className="text-xs uppercase tracking-[0.22em] text-[#8a6a14] mt-1">Player Edition · 2026</div>
+                <div className="text-xs uppercase tracking-[0.22em] text-[#fa5400] mt-1">Player Edition · 2026</div>
 
                 {!hideKitSelector && (
                   <div className="mt-4 grid grid-cols-2 gap-2">
                     {(["Home", "Away"] as Kit[]).map((k) => (
                       <button key={k} onClick={() => setKit(k)}
                         className={`rounded-lg border px-3 py-2.5 text-sm font-semibold transition ${
-                          kit === k ? "border-[#b8862b] bg-[#fbf4dd] text-[#1a1a1a]" : "border-border hover:border-gold/60"
+                          kit === k ? "border-[#000000] bg-[#f5f5f5] text-[#1a1a1a]" : "border-border hover:border-black/30"
                         }`}>
                         <div>{k} Kit</div>
                         <div className="text-xs font-normal text-muted-foreground">₹{getKitPrice(team, k)}</div>
@@ -247,15 +246,15 @@ export function OrderModal({
                   </div>
                 )}
                 {hideKitSelector && (
-                  <div className="mt-4 rounded-lg border border-[#b8862b] bg-[#fbf4dd] px-3 py-2.5 text-sm font-semibold text-[#1a1a1a]">
-                    Special Drop · <span className="text-[#8a6a14]">₹{unit}</span>
+                  <div className="mt-4 rounded-lg border border-[#000000] bg-[#f5f5f5] px-3 py-2.5 text-sm font-semibold text-[#1a1a1a]">
+                    Special Drop · <span className="text-[#fa5400]">₹{unit}</span>
                   </div>
                 )}
 
                 <div className="mt-4 flex items-center justify-between">
                   <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Size</label>
                   <button type="button" onClick={() => setShowSizeChart(true)}
-                    className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-[#8a6a14] hover:text-[#b8862b]">
+                    className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-[#fa5400] hover:text-[#000000]">
                     <Ruler className="size-3.5" /> Size Chart
                   </button>
                 </div>
@@ -270,13 +269,13 @@ export function OrderModal({
                           out
                             ? "border-neutral-200 bg-neutral-100 text-neutral-400 cursor-not-allowed line-through"
                             : size === s
-                              ? "border-[#b8862b] bg-[#1a1a1a] text-[#f4d77a]"
-                              : "border-border hover:border-gold/60"
+                              ? "border-[#000000] bg-[#1a1a1a] text-[#ffffff]"
+                              : "border-border hover:border-black/30"
                         }`}>
                         <span className="leading-none">{s}</span>
                         {jerseyId && (
                           <span className={`text-[8px] mt-0.5 leading-none font-bold uppercase tracking-wider ${
-                            out ? "text-red-500" : size === s ? "text-[#f4d77a]/80" : "text-neutral-500"
+                            out ? "text-red-500" : size === s ? "text-[#ffffff]/80" : "text-neutral-500"
                           }`}>
                             {out ? "Out" : `${left} left`}
                           </span>
@@ -304,10 +303,10 @@ export function OrderModal({
                 </div>
 
                 {/* Back-printing add-on */}
-                <div className="mt-5 rounded-xl border-2 border-dashed border-gold/60 bg-[#fffaeb] p-3">
+                <div className="mt-5 rounded-xl border-2 border-dashed border-black/30 bg-[#f5f5f5] p-3">
                   <label className="flex items-start gap-2.5 cursor-pointer">
                     <input type="checkbox" checked={addPrint} onChange={(e) => setAddPrint(e.target.checked)}
-                      className="mt-1 size-4 accent-[#b8862b]" />
+                      className="mt-1 size-4 accent-[#000000]" />
                     <div className="flex-1">
                       <div className="text-sm font-semibold text-[#1a1a1a]">Add back printing (Name + Number)</div>
                       <div className="text-[11px] text-neutral-600">Optional · +₹{PRINT_ADDON} · heat-pressed on back</div>
@@ -318,12 +317,12 @@ export function OrderModal({
                       <label className="block">
                         <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Name on back</span>
                         <input value={printName} onChange={(e) => setPrintName(e.target.value.toUpperCase().slice(0, 14))}
-                          placeholder="MESSI" className="mt-1 w-full rounded-md border border-border bg-white px-2.5 py-2 text-sm font-bold tracking-wider focus:border-[#b8862b] focus:outline-none" />
+                          placeholder="MESSI" className="mt-1 w-full rounded-md border border-border bg-white px-2.5 py-2 text-sm font-bold tracking-wider focus:border-[#000000] focus:outline-none" />
                       </label>
                       <label className="block">
                         <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Number</span>
                         <input value={printNumber} onChange={(e) => setPrintNumber(e.target.value.replace(/\D/g, "").slice(0, 3))}
-                          placeholder="10" className="mt-1 w-full rounded-md border border-border bg-white px-2.5 py-2 text-sm font-bold focus:border-[#b8862b] focus:outline-none" />
+                          placeholder="10" className="mt-1 w-full rounded-md border border-border bg-white px-2.5 py-2 text-sm font-bold focus:border-[#000000] focus:outline-none" />
                       </label>
                       {!printingValid && (
                         <div className="col-span-2 text-[11px] text-red-600">Fill both name and number, or uncheck add-on.</div>
@@ -350,17 +349,17 @@ export function OrderModal({
               )}
 
 
-              <div className="mt-5 rounded-xl border border-gold/40 bg-gold-soft p-4">
+              <div className="mt-5 rounded-xl border border-black/10 bg-[#f5f5f5] p-4">
                 <Row label={`${hideKitSelector ? team : `${kit} Kit`} × ${qty}`} value={`₹${subtotal}`} />
                 {addPrint && <Row label={`Back printing · ${printName || "—"} #${printNumber || "—"}`} value={`₹${printingFee}`} />}
                 <Row label="Shipping" value="Free" />
-                <div className="my-2 h-px hairline-gold" />
+                <div className="my-2 h-px bg-black/10" />
                 <Row label="Total" value={`₹${total}`} strong />
                 <div className="mt-2 text-[11px] text-muted-foreground">All-India delivery · No COD · Pay via UPI QR on next step.</div>
               </div>
 
-              <div className="mt-4 rounded-xl border border-gold/40 bg-gold-soft p-4">
-                <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#8a6a14]">🟩 Terms &amp; Conditions</div>
+              <div className="mt-4 rounded-xl border border-black/10 bg-[#f5f5f5] p-4">
+                <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#fa5400]">🟩 Terms &amp; Conditions</div>
                 <ol className="mt-2 list-decimal pl-5 space-y-1.5 text-[11.5px] text-neutral-700 leading-relaxed">
                   <li>You have to make a proper video of opening the parcel.</li>
                   <li>Product will be changed only when the product is damaged or missing in package — the opening video is the only proof.</li>
@@ -376,12 +375,12 @@ export function OrderModal({
               <div className="mt-5 flex flex-col sm:flex-row gap-2">
                 <button disabled={!validDetails} onClick={() => setStep(2)}
                   className="flex-1 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold uppercase tracking-[0.18em] transition disabled:opacity-50"
-                  style={{ background: "linear-gradient(135deg,#1a1a1a,#2b2b2b)", color: "#f4d77a", border: "1px solid #d4af37" }}>
+                  style={{ background: "linear-gradient(135deg,#1a1a1a,#2b2b2b)", color: "#ffffff", border: "1px solid #fa5400" }}>
                   Continue to Payment
                 </button>
                 <a href={`https://wa.me/${BRAND.whatsappPrimary}?text=${encodeURIComponent(`Hi, I have a question about the ${team} ${kit} kit.`)}`}
                   target="_blank" rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3.5 text-sm font-semibold border border-border hover:border-gold/60">
+                  className="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3.5 text-sm font-semibold border border-border hover:border-black/30">
                   <Phone className="size-4" /> Ask first
                 </a>
               </div>
@@ -396,7 +395,7 @@ export function OrderModal({
                 <div className="text-lg font-display font-semibold">Scan & Pay ₹{total}</div>
                 <div className="mt-1 text-sm text-muted-foreground">UPI · GPay · PhonePe · Paytm · BHIM</div>
 
-                <div className="mt-4 rounded-2xl border-2 border-gold/60 bg-white p-3 max-w-sm">
+                <div className="mt-4 rounded-2xl border-2 border-black/30 bg-white p-3 max-w-sm">
                   <img src={PAYMENT_QR_URL} alt="Scan to pay" className="w-full h-auto" />
                 </div>
 
@@ -406,11 +405,11 @@ export function OrderModal({
                 </div>
 
                 <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
-                  <ShieldCheck className="size-4 text-[#8a6a14]" /> No COD — for buyer & seller safety.
+                  <ShieldCheck className="size-4 text-[#fa5400]" /> No COD — for buyer & seller safety.
                 </div>
 
-                <div className="mt-4 rounded-xl border border-[#d4af37] bg-[#fffaeb] p-3 text-[12px] leading-relaxed text-neutral-800">
-                  <div className="font-bold text-[#8a6a14] uppercase tracking-wider text-[10px] mb-1">How to pay</div>
+                <div className="mt-4 rounded-xl border border-[#fa5400] bg-[#f5f5f5] p-3 text-[12px] leading-relaxed text-neutral-800">
+                  <div className="font-bold text-[#fa5400] uppercase tracking-wider text-[10px] mb-1">How to pay</div>
                   📸 <b>Take a screenshot of this QR</b>, pay the amount, then share the payment screenshot with us on WhatsApp to confirm your order — and enjoy your jersey! 🎉<br/>
                   <span className="block mt-1.5 text-neutral-600">Feel free to ask on WhatsApp if you face any problem or have any questions — we're here to help.</span>
                 </div>
@@ -425,7 +424,7 @@ export function OrderModal({
                     <div className="text-muted-foreground">Size {size} · Qty {qty}</div>
                     {addPrint && <div className="text-muted-foreground">Back: <b>{printName}</b> #{printNumber}</div>}
                   </div>
-                  <div className="mt-3 h-px hairline-gold" />
+                  <div className="mt-3 h-px bg-black/10" />
                   <Row label="Subtotal" value={`₹${subtotal}`} />
                   {addPrint && <Row label="Back printing" value={`₹${printingFee}`} />}
                   <Row label="Shipping" value="Free" />
@@ -442,7 +441,7 @@ export function OrderModal({
                 <div className="mt-4 flex flex-col gap-2">
                   <button onClick={confirmPaid} disabled={placing}
                     className="w-full inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold uppercase tracking-[0.18em] disabled:opacity-60"
-                    style={{ background: "var(--gradient-gold)", color: "#1a1a1a", border: "1px solid #8a6a14" }}>
+                    style={{ background: "#fa5400", color: "#ffffff", border: "1px solid #fa5400" }}>
                     <Check className="size-4" /> {placing ? "Saving order…" : "I've Paid — Send Screenshot on WhatsApp"}
                   </button>
                   <div className="text-[11px] text-muted-foreground text-center px-2">
@@ -489,7 +488,7 @@ function PendingVerification(props: {
         </div>
         <div className="mt-3 font-display text-2xl font-semibold">Payment Under Verification</div>
         <div className="mt-1 text-sm text-muted-foreground">Order number</div>
-        <div className="mt-1 text-xl font-bold tracking-[0.18em] text-[#8a6a14]">{orderNo || "—"}</div>
+        <div className="mt-1 text-xl font-bold tracking-[0.18em] text-[#fa5400]">{orderNo || "—"}</div>
       </div>
 
       <div className="mt-5 rounded-xl border-2 border-amber-300 bg-amber-50 p-4 max-w-md mx-auto text-[12.5px] text-neutral-800 leading-relaxed">
@@ -502,7 +501,7 @@ function PendingVerification(props: {
         </ol>
       </div>
 
-      <div className="mt-4 rounded-xl border border-gold/40 bg-gold-soft p-4 max-w-md mx-auto text-sm">
+      <div className="mt-4 rounded-xl border border-black/10 bg-[#f5f5f5] p-4 max-w-md mx-auto text-sm">
         <div className="font-semibold">{itemLine}</div>
         <div className="text-muted-foreground">Size {size} · Qty {qty}</div>
         <Row label="Amount to pay" value={`₹${total}`} strong />
@@ -516,7 +515,7 @@ function PendingVerification(props: {
           <MessageCircle className="size-4" /> Send Screenshot on WhatsApp
         </button>
         <button onClick={onClose}
-          className="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold border border-border hover:border-gold/60">
+          className="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold border border-border hover:border-black/30">
           Close
         </button>
       </div>
@@ -573,30 +572,30 @@ function InvoiceView(props: {
   *{box-sizing:border-box}
   body{font-family:-apple-system,Segoe UI,Roboto,Inter,sans-serif;color:#1a1a1a;margin:0;padding:24px;background:#f6f3ea}
   .wrap{max-width:780px;margin:0 auto;border:1px solid #e5e0c8;background:#fff;box-shadow:0 20px 50px -30px rgba(0,0,0,0.25)}
-  .hd{background:linear-gradient(135deg,#1a1a1a,#2b2b2b);color:#f4d77a;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #d4af37;gap:16px}
+  .hd{background:linear-gradient(135deg,#1a1a1a,#2b2b2b);color:#ffffff;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #fa5400;gap:16px}
   .brand{display:flex;align-items:center;gap:14px}
-  .brand img{width:54px;height:54px;border-radius:10px;border:1.5px solid #d4af37;background:#fff;object-fit:cover}
+  .brand img{width:54px;height:54px;border-radius:10px;border:1.5px solid #fa5400;background:#fff;object-fit:cover}
   .brand h1{margin:0;font-size:22px;letter-spacing:.18em}
   .brand .tag{font-size:9.5px;letter-spacing:.22em;margin-top:3px;color:#e5d28a}
   .meta{font-size:11px;color:#e5d28a;text-align:right;line-height:1.55}
-  .meta b{color:#f4d77a;font-size:13px;letter-spacing:.12em}
+  .meta b{color:#ffffff;font-size:13px;letter-spacing:.12em}
   .body{padding:22px 24px}
   .row{display:flex;justify-content:space-between;gap:24px;margin-bottom:18px}
   .col{flex:1;min-width:0}
-  h3{font-size:10px;text-transform:uppercase;letter-spacing:.2em;color:#8a6a14;margin:0 0 6px;font-weight:700}
+  h3{font-size:10px;text-transform:uppercase;letter-spacing:.2em;color:#fa5400;margin:0 0 6px;font-weight:700}
   .kv{font-size:12.5px;line-height:1.65}
   table{width:100%;border-collapse:collapse;margin-top:6px}
   th,td{padding:10px 8px;text-align:left;border-bottom:1px solid #efe9d3;font-size:12.5px;vertical-align:top}
-  th{background:#fbf4dd;color:#8a6a14;text-transform:uppercase;font-size:9.5px;letter-spacing:.16em}
+  th{background:#f5f5f5;color:#fa5400;text-transform:uppercase;font-size:9.5px;letter-spacing:.16em}
   .tot{font-weight:800;font-size:16px;color:#1a1a1a}
   .totals{margin-top:14px;margin-left:auto;width:300px}
   .totals .ln{display:flex;justify-content:space-between;padding:5px 0;font-size:12.5px}
   .ft{padding:14px 24px;border-top:1px solid #efe9d3;font-size:10.5px;color:#777;text-align:center;background:#fbf9f1}
   .stamp{display:inline-block;border:2.5px solid #1a7a3a;color:#1a7a3a;padding:4px 12px;border-radius:6px;font-weight:800;letter-spacing:.22em;font-size:11px;transform:rotate(-7deg);margin-top:6px}
-  .pill{display:inline-block;background:#fbf4dd;color:#8a6a14;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+  .pill{display:inline-block;background:#f5f5f5;color:#fa5400;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
   .box{border:1px solid #efe9d3;border-radius:10px;padding:12px 14px;background:#fcfaf3}
-  .box h4{margin:0 0 6px;font-size:10px;letter-spacing:.18em;color:#8a6a14;text-transform:uppercase}
+  .box h4{margin:0 0 6px;font-size:10px;letter-spacing:.18em;color:#fa5400;text-transform:uppercase}
   .box .v{font-size:12px;color:#333;line-height:1.55}
   @media print{body{padding:0;background:#fff}.no-print{display:none}.wrap{box-shadow:none;border:none}}
 </style></head><body>
@@ -676,7 +675,7 @@ function InvoiceView(props: {
       ${printName ? `<div class="ln"><span>Back printing add-on</span><span>₹${printingFee}</span></div>` : ""}
       <div class="ln"><span>Shipping (All-India)</span><span>${shipping === 0 ? "FREE" : "₹" + shipping}</span></div>
       <div class="ln"><span>Discount</span><span>—</span></div>
-      <div class="ln tot" style="border-top:1.5px solid #d4af37;margin-top:6px;padding-top:8px"><span>Grand Total</span><span>₹${total}</span></div>
+      <div class="ln tot" style="border-top:1.5px solid #fa5400;margin-top:6px;padding-top:8px"><span>Grand Total</span><span>₹${total}</span></div>
       <div style="font-size:11px;color:#666;margin-top:6px;text-align:right">Inclusive of all taxes</div>
     </div>
 
@@ -701,8 +700,8 @@ function InvoiceView(props: {
       </div>
     </div>
 
-    <div style="margin-top:18px;padding:12px 14px;border:1px dashed #d4af37;border-radius:10px;background:#fbf4dd">
-      <div style="font-size:10px;letter-spacing:.18em;color:#8a6a14;font-weight:700;text-transform:uppercase">Replacement Policy</div>
+    <div style="margin-top:18px;padding:12px 14px;border:1px dashed #fa5400;border-radius:10px;background:#f5f5f5">
+      <div style="font-size:10px;letter-spacing:.18em;color:#fa5400;font-weight:700;text-transform:uppercase">Replacement Policy</div>
       <ol style="margin:6px 0 0 18px;padding:0;font-size:11px;color:#555;line-height:1.65">
         <li>Record a clear opening video of the parcel — required as proof.</li>
         <li>Replacement only for damaged/missing items shown in the opening video, or if wrong item/size is sent by us.</li>
@@ -715,12 +714,12 @@ function InvoiceView(props: {
     </div>
   </div>
   <div class="ft">
-    Thank you for shopping with <b style="color:#8a6a14">CHECKMATE</b> · Wear Your Passion ❤️<br/>
+    Thank you for shopping with <b style="color:#fa5400">CHECKMATE</b> · Wear Your Passion ❤️<br/>
     For any query: WhatsApp +91 70033 69589 · ${BRAND.email}
   </div>
 </div>
 <div class="no-print" style="text-align:center;margin:18px 0">
-  <button onclick="window.print()" style="padding:10px 22px;background:#1a1a1a;color:#f4d77a;border:1px solid #d4af37;border-radius:999px;font-weight:700;letter-spacing:.18em;cursor:pointer">PRINT / SAVE AS PDF</button>
+  <button onclick="window.print()" style="padding:10px 22px;background:#1a1a1a;color:#ffffff;border:1px solid #fa5400;border-radius:999px;font-weight:700;letter-spacing:.18em;cursor:pointer">PRINT / SAVE AS PDF</button>
 </div>
 </body></html>`;
     const w = window.open("", "_blank");
@@ -733,11 +732,11 @@ function InvoiceView(props: {
         <div className="mx-auto size-14 rounded-full bg-[#1a7a3a] grid place-items-center text-white"><Check className="size-7" /></div>
         <div className="mt-3 font-display text-2xl font-semibold">Payment Received · Order Placed</div>
         <div className="mt-1 text-sm text-muted-foreground">Order number</div>
-        <div className="mt-1 text-xl font-bold tracking-[0.18em] text-[#8a6a14]">{orderNo}</div>
+        <div className="mt-1 text-xl font-bold tracking-[0.18em] text-[#fa5400]">{orderNo}</div>
         <div className="mt-1 text-[11px] text-muted-foreground">{date}</div>
       </div>
 
-      <div className="mt-5 rounded-xl border border-gold/40 bg-gold-soft p-4 max-w-md mx-auto">
+      <div className="mt-5 rounded-xl border border-black/10 bg-[#f5f5f5] p-4 max-w-md mx-auto">
         <div className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">Summary</div>
         <Row label={`${itemLine} · ${size} × ${qty}`} value={`₹${subtotal}`} />
         {printName && <Row label={`Printing · ${printName} #${printNumber}`} value={`₹${printingFee}`} />}
@@ -757,7 +756,7 @@ function InvoiceView(props: {
         </button>
         <button onClick={printInvoice}
           className="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold uppercase tracking-[0.16em]"
-          style={{ background: "var(--gradient-gold)", color: "#1a1a1a", border: "1px solid #8a6a14" }}>
+          style={{ background: "#fa5400", color: "#ffffff", border: "1px solid #fa5400" }}>
           <Printer className="size-4" /> Invoice
         </button>
       </div>
@@ -781,7 +780,7 @@ function Field({ label, value, onChange, placeholder, className = "" }: { label:
     <label className={`block ${className}`}>
       <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{label}</span>
       <input value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder}
-        className="mt-1 w-full rounded-lg border border-border bg-white px-3 py-2.5 text-sm focus:border-[#b8862b] focus:outline-none focus:ring-2 focus:ring-[#f4d77a]/40" />
+        className="mt-1 w-full rounded-lg border border-border bg-white px-3 py-2.5 text-sm focus:border-[#000000] focus:outline-none focus:ring-2 focus:ring-[#ffffff]/40" />
     </label>
   );
 }
