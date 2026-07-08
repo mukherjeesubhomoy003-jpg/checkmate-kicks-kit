@@ -13,7 +13,7 @@ const POSTERS: Poster[] = [
   { id: "p-neymar", name: "Neymar Jr · 10", subtitle: "Brasil · Samba Series", image: neymar.url, accent: "#f5d000" },
 ];
 
-const PRICE = 150;
+const PRICE = 99;
 const SHIPPING = 50;
 
 export function PosterDrop() {
