@@ -11,9 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WorldCup2026RouteImport } from './routes/world-cup-2026'
 import { Route as WishlistRouteImport } from './routes/wishlist'
+import { Route as ShortsRouteImport } from './routes/shorts'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as PostersRouteImport } from './routes/posters'
+import { Route as PlayerVersionRouteImport } from './routes/player-version'
 import { Route as JerseyAdminRouteImport } from './routes/jersey-admin'
+import { Route as FanVersionRouteImport } from './routes/fan-version'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
@@ -41,6 +45,11 @@ const WishlistRoute = WishlistRouteImport.update({
   path: '/wishlist',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ShortsRoute = ShortsRouteImport.update({
+  id: '/shorts',
+  path: '/shorts',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShopRoute = ShopRouteImport.update({
   id: '/shop',
   path: '/shop',
@@ -51,9 +60,24 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PostersRoute = PostersRouteImport.update({
+  id: '/posters',
+  path: '/posters',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlayerVersionRoute = PlayerVersionRouteImport.update({
+  id: '/player-version',
+  path: '/player-version',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const JerseyAdminRoute = JerseyAdminRouteImport.update({
   id: '/jersey-admin',
   path: '/jersey-admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FanVersionRoute = FanVersionRouteImport.update({
+  id: '/fan-version',
+  path: '/fan-version',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CartRoute = CartRouteImport.update({
@@ -145,9 +169,13 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/fan-version': typeof FanVersionRoute
   '/jersey-admin': typeof JerseyAdminRoute
+  '/player-version': typeof PlayerVersionRoute
+  '/posters': typeof PostersRoute
   '/reset-password': typeof ResetPasswordRoute
   '/shop': typeof ShopRoute
+  '/shorts': typeof ShortsRoute
   '/wishlist': typeof WishlistRoute
   '/world-cup-2026': typeof WorldCup2026Route
   '/account': typeof AuthenticatedAccountRouteWithChildren
@@ -167,9 +195,13 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/fan-version': typeof FanVersionRoute
   '/jersey-admin': typeof JerseyAdminRoute
+  '/player-version': typeof PlayerVersionRoute
+  '/posters': typeof PostersRoute
   '/reset-password': typeof ResetPasswordRoute
   '/shop': typeof ShopRoute
+  '/shorts': typeof ShortsRoute
   '/wishlist': typeof WishlistRoute
   '/world-cup-2026': typeof WorldCup2026Route
   '/account': typeof AuthenticatedAccountRouteWithChildren
@@ -190,9 +222,13 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/fan-version': typeof FanVersionRoute
   '/jersey-admin': typeof JerseyAdminRoute
+  '/player-version': typeof PlayerVersionRoute
+  '/posters': typeof PostersRoute
   '/reset-password': typeof ResetPasswordRoute
   '/shop': typeof ShopRoute
+  '/shorts': typeof ShortsRoute
   '/wishlist': typeof WishlistRoute
   '/world-cup-2026': typeof WorldCup2026Route
   '/_authenticated/account': typeof AuthenticatedAccountRouteWithChildren
@@ -214,9 +250,13 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/cart'
+    | '/fan-version'
     | '/jersey-admin'
+    | '/player-version'
+    | '/posters'
     | '/reset-password'
     | '/shop'
+    | '/shorts'
     | '/wishlist'
     | '/world-cup-2026'
     | '/account'
@@ -236,9 +276,13 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/cart'
+    | '/fan-version'
     | '/jersey-admin'
+    | '/player-version'
+    | '/posters'
     | '/reset-password'
     | '/shop'
+    | '/shorts'
     | '/wishlist'
     | '/world-cup-2026'
     | '/account'
@@ -258,9 +302,13 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/cart'
+    | '/fan-version'
     | '/jersey-admin'
+    | '/player-version'
+    | '/posters'
     | '/reset-password'
     | '/shop'
+    | '/shorts'
     | '/wishlist'
     | '/world-cup-2026'
     | '/_authenticated/account'
@@ -282,9 +330,13 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   CartRoute: typeof CartRoute
+  FanVersionRoute: typeof FanVersionRoute
   JerseyAdminRoute: typeof JerseyAdminRoute
+  PlayerVersionRoute: typeof PlayerVersionRoute
+  PostersRoute: typeof PostersRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ShopRoute: typeof ShopRoute
+  ShortsRoute: typeof ShortsRoute
   WishlistRoute: typeof WishlistRoute
   WorldCup2026Route: typeof WorldCup2026Route
   CategorySlugRoute: typeof CategorySlugRoute
@@ -308,6 +360,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WishlistRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/shorts': {
+      id: '/shorts'
+      path: '/shorts'
+      fullPath: '/shorts'
+      preLoaderRoute: typeof ShortsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shop': {
       id: '/shop'
       path: '/shop'
@@ -322,11 +381,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/posters': {
+      id: '/posters'
+      path: '/posters'
+      fullPath: '/posters'
+      preLoaderRoute: typeof PostersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/player-version': {
+      id: '/player-version'
+      path: '/player-version'
+      fullPath: '/player-version'
+      preLoaderRoute: typeof PlayerVersionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/jersey-admin': {
       id: '/jersey-admin'
       path: '/jersey-admin'
       fullPath: '/jersey-admin'
       preLoaderRoute: typeof JerseyAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fan-version': {
+      id: '/fan-version'
+      path: '/fan-version'
+      fullPath: '/fan-version'
+      preLoaderRoute: typeof FanVersionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cart': {
@@ -506,9 +586,13 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   CartRoute: CartRoute,
+  FanVersionRoute: FanVersionRoute,
   JerseyAdminRoute: JerseyAdminRoute,
+  PlayerVersionRoute: PlayerVersionRoute,
+  PostersRoute: PostersRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ShopRoute: ShopRoute,
+  ShortsRoute: ShortsRoute,
   WishlistRoute: WishlistRoute,
   WorldCup2026Route: WorldCup2026Route,
   CategorySlugRoute: CategorySlugRoute,
@@ -518,13 +602,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
