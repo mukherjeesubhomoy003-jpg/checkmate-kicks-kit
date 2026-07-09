@@ -7,7 +7,7 @@ import argPractice from "@/assets/specials/argentina-practice.jpg.asset.json";
 import spainPv from "@/assets/specials/spain-pv.jpg.asset.json";
 import mexOro from "@/assets/specials/mexico-oro.jpg.asset.json";
 import turkeyPv from "@/assets/specials/turkey-pv.jpg.asset.json";
-import brasilAway from "@/assets/fan/brasil-away.jpg.asset.json";
+import brasilAway from "@/assets/specials/brazil-away-se.jpg.asset.json";
 
 type Size = "S" | "M" | "L" | "XL" | "XXL";
 type Drop = {
