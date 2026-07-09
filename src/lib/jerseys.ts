@@ -46,7 +46,7 @@ import j44 from "@/assets/jerseys/j44.jpg.asset.json";
 import j45 from "@/assets/jerseys/j45.jpg.asset.json";
 import j46 from "@/assets/jerseys/j46.jpg.asset.json";
 import j47 from "@/assets/jerseys/j47.jpg.asset.json";
-import j48 from "@/assets/jerseys/j48.jpg.asset.json";
+
 import j49 from "@/assets/jerseys/j49.jpg.asset.json";
 import j50 from "@/assets/jerseys/j50.jpg.asset.json";
 import j51 from "@/assets/jerseys/j51.jpg.asset.json";
@@ -103,7 +103,7 @@ const RAW: [string, "Home" | "Away", string][] = [
   ["Netherlands", "Home", j45.url],
   ["Germany", "Home", j46.url],
   ["Portugal", "Away", j47.url],
-  ["Spain", "Home", j48.url],
+  
   ["Germany", "Away", j49.url],
   ["Germany", "Home", j50.url],
   ["Belgium", "Home", j51.url],
