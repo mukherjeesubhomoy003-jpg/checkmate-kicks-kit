@@ -4,9 +4,6 @@ import { OrderModal } from "@/components/order/OrderModal";
 import argFs from "@/assets/specials/argentina-fs.jpg.asset.json";
 import porFs from "@/assets/specials/portugal-fs.jpg.asset.json";
 import argPractice from "@/assets/specials/argentina-practice.jpg.asset.json";
-import spainPv from "@/assets/specials/spain-pv.jpg.asset.json";
-import mexOro from "@/assets/specials/mexico-oro.jpg.asset.json";
-import turkeyPv from "@/assets/specials/turkey-pv.jpg.asset.json";
 import brasilAway from "@/assets/specials/brazil-away-se.jpg.asset.json";
 
 type Size = "S" | "M" | "L" | "XL" | "XXL";
@@ -67,39 +64,6 @@ const DROPS: Drop[] = [
     price: 800, mrp: 1499,
     sizes: ["S", "M", "L", "XL"],
     badge: "Deal",
-  },
-  {
-    key: "spain-pv",
-    team: "Spain · Away Player Version",
-    title: "Spain Away",
-    subtitle: "Ornate Weave · Player Version",
-    eyebrow: "Player Version",
-    image: spainPv.url,
-    price: 850, mrp: 1799,
-    sizes: ["S", "M", "L", "XL"],
-    badge: "New",
-  },
-  {
-    key: "mexico-oro",
-    team: "Mexico · De Oro Player Version",
-    title: "México De Oro",
-    subtitle: "Black & Gold · Heat.RDY Player Version",
-    eyebrow: "Player Version",
-    image: mexOro.url,
-    price: 850, mrp: 1799,
-    sizes: ["S", "M", "L", "XL"],
-    badge: "New",
-  },
-  {
-    key: "turkey-pv",
-    team: "Türkiye · Home Player Version",
-    title: "Türkiye Home",
-    subtitle: "Crescent Panel · Player Version",
-    eyebrow: "Player Version",
-    image: turkeyPv.url,
-    price: 850, mrp: 1799,
-    sizes: ["S", "M", "L", "XL"],
-    badge: "New",
   },
 ];
 
