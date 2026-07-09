@@ -103,7 +103,7 @@ const RAW: [string, "Home" | "Away", string][] = [
   ["Netherlands", "Home", j45.url],
   ["Germany", "Home", j46.url],
   ["Portugal", "Away", j47.url],
-  ["Spain", "Home", j48.url],
+  
   ["Germany", "Away", j49.url],
   ["Germany", "Home", j50.url],
   ["Belgium", "Home", j51.url],
