@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import pv from "@/assets/jerseys/j02.jpg.asset.json";
-import fan from "@/assets/fan/argentina-home.jpg.asset.json";
-import poster from "@/assets/posters/ronaldo.jpg.asset.json";
+import pv from "@/assets/banners/player-version.jpg.asset.json";
+import fan from "@/assets/banners/fan-version.jpg.asset.json";
+import shorts from "@/assets/banners/shorts.jpg.asset.json";
+import poster from "@/assets/banners/posters.jpg.asset.json";
 
 type Tile = {
   to: "/player-version" | "/fan-version" | "/shorts" | "/posters";
@@ -16,7 +17,7 @@ type Tile = {
 const TILES: Tile[] = [
   { to: "/player-version", label: "Player Version", sub: "Match-grade · WC 2026", price: "₹850", image: pv.url },
   { to: "/fan-version", label: "Fan Version", sub: "Everyday supporter kit", price: "₹750", image: fan.url },
-  { to: "/shorts", label: "Shorts", sub: "Coming soon", price: "Soon", soon: true },
+  { to: "/shorts", label: "Shorts", sub: "Coming soon", price: "Soon", image: shorts.url, soon: true },
   { to: "/posters", label: "Wall Posters", sub: "Legend series prints", price: "₹99", image: poster.url },
 ];
 
