@@ -111,9 +111,17 @@ const RAW: [string, "Home" | "Away", string][] = [
   ["France", "Away", j53.url],
 ];
 
-export const JERSEYS: Jersey[] = RAW.map(([team, tag, image], i) => ({
+const ALL_JERSEYS: Jersey[] = RAW.map(([team, tag, image], i) => ({
   id: `j${String(i + 1).padStart(2, "0")}`,
   team,
   tag,
   image,
 }));
+
+const seen = new Set<string>();
+export const JERSEYS: Jersey[] = ALL_JERSEYS.filter((j) => {
+  const key = `${j.team}|${j.tag}`;
+  if (seen.has(key)) return false;
+  seen.add(key);
+  return true;
+});
