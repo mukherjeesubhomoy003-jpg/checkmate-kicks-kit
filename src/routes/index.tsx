@@ -58,22 +58,6 @@ function Home() {
             </div>
           </div>
 
-          <div className="relative col-span-2 lg:col-span-1 lg:order-last mx-auto w-full max-w-xs sm:max-w-sm lg:max-w-none">
-            <div className="relative z-10 w-full aspect-square border-2 border-white/25 p-3 sm:p-5 rotate-2 lg:rotate-3 bg-black/30">
-              <div className="relative size-full overflow-hidden bg-neutral-200 group">
-                <img
-                  src={heroJersey.url}
-                  alt="CHECKMATE player edition jersey detail"
-                  className="size-full object-cover scale-105 transition-transform duration-[1200ms] group-hover:scale-[1.12]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                <div className="absolute bottom-4 sm:bottom-6 right-0 bg-[#fa5400] text-white px-3 sm:px-5 py-2 sm:py-3 pr-7 sm:pr-10 clip-slant-tag">
-                  <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.18em] opacity-90">Special Offer</p>
-                  <p className="font-bebas text-lg sm:text-2xl tracking-[0.12em] leading-none mt-0.5">₹850 · ALL TEAMS</p>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
         <div className="relative z-[3] w-full border-y border-white/15 bg-black/80 backdrop-blur-md overflow-hidden">
