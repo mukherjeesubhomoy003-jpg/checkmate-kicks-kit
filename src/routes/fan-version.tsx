@@ -87,6 +87,7 @@ function FanPage() {
         image={active?.image ?? ""}
         priceOverride={FAN_PRICE}
         hideKitSelector
+        jerseyId={active?.id}
         onClose={() => setActive(null)}
       />
     </div>

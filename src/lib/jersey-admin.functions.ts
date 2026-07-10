@@ -30,7 +30,7 @@ export const updateJerseySizeStock = createServerFn({ method: "POST" })
       updates: z
         .array(
           z.object({
-            jersey_id: z.string().regex(/^j\d{2}$/),
+            jersey_id: z.string().regex(/^[a-z0-9-]{2,24}$/i),
             size: SIZE,
             stock: z.number().int().min(0).max(9999),
           }),
@@ -76,7 +76,7 @@ export const createJerseyOrder = createServerFn({ method: "POST" })
       printing_number: z.string().trim().max(6).optional().nullable(),
       printing_fee: z.number().int().min(0).max(10000).default(0),
       total: z.number().int().min(1).max(1000000),
-      jersey_id: z.string().regex(/^j\d{2}$/).optional().nullable(),
+      jersey_id: z.string().regex(/^[a-z0-9-]{2,24}$/i).optional().nullable(),
     }),
   )
   .handler(async ({ data }) => {
