@@ -6,7 +6,6 @@ import { HappyCustomers } from "@/components/home/HappyCustomers";
 import { ShareBanner } from "@/components/home/ShareBanner";
 import { BRAND } from "@/components/order/OrderModal";
 import { HeroSlideshow } from "@/components/home/HeroSlideshow";
-import heroJersey from "@/assets/argentina-messi.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
