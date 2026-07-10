@@ -5,6 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Save, LogOut, Lock, Eye, EyeOff, Package, ClipboardList, Truck, Calendar } from "lucide-react";
 import { JERSEYS } from "@/lib/jerseys";
+import { FAN_JERSEYS } from "@/lib/fan-jerseys";
 import {
   setAdminSession,
   clearAdminSession,
@@ -288,7 +289,22 @@ function Detail({ label, value }: { label: string; value: string }) {
 
 // ============ STOCK ============
 
+const POSTER_ITEMS = [
+  { id: "p-ronaldo", team: "Ronaldo · 7", image: "https://placehold.co/60/1a1a1a/fa5400?text=R" },
+  { id: "p-mbappe", team: "Mbappé · 10", image: "https://placehold.co/60/1a1a1a/fa5400?text=M" },
+  { id: "p-neymar", team: "Neymar · 10", image: "https://placehold.co/60/1a1a1a/fa5400?text=N" },
+];
+
+type StockSection = "player" | "fan" | "shorts" | "posters";
+const SECTIONS: { key: StockSection; label: string; sub: string }[] = [
+  { key: "player", label: "Player Version", sub: "Match-grade · S/M/L/XL/XXL" },
+  { key: "fan", label: "Fan Version", sub: "Supporter kits · S/M/L/XL/XXL" },
+  { key: "shorts", label: "Shorts", sub: "Coming soon" },
+  { key: "posters", label: "Wall Posters", sub: "Single-unit stock" },
+];
+
 function StockPanel({ token }: { token: string }) {
+  const [section, setSection] = useState<StockSection>("player");
   const { data: stockMap, isLoading } = useJerseySizeStock();
   const save = useServerFn(updateJerseySizeStock);
   const qc = useQueryClient();
@@ -297,11 +313,20 @@ function StockPanel({ token }: { token: string }) {
 
   useEffect(() => { if (stockMap) setDraft(JSON.parse(JSON.stringify(stockMap))); }, [stockMap]);
 
+  const items = section === "player" ? JERSEYS
+    : section === "fan" ? FAN_JERSEYS
+    : section === "posters" ? POSTER_ITEMS
+    : [];
+  const sizeCols: SizeKey[] = section === "posters" ? ["M"] : SIZES;
+
   const dirty = useMemo(() => {
     const updates: { jersey_id: string; size: SizeKey; stock: number }[] = [];
     if (!stockMap) return updates;
-    for (const j of JERSEYS) {
-      for (const s of SIZES) {
+    const all = [...JERSEYS, ...FAN_JERSEYS, ...POSTER_ITEMS];
+    for (const j of all) {
+      const isPoster = j.id.startsWith("p-");
+      const cols: SizeKey[] = isPoster ? ["M"] : SIZES;
+      for (const s of cols) {
         const a = draft[j.id]?.[s] ?? 0;
         const b = stockMap[j.id]?.[s] ?? 0;
         if (a !== b) updates.push({ jersey_id: j.id, size: s, stock: a });
@@ -321,66 +346,105 @@ function StockPanel({ token }: { token: string }) {
     try {
       await save({ data: { token, updates: dirty } });
       await qc.invalidateQueries({ queryKey: ["jersey-size-stock"] });
-      toast.success(`Updated ${dirty.length} size${dirty.length > 1 ? "s" : ""}`);
+      toast.success(`Updated ${dirty.length} row${dirty.length > 1 ? "s" : ""} — live on website`);
     } catch (e) { toast.error((e as Error).message); }
     finally { setSaving(false); }
   }
 
+  const sectionDirty = dirty.filter((u) => {
+    if (section === "player") return JERSEYS.some((j) => j.id === u.jersey_id);
+    if (section === "fan") return FAN_JERSEYS.some((j) => j.id === u.jersey_id);
+    if (section === "posters") return POSTER_ITEMS.some((j) => j.id === u.jersey_id);
+    return false;
+  }).length;
+
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <p className="text-xs text-neutral-500">Per-size stock (S/M/L/XL/XXL). Out-of-stock sizes are disabled on the order form.</p>
+      {/* Section tabs */}
+      <div className="flex flex-wrap gap-2">
+        {SECTIONS.map((s) => (
+          <button key={s.key} onClick={() => setSection(s.key)}
+            className={`rounded-xl border px-3 py-2 text-left transition ${section === s.key ? "border-[#fa5400] bg-[#1a1a1a] text-white" : "border-neutral-300 bg-white text-neutral-800 hover:border-neutral-500"}`}>
+            <div className="text-[11px] font-bold uppercase tracking-wider">{s.label}</div>
+            <div className={`text-[10px] ${section === s.key ? "text-[#fa5400]" : "text-neutral-500"}`}>{s.sub}</div>
+          </button>
+        ))}
+      </div>
+
+      <div className="mt-5 flex items-center justify-between">
+        <p className="text-xs text-neutral-500">
+          {section === "shorts"
+            ? "Shorts inventory not launched yet. Add stock rows here when products go live."
+            : `Editing ${items.length} ${section === "posters" ? "posters" : "jerseys"}. Changes apply to the website instantly after Save.`}
+        </p>
         <button onClick={saveAll} disabled={saving || !dirty.length}
-          className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold uppercase tracking-wider disabled:opacity-50"
-          style={{ background: "var(--gradient-gold)", color: "#1a1a1a", border: "1px solid #8a6a14" }}>
+          className="inline-flex items-center gap-1.5 rounded-full bg-[#fa5400] px-4 py-2 text-xs font-bold uppercase tracking-wider text-white shadow-sm hover:bg-[#e64a00] disabled:opacity-50">
           <Save className="size-3.5" /> {saving ? "Saving…" : `Save${dirty.length ? ` (${dirty.length})` : ""}`}
         </button>
       </div>
 
-      {isLoading ? (
+      {section !== "shorts" && sectionDirty > 0 && (
+        <div className="mt-3 rounded-lg border border-[#fa5400]/40 bg-[#fff4ec] px-3 py-2 text-[11px] font-semibold text-[#8a3400]">
+          {sectionDirty} unsaved change{sectionDirty > 1 ? "s" : ""} in this section.
+        </div>
+      )}
+
+      {section === "shorts" ? (
+        <div className="mt-6 rounded-xl border border-dashed border-neutral-300 bg-neutral-50 p-10 text-center">
+          <div className="mx-auto mb-2 grid size-12 place-items-center rounded-full bg-[#1a1a1a] text-[#fa5400]">
+            <Package className="size-5" />
+          </div>
+          <div className="font-bebas text-2xl tracking-wide">SHORTS DROP INCOMING</div>
+          <div className="mt-1 text-xs text-neutral-500">No stockable products yet — the website shows "Coming soon".</div>
+        </div>
+      ) : isLoading ? (
         <div className="mt-6 text-sm text-neutral-500">Loading stock…</div>
       ) : (
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
-          {JERSEYS.map((j) => {
-            const jerseyTotal = SIZES.reduce((s, k) => s + (draft[j.id]?.[k] ?? 0), 0);
+          {items.map((j) => {
+            const jerseyTotal = sizeCols.reduce((s, k) => s + (draft[j.id]?.[k] ?? 0), 0);
             const stockOut = () => setDraft((d) => ({
               ...d,
-              [j.id]: { S: 0, M: 0, L: 0, XL: 0, XXL: 0 },
+              [j.id]: sizeCols.reduce((o, k) => ({ ...o, [k]: 0 }), {} as Partial<Record<SizeKey, number>>),
             }));
+            const label = "team" in j ? j.team : "";
+            const tag = "tag" in j ? ` · ${(j as { tag: string }).tag}` : "";
             return (
-            <div key={j.id} className="rounded-xl border border-neutral-200 bg-white p-3">
-              <div className="flex items-center gap-3">
-                <img src={j.image} alt={j.team} className="size-12 rounded-md object-cover bg-gold-soft" />
-                <div className="min-w-0 flex-1">
-                  <div className="text-[10px] font-mono text-neutral-500">#{j.id}</div>
-                  <div className="font-semibold text-sm truncate">{j.team}</div>
+              <div key={j.id} className="rounded-xl border border-neutral-200 bg-white p-3">
+                <div className="flex items-center gap-3">
+                  <img src={j.image} alt={label} className="size-12 rounded-md object-cover bg-neutral-100" />
+                  <div className="min-w-0 flex-1">
+                    <div className="text-[10px] font-mono text-neutral-500">#{j.id}</div>
+                    <div className="font-semibold text-sm truncate">{label}{tag}</div>
+                  </div>
+                  <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${jerseyTotal === 0 ? "bg-red-100 text-red-700" : "bg-emerald-50 text-emerald-700 border border-emerald-200"}`}>
+                    {jerseyTotal === 0 ? "Sold out" : `${jerseyTotal} total`}
+                  </span>
+                  <button onClick={stockOut} disabled={jerseyTotal === 0}
+                    className="rounded-md border border-red-300 bg-white px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-red-700 hover:bg-red-50 disabled:opacity-40">
+                    Stock out
+                  </button>
                 </div>
-                <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${jerseyTotal === 0 ? "bg-red-100 text-red-700" : "bg-emerald-50 text-emerald-700 border border-emerald-200"}`}>
-                  {jerseyTotal === 0 ? "Sold out" : `${jerseyTotal} total`}
-                </span>
-                <button onClick={stockOut} disabled={jerseyTotal === 0}
-                  className="rounded-md border border-red-300 bg-white px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-red-700 hover:bg-red-50 disabled:opacity-40">
-                  Stock out
-                </button>
+                <div className={`mt-3 grid gap-2`} style={{ gridTemplateColumns: `repeat(${sizeCols.length}, minmax(0, 1fr))` }}>
+                  {sizeCols.map((s) => {
+                    const cur = draft[j.id]?.[s] ?? 0;
+                    const orig = stockMap?.[j.id]?.[s] ?? 0;
+                    const isDirty = cur !== orig;
+                    return (
+                      <div key={s} className={`rounded-md border p-1.5 text-center ${isDirty ? "border-[#fa5400] bg-[#fff4ec]" : "border-neutral-200"}`}>
+                        <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">{section === "posters" ? "Units" : s}</div>
+                        <input value={cur} onChange={(e) => setVal(j.id, s, e.target.value)} inputMode="numeric"
+                          className="mt-0.5 w-full rounded border border-neutral-300 px-1 py-0.5 text-center text-sm font-semibold" />
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-              <div className="mt-3 grid grid-cols-5 gap-2">
-                {SIZES.map((s) => {
-                  const cur = draft[j.id]?.[s] ?? 0;
-                  const orig = stockMap?.[j.id]?.[s] ?? 0;
-                  const isDirty = cur !== orig;
-                  return (
-                    <div key={s} className={`rounded-md border p-1.5 text-center ${isDirty ? "border-[#d4af37] bg-[#fbf4dd]" : "border-neutral-200"}`}>
-                      <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">{s}</div>
-                      <input value={cur} onChange={(e) => setVal(j.id, s, e.target.value)} inputMode="numeric"
-                        className="mt-0.5 w-full rounded border border-neutral-300 px-1 py-0.5 text-center text-sm font-semibold" />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          );})}
+            );
+          })}
         </div>
       )}
     </div>
   );
 }
+

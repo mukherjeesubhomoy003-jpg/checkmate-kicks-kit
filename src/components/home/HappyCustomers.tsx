@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Quote, Star, Send } from "lucide-react";
+import { Quote, Star, Send, Flame } from "lucide-react";
 
 const WHATSAPP_NUMBER = "917003369589";
 
@@ -23,47 +23,44 @@ const REVIEWS: { text: string; name: string; tag?: string }[] = [
 
 export function HappyCustomers() {
   return (
-    <section className="relative bg-[#fbf7ee] border-y border-gold/30 overflow-hidden">
-      <div aria-hidden className="absolute inset-x-0 top-0 h-px hairline-gold" />
-      <div aria-hidden className="absolute inset-x-0 bottom-0 h-px hairline-gold" />
-      <div className="container-x py-16 md:py-20">
+    <section className="relative overflow-hidden bg-[#0a0a0a] text-white">
+      {/* subtle orange radial glow */}
+      <div aria-hidden className="absolute inset-0 opacity-40" style={{
+        backgroundImage: "radial-gradient(circle at 15% 15%, rgba(250,84,0,0.25) 0, transparent 45%), radial-gradient(circle at 85% 85%, rgba(250,84,0,0.18) 0, transparent 50%)",
+      }} />
+      <div className="h-[3px] w-full" style={{ background: "linear-gradient(90deg,transparent,#fa5400,transparent)" }} />
+
+      <div className="container-x relative py-16 md:py-24">
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.22em] text-[#8a6a14]"
-            style={{ background: "linear-gradient(135deg,#fff8e1,#ffffff)", border: "1px solid #e6c976" }}>
-            <Star className="size-3.5 fill-[#d4af37] text-[#d4af37]" /> Our Happy Customers
+          <div className="inline-flex items-center gap-2 border border-[#fa5400] bg-[#fa5400]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em] text-[#fa5400]">
+            <Flame className="size-3.5" /> Real Reviews
           </div>
-          <h2 className="mt-4 font-display text-3xl md:text-5xl font-bold tracking-tight">
-            <span style={{ backgroundImage: "linear-gradient(180deg,#1a1a1a 0%,#1a1a1a 55%,#8a6a14 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
-              Real reviews from
-            </span>{" "}
-            <span style={{ backgroundImage: "var(--gradient-gold)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
-              the CHECKMATE family
-            </span>
+          <h2 className="mt-4 font-bebas text-4xl md:text-6xl leading-[0.9] tracking-tight uppercase">
+            Straight from the <span className="text-[#fa5400]">CHECKMATE family.</span>
           </h2>
-          <p className="mt-3 text-sm text-neutral-600 max-w-xl mx-auto">
-            Straight from WhatsApp — unedited words from buyers across India.
+          <p className="mt-3 text-sm text-neutral-400 max-w-xl mx-auto">
+            Unedited words from buyers across India — copied straight from WhatsApp.
           </p>
         </div>
 
         <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {REVIEWS.map((r, i) => (
-            <figure key={i} className="relative rounded-2xl bg-white p-5 shadow-luxe border border-gold/30">
-              <Quote className="absolute right-3 top-3 size-5 text-[#d4af37]/40" />
-              <div className="flex items-center gap-0.5 text-[#d4af37]">
+            <figure key={i} className="group relative rounded-2xl bg-[#141414] p-5 border border-white/10 hover:border-[#fa5400]/50 transition">
+              <Quote className="absolute right-3 top-3 size-5 text-[#fa5400]/40" />
+              <div className="flex items-center gap-0.5 text-[#fa5400]">
                 {Array.from({ length: 5 }).map((_, k) => (
                   <Star key={k} className="size-3.5 fill-current" />
                 ))}
               </div>
-              <blockquote className="mt-3 text-[14px] leading-relaxed text-neutral-800">
+              <blockquote className="mt-3 text-[14px] leading-relaxed text-neutral-200">
                 "{r.text}"
               </blockquote>
               <figcaption className="mt-4 flex items-center gap-3">
-                <div className="size-9 rounded-full grid place-items-center text-xs font-bold text-[#8a6a14]"
-                  style={{ background: "linear-gradient(135deg,#fff8e1,#fbf4dd)", border: "1px solid #e6c976" }}>
+                <div className="size-9 rounded-full grid place-items-center text-xs font-bold text-white bg-[#fa5400]">
                   {r.name.slice(0, 1).toUpperCase()}
                 </div>
                 <div className="text-xs">
-                  <div className="font-semibold text-neutral-900">{r.name}</div>
+                  <div className="font-semibold text-white">{r.name}</div>
                   {r.tag && <div className="text-neutral-500">{r.tag}</div>}
                 </div>
               </figcaption>
@@ -112,79 +109,35 @@ function AddReview() {
 
   return (
     <div className="mt-12">
-      <div className="mx-auto max-w-2xl rounded-3xl bg-white p-6 md:p-8 shadow-luxe border border-gold/40">
+      <div className="mx-auto max-w-2xl rounded-3xl bg-[#141414] p-6 md:p-8 border border-white/10">
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-[#8a6a14]"
-            style={{ background: "linear-gradient(135deg,#fff8e1,#ffffff)", border: "1px solid #e6c976" }}>
-            <Star className="size-3 fill-[#d4af37] text-[#d4af37]" /> Share Your Experience
+          <div className="inline-flex items-center gap-2 border border-[#fa5400] bg-[#fa5400]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-[#fa5400]">
+            Share your experience
           </div>
-          <h3 className="mt-3 font-display text-2xl md:text-3xl font-bold tracking-tight">
-            Loved your jersey? <span style={{ backgroundImage: "var(--gradient-gold)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>Drop a review</span>
+          <h3 className="mt-3 font-bebas text-2xl md:text-3xl uppercase tracking-wide">
+            Drop your <span className="text-[#fa5400]">review.</span>
           </h3>
-          <p className="mt-2 text-xs text-neutral-600">
-            Your review goes straight to our WhatsApp — we'll feature it here.
-          </p>
+          <p className="mt-1 text-xs text-neutral-500">Sends to our WhatsApp — we post it here after verification.</p>
         </div>
-
-        <form onSubmit={submit} className="mt-6 grid gap-4">
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div>
-              <label className="text-[11px] font-semibold uppercase tracking-wider text-neutral-700">Your Name *</label>
-              <input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                placeholder="e.g. Rohit"
-                className="mt-1 w-full rounded-xl border border-neutral-300 bg-white px-3 py-2.5 text-sm focus:border-[#d4af37] focus:outline-none focus:ring-2 focus:ring-[#d4af37]/30"
-              />
-            </div>
-            <div>
-              <label className="text-[11px] font-semibold uppercase tracking-wider text-neutral-700">Jersey Bought</label>
-              <input
-                value={team}
-                onChange={(e) => setTeam(e.target.value)}
-                placeholder="e.g. Argentina Messi #10"
-                className="mt-1 w-full rounded-xl border border-neutral-300 bg-white px-3 py-2.5 text-sm focus:border-[#d4af37] focus:outline-none focus:ring-2 focus:ring-[#d4af37]/30"
-              />
-            </div>
+        <form onSubmit={submit} className="mt-5 grid gap-3 sm:grid-cols-2">
+          <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name"
+            className="rounded-md border border-white/15 bg-black/40 px-3 py-2.5 text-sm text-white placeholder-neutral-500 focus:border-[#fa5400] focus:outline-none" />
+          <input value={team} onChange={(e) => setTeam(e.target.value)} placeholder="Jersey (optional)"
+            className="rounded-md border border-white/15 bg-black/40 px-3 py-2.5 text-sm text-white placeholder-neutral-500 focus:border-[#fa5400] focus:outline-none" />
+          <div className="sm:col-span-2 flex items-center gap-2">
+            <span className="text-[10px] uppercase tracking-widest text-neutral-500">Rating</span>
+            {[1,2,3,4,5].map((n) => (
+              <button key={n} type="button" onClick={() => setRating(n)}
+                className={`p-1 ${n <= rating ? "text-[#fa5400]" : "text-neutral-700"}`}>
+                <Star className="size-5 fill-current" />
+              </button>
+            ))}
           </div>
-
-          <div>
-            <label className="text-[11px] font-semibold uppercase tracking-wider text-neutral-700">Your Rating</label>
-            <div className="mt-2 flex items-center gap-1">
-              {[1, 2, 3, 4, 5].map((n) => (
-                <button
-                  key={n}
-                  type="button"
-                  onClick={() => setRating(n)}
-                  aria-label={`${n} star${n > 1 ? "s" : ""}`}
-                  className="p-1 transition-transform hover:scale-110"
-                >
-                  <Star className={`size-7 ${n <= rating ? "fill-[#d4af37] text-[#d4af37]" : "text-neutral-300"}`} />
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="text-[11px] font-semibold uppercase tracking-wider text-neutral-700">Your Review *</label>
-            <textarea
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              required
-              rows={4}
-              placeholder="How was the quality, fit & delivery?"
-              className="mt-1 w-full rounded-xl border border-neutral-300 bg-white px-3 py-2.5 text-sm focus:border-[#d4af37] focus:outline-none focus:ring-2 focus:ring-[#d4af37]/30 resize-none"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-bold text-black shadow-luxe transition-transform hover:scale-[1.01] active:scale-[0.99]"
-            style={{ background: "var(--gradient-gold)" }}
-          >
-            <Send className="size-4" />
-            {sent ? "Sent! Thank you 🙏" : "Send Review via WhatsApp"}
+          <textarea value={text} onChange={(e) => setText(e.target.value)} rows={3} placeholder="Your review…"
+            className="sm:col-span-2 rounded-md border border-white/15 bg-black/40 px-3 py-2.5 text-sm text-white placeholder-neutral-500 focus:border-[#fa5400] focus:outline-none" />
+          <button type="submit" disabled={sent}
+            className="sm:col-span-2 inline-flex items-center justify-center gap-2 rounded-full bg-[#fa5400] px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] text-white hover:bg-[#e64a00] disabled:opacity-60">
+            <Send className="size-4" /> {sent ? "Sent — thank you!" : "Send review on WhatsApp"}
           </button>
         </form>
       </div>
