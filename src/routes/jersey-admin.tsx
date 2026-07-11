@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Save, LogOut, Lock, Eye, EyeOff, Package, ClipboardList, Truck, Calendar } from "lucide-react";
 import { JERSEYS, ALL_JERSEYS } from "@/lib/jerseys";
 import { FAN_JERSEYS } from "@/lib/fan-jerseys";
+import { SPECIALS } from "@/lib/specials";
 import {
   setAdminSession,
   clearAdminSession,
