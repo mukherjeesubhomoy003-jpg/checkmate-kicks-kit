@@ -43,7 +43,7 @@ function FanPage() {
       <section className="container-x py-10 md:py-16">
         <div className="flex flex-col items-center text-center">
           <div className="inline-flex items-center gap-2 bg-[#fa5400] text-white px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em]">
-            <Trophy className="size-3.5" /> {FAN_JERSEYS.length} Fan Version Kits
+            <Trophy className="size-3.5" /> {list.length} Fan Version Kits
           </div>
           <h1 className="mt-4 font-bebas text-4xl md:text-6xl lg:text-7xl uppercase leading-[0.9] tracking-tight">
             Fan <span className="text-[#fa5400]">Version.</span>
