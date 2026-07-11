@@ -4,6 +4,7 @@ import ronaldo from "@/assets/posters/ronaldo.jpg.asset.json";
 import mbappe from "@/assets/posters/mbappe.jpg.asset.json";
 import neymar from "@/assets/posters/neymar.jpg.asset.json";
 import { BRAND, PAYMENT_QR_URL, UPI_ID, UPI_NAME } from "@/components/order/OrderModal";
+import { useJerseySizeStock } from "@/lib/jersey-size-stock";
 
 type Poster = { id: string; name: string; subtitle: string; image: string; accent: string };
 
@@ -15,6 +16,7 @@ const POSTERS: Poster[] = [
 
 const PRICE = 99;
 const SHIPPING = 50;
+
 
 export function PosterDrop() {
   const [active, setActive] = useState<Poster | null>(null);
