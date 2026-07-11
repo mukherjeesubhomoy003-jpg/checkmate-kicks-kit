@@ -111,15 +111,19 @@ const RAW: [string, "Home" | "Away", string][] = [
   ["France", "Away", j53.url],
 ];
 
-const ALL_JERSEYS: Jersey[] = RAW.map(([team, tag, image], i) => ({
+export const ALL_JERSEYS: Jersey[] = RAW.map(([team, tag, image], i) => ({
   id: `j${String(i + 1).padStart(2, "0")}`,
   team,
   tag,
   image,
 }));
 
+// Hidden from the Player Version catalogue but still manageable in stock admin.
+const HIDDEN_FROM_PV = new Set<string>(["j13"]); // Portugal Away (black)
+
 const seen = new Set<string>();
 export const JERSEYS: Jersey[] = ALL_JERSEYS.filter((j) => {
+  if (HIDDEN_FROM_PV.has(j.id)) return false;
   const key = `${j.team}|${j.tag}`;
   if (seen.has(key)) return false;
   seen.add(key);
