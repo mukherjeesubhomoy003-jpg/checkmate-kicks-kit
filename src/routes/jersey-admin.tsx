@@ -313,7 +313,7 @@ function StockPanel({ token }: { token: string }) {
 
   useEffect(() => { if (stockMap) setDraft(JSON.parse(JSON.stringify(stockMap))); }, [stockMap]);
 
-  const items = section === "player" ? JERSEYS
+  const items = section === "player" ? ALL_JERSEYS
     : section === "fan" ? FAN_JERSEYS
     : section === "posters" ? POSTER_ITEMS
     : [];
@@ -322,7 +322,7 @@ function StockPanel({ token }: { token: string }) {
   const dirty = useMemo(() => {
     const updates: { jersey_id: string; size: SizeKey; stock: number }[] = [];
     if (!stockMap) return updates;
-    const all = [...JERSEYS, ...FAN_JERSEYS, ...POSTER_ITEMS];
+    const all = [...ALL_JERSEYS, ...FAN_JERSEYS, ...POSTER_ITEMS];
     for (const j of all) {
       const isPoster = j.id.startsWith("p-");
       const cols: SizeKey[] = isPoster ? ["M"] : SIZES;
