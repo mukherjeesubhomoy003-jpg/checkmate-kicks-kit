@@ -20,6 +20,11 @@ const SHIPPING = 50;
 
 export function PosterDrop() {
   const [active, setActive] = useState<Poster | null>(null);
+  const { data: stockMap } = useJerseySizeStock();
+  const list = POSTERS.filter((p) => {
+    const s = stockMap?.[p.id]?.M;
+    return s === undefined || s > 0;
+  });
   return (
     <section className="relative overflow-hidden bg-neutral-950 text-white" id="posters">
       <div aria-hidden className="absolute inset-0 opacity-30" style={{
