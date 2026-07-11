@@ -50,15 +50,20 @@ export function PosterDrop() {
         </div>
 
         <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-          {POSTERS.map((p) => (
+          {list.map((p) => {
+            const stock = stockMap?.[p.id]?.M;
+            const low = typeof stock === "number" && stock > 0 && stock <= 3;
+            return (
             <article key={p.id} className="group relative cursor-pointer" onClick={() => setActive(p)}>
               <div className="relative overflow-hidden bg-[#f5f5f5] transition-transform group-hover:-translate-y-1">
                 <div className="absolute right-2 top-2 z-10 bg-black px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
                   NEW
                 </div>
-                <div className="absolute left-2 top-2 z-10 bg-[#fa5400] px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
-                  Only 1 left
-                </div>
+                {low && (
+                  <div className="absolute left-2 top-2 z-10 bg-[#fa5400] px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+                    Only {stock} left
+                  </div>
+                )}
                 <div className="aspect-[3/4] overflow-hidden">
                   <img src={p.image} alt={`${p.name} wall poster`} loading="lazy"
                     className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.04]" />
@@ -76,7 +81,8 @@ export function PosterDrop() {
                 </div>
               </div>
             </article>
-          ))}
+            );
+          })}
         </div>
       </div>
 
