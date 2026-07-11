@@ -352,7 +352,7 @@ function StockPanel({ token }: { token: string }) {
   }
 
   const sectionDirty = dirty.filter((u) => {
-    if (section === "player") return JERSEYS.some((j) => j.id === u.jersey_id);
+    if (section === "player") return ALL_JERSEYS.some((j) => j.id === u.jersey_id);
     if (section === "fan") return FAN_JERSEYS.some((j) => j.id === u.jersey_id);
     if (section === "posters") return POSTER_ITEMS.some((j) => j.id === u.jersey_id);
     return false;
