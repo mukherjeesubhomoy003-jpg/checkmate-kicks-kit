@@ -4,6 +4,7 @@ import ronaldo from "@/assets/posters/ronaldo.jpg.asset.json";
 import mbappe from "@/assets/posters/mbappe.jpg.asset.json";
 import neymar from "@/assets/posters/neymar.jpg.asset.json";
 import { BRAND, PAYMENT_QR_URL, UPI_ID, UPI_NAME } from "@/components/order/OrderModal";
+import { useJerseySizeStock } from "@/lib/jersey-size-stock";
 
 type Poster = { id: string; name: string; subtitle: string; image: string; accent: string };
 
@@ -16,8 +17,14 @@ const POSTERS: Poster[] = [
 const PRICE = 99;
 const SHIPPING = 50;
 
+
 export function PosterDrop() {
   const [active, setActive] = useState<Poster | null>(null);
+  const { data: stockMap } = useJerseySizeStock();
+  const list = POSTERS.filter((p) => {
+    const s = stockMap?.[p.id]?.M;
+    return s === undefined || s > 0;
+  });
   return (
     <section className="relative overflow-hidden bg-neutral-950 text-white" id="posters">
       <div aria-hidden className="absolute inset-0 opacity-30" style={{
@@ -43,15 +50,20 @@ export function PosterDrop() {
         </div>
 
         <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-          {POSTERS.map((p) => (
+          {list.map((p) => {
+            const stock = stockMap?.[p.id]?.M;
+            const low = typeof stock === "number" && stock > 0 && stock <= 3;
+            return (
             <article key={p.id} className="group relative cursor-pointer" onClick={() => setActive(p)}>
               <div className="relative overflow-hidden bg-[#f5f5f5] transition-transform group-hover:-translate-y-1">
                 <div className="absolute right-2 top-2 z-10 bg-black px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
                   NEW
                 </div>
-                <div className="absolute left-2 top-2 z-10 bg-[#fa5400] px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
-                  Only 1 left
-                </div>
+                {low && (
+                  <div className="absolute left-2 top-2 z-10 bg-[#fa5400] px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+                    Only {stock} left
+                  </div>
+                )}
                 <div className="aspect-[3/4] overflow-hidden">
                   <img src={p.image} alt={`${p.name} wall poster`} loading="lazy"
                     className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.04]" />
@@ -69,7 +81,8 @@ export function PosterDrop() {
                 </div>
               </div>
             </article>
-          ))}
+            );
+          })}
         </div>
       </div>
 
