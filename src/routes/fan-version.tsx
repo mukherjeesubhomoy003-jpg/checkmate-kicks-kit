@@ -3,6 +3,14 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Trophy } from "lucide-react";
 import { FAN_JERSEYS, FAN_PRICE, FAN_MRP, type FanJersey } from "@/lib/fan-jerseys";
 import { OrderModal } from "@/components/order/OrderModal";
+import { useJerseySizeStock, type SizeKey } from "@/lib/jersey-size-stock";
+
+const SIZES: SizeKey[] = ["S", "M", "L", "XL", "XXL"];
+function totalStock(map: Record<string, Partial<Record<SizeKey, number>>> | undefined, id: string) {
+  const row = map?.[id];
+  if (!row) return undefined;
+  return SIZES.reduce((s, k) => s + (row[k] ?? 0), 0);
+}
 
 export const Route = createFileRoute("/fan-version")({
   head: () => ({
@@ -18,6 +26,12 @@ export const Route = createFileRoute("/fan-version")({
 
 function FanPage() {
   const [active, setActive] = useState<FanJersey | null>(null);
+  const { data: stockMap } = useJerseySizeStock();
+  const list = FAN_JERSEYS.filter((j) => {
+    const t = totalStock(stockMap, j.id);
+    return t === undefined || t > 0;
+  });
+
   return (
     <div>
       <div className="container-x pt-5">
