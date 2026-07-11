@@ -54,7 +54,10 @@ function FanPage() {
         </div>
 
         <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5">
-          {FAN_JERSEYS.map((j) => (
+          {list.map((j) => {
+            const total = totalStock(stockMap, j.id);
+            const low = typeof total === "number" && total > 0 && total <= 3;
+            return (
             <article
               key={j.id}
               className="group relative bg-[#f5f5f5] cursor-pointer"
@@ -64,6 +67,11 @@ function FanPage() {
                 <div className="absolute right-2 top-2 z-10 bg-black px-2 py-1 text-[9px] md:text-[10px] font-bold uppercase tracking-wider text-white">
                   Fan · -50%
                 </div>
+                {low && (
+                  <div className="absolute left-2 top-2 z-10 bg-[#fa5400] px-2 py-1 text-[9px] md:text-[10px] font-bold uppercase tracking-wider text-white">
+                    Only {total} left
+                  </div>
+                )}
                 <div className="aspect-[4/5] w-full">
                   <img
                     src={j.image}
@@ -87,7 +95,8 @@ function FanPage() {
                 </div>
               </div>
             </article>
-          ))}
+            );
+          })}
         </div>
 
         <div className="mt-10 text-center text-[11px] uppercase tracking-[0.25em] text-neutral-500">
