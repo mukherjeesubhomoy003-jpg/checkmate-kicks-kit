@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Save, LogOut, Lock, Eye, EyeOff, Package, ClipboardList, Truck, Calendar } from "lucide-react";
-import { JERSEYS } from "@/lib/jerseys";
+import { JERSEYS, ALL_JERSEYS } from "@/lib/jerseys";
 import { FAN_JERSEYS } from "@/lib/fan-jerseys";
 import {
   setAdminSession,
@@ -313,7 +313,7 @@ function StockPanel({ token }: { token: string }) {
 
   useEffect(() => { if (stockMap) setDraft(JSON.parse(JSON.stringify(stockMap))); }, [stockMap]);
 
-  const items = section === "player" ? JERSEYS
+  const items = section === "player" ? ALL_JERSEYS
     : section === "fan" ? FAN_JERSEYS
     : section === "posters" ? POSTER_ITEMS
     : [];
@@ -322,7 +322,7 @@ function StockPanel({ token }: { token: string }) {
   const dirty = useMemo(() => {
     const updates: { jersey_id: string; size: SizeKey; stock: number }[] = [];
     if (!stockMap) return updates;
-    const all = [...JERSEYS, ...FAN_JERSEYS, ...POSTER_ITEMS];
+    const all = [...ALL_JERSEYS, ...FAN_JERSEYS, ...POSTER_ITEMS];
     for (const j of all) {
       const isPoster = j.id.startsWith("p-");
       const cols: SizeKey[] = isPoster ? ["M"] : SIZES;
@@ -352,7 +352,7 @@ function StockPanel({ token }: { token: string }) {
   }
 
   const sectionDirty = dirty.filter((u) => {
-    if (section === "player") return JERSEYS.some((j) => j.id === u.jersey_id);
+    if (section === "player") return ALL_JERSEYS.some((j) => j.id === u.jersey_id);
     if (section === "fan") return FAN_JERSEYS.some((j) => j.id === u.jersey_id);
     if (section === "posters") return POSTER_ITEMS.some((j) => j.id === u.jersey_id);
     return false;
