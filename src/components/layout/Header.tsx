@@ -5,6 +5,7 @@ import { Logo } from "./Logo";
 import { BRAND } from "@/components/order/OrderModal";
 import { JERSEYS } from "@/lib/jerseys";
 import { FAN_JERSEYS } from "@/lib/fan-jerseys";
+import { JACKETS } from "@/lib/jackets";
 
 export function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -18,6 +19,9 @@ export function Header() {
     })),
     ...FAN_JERSEYS.filter(j => `${j.team} ${j.tag}`.toLowerCase().includes(query)).map(j => ({
       id: `fan-${j.id}`, label: `${j.team} ${j.tag}`, sub: "Fan Version · ₹750", to: "/fan-version" as const, image: j.image,
+    })),
+    ...JACKETS.filter(j => `${j.team} ${j.tag} jacket`.toLowerCase().includes(query)).map(j => ({
+      id: `jk-${j.id}`, label: `${j.team} — ${j.tag}`, sub: "Jacket · ₹1750", to: "/jackets" as const, image: j.image,
     })),
     ...("poster wall ronaldo mbappe neymar".includes(query) ? [{ id: "posters", label: "Wall Posters", sub: "Legend Series · ₹99", to: "/posters" as const, image: "" }] : []),
     ...("shorts".includes(query) ? [{ id: "shorts", label: "Shorts (Coming Soon)", sub: "Notify me", to: "/shorts" as const, image: "" }] : []),
@@ -37,6 +41,7 @@ export function Header() {
             <Link to="/" className="hover:text-[#fa5400] whitespace-nowrap">Home</Link>
             <Link to="/player-version" className="hover:text-[#fa5400] whitespace-nowrap">Player</Link>
             <Link to="/fan-version" className="hover:text-[#fa5400] whitespace-nowrap">Fan</Link>
+            <Link to="/jackets" className="hover:text-[#fa5400] whitespace-nowrap">Jackets</Link>
             <Link to="/shorts" className="hover:text-[#fa5400] whitespace-nowrap">Shorts</Link>
             <Link to="/posters" className="hover:text-[#fa5400] whitespace-nowrap">Posters</Link>
             <Link to="/jersey-admin" className="hover:text-[#fa5400] whitespace-nowrap text-[#fa5400]">Admin</Link>
@@ -107,6 +112,7 @@ export function Header() {
                     {[
                       { l: "Player Version", to: "/player-version" as const },
                       { l: "Fan Version", to: "/fan-version" as const },
+                      { l: "Jackets", to: "/jackets" as const },
                       { l: "Posters", to: "/posters" as const },
                       { l: "Shorts", to: "/shorts" as const },
                     ].map(x => (

@@ -17,6 +17,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PostersRouteImport } from './routes/posters'
 import { Route as PlayerVersionRouteImport } from './routes/player-version'
 import { Route as JerseyAdminRouteImport } from './routes/jersey-admin'
+import { Route as JacketsRouteImport } from './routes/jackets'
 import { Route as FanVersionRouteImport } from './routes/fan-version'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -73,6 +74,11 @@ const PlayerVersionRoute = PlayerVersionRouteImport.update({
 const JerseyAdminRoute = JerseyAdminRouteImport.update({
   id: '/jersey-admin',
   path: '/jersey-admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JacketsRoute = JacketsRouteImport.update({
+  id: '/jackets',
+  path: '/jackets',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FanVersionRoute = FanVersionRouteImport.update({
@@ -170,6 +176,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
   '/fan-version': typeof FanVersionRoute
+  '/jackets': typeof JacketsRoute
   '/jersey-admin': typeof JerseyAdminRoute
   '/player-version': typeof PlayerVersionRoute
   '/posters': typeof PostersRoute
@@ -196,6 +203,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
   '/fan-version': typeof FanVersionRoute
+  '/jackets': typeof JacketsRoute
   '/jersey-admin': typeof JerseyAdminRoute
   '/player-version': typeof PlayerVersionRoute
   '/posters': typeof PostersRoute
@@ -223,6 +231,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
   '/fan-version': typeof FanVersionRoute
+  '/jackets': typeof JacketsRoute
   '/jersey-admin': typeof JerseyAdminRoute
   '/player-version': typeof PlayerVersionRoute
   '/posters': typeof PostersRoute
@@ -251,6 +260,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/cart'
     | '/fan-version'
+    | '/jackets'
     | '/jersey-admin'
     | '/player-version'
     | '/posters'
@@ -277,6 +287,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/cart'
     | '/fan-version'
+    | '/jackets'
     | '/jersey-admin'
     | '/player-version'
     | '/posters'
@@ -303,6 +314,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/cart'
     | '/fan-version'
+    | '/jackets'
     | '/jersey-admin'
     | '/player-version'
     | '/posters'
@@ -331,6 +343,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   CartRoute: typeof CartRoute
   FanVersionRoute: typeof FanVersionRoute
+  JacketsRoute: typeof JacketsRoute
   JerseyAdminRoute: typeof JerseyAdminRoute
   PlayerVersionRoute: typeof PlayerVersionRoute
   PostersRoute: typeof PostersRoute
@@ -400,6 +413,13 @@ declare module '@tanstack/react-router' {
       path: '/jersey-admin'
       fullPath: '/jersey-admin'
       preLoaderRoute: typeof JerseyAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jackets': {
+      id: '/jackets'
+      path: '/jackets'
+      fullPath: '/jackets'
+      preLoaderRoute: typeof JacketsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/fan-version': {
@@ -587,6 +607,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   CartRoute: CartRoute,
   FanVersionRoute: FanVersionRoute,
+  JacketsRoute: JacketsRoute,
   JerseyAdminRoute: JerseyAdminRoute,
   PlayerVersionRoute: PlayerVersionRoute,
   PostersRoute: PostersRoute,

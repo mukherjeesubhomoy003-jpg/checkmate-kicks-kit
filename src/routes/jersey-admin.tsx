@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Save, LogOut, Lock, Eye, EyeOff, Package, ClipboardList, Truck, Calendar } from "lucide-react";
 import { JERSEYS, ALL_JERSEYS } from "@/lib/jerseys";
 import { FAN_JERSEYS } from "@/lib/fan-jerseys";
+import { JACKETS } from "@/lib/jackets";
 import { SPECIALS } from "@/lib/specials";
 import {
   setAdminSession,
@@ -296,11 +297,12 @@ const POSTER_ITEMS = [
   { id: "p-neymar", team: "Neymar · 10", image: "https://placehold.co/60/1a1a1a/fa5400?text=N" },
 ];
 
-type StockSection = "player" | "specials" | "fan" | "shorts" | "posters";
+type StockSection = "player" | "specials" | "fan" | "jackets" | "shorts" | "posters";
 const SECTIONS: { key: StockSection; label: string; sub: string }[] = [
   { key: "player", label: "Player Version", sub: "Match-grade · S/M/L/XL/XXL" },
   { key: "specials", label: "Special Editions", sub: "FS · Practice · Deals" },
   { key: "fan", label: "Fan Version", sub: "Supporter kits · S/M/L/XL/XXL" },
+  { key: "jackets", label: "Jackets", sub: "Track jackets · S/M/L/XL/XXL" },
   { key: "shorts", label: "Shorts", sub: "Coming soon" },
   { key: "posters", label: "Wall Posters", sub: "Single-unit stock" },
 ];
@@ -320,6 +322,7 @@ function StockPanel({ token }: { token: string }) {
   const items = section === "player" ? ALL_JERSEYS
     : section === "specials" ? SPECIAL_ITEMS
     : section === "fan" ? FAN_JERSEYS
+    : section === "jackets" ? JACKETS
     : section === "posters" ? POSTER_ITEMS
     : [];
   const sizeCols: SizeKey[] = section === "posters" ? ["M"] : SIZES;
@@ -327,7 +330,7 @@ function StockPanel({ token }: { token: string }) {
   const dirty = useMemo(() => {
     const updates: { jersey_id: string; size: SizeKey; stock: number }[] = [];
     if (!stockMap) return updates;
-    const all = [...ALL_JERSEYS, ...SPECIAL_ITEMS, ...FAN_JERSEYS, ...POSTER_ITEMS];
+    const all = [...ALL_JERSEYS, ...SPECIAL_ITEMS, ...FAN_JERSEYS, ...JACKETS, ...POSTER_ITEMS];
     for (const j of all) {
       const isPoster = j.id.startsWith("p-");
       const cols: SizeKey[] = isPoster ? ["M"] : SIZES;
@@ -360,6 +363,7 @@ function StockPanel({ token }: { token: string }) {
     if (section === "player") return ALL_JERSEYS.some((j) => j.id === u.jersey_id);
     if (section === "specials") return SPECIAL_ITEMS.some((j) => j.id === u.jersey_id);
     if (section === "fan") return FAN_JERSEYS.some((j) => j.id === u.jersey_id);
+    if (section === "jackets") return JACKETS.some((j) => j.id === u.jersey_id);
     if (section === "posters") return POSTER_ITEMS.some((j) => j.id === u.jersey_id);
     return false;
   }).length;
