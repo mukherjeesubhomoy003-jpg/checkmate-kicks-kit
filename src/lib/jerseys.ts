@@ -52,6 +52,8 @@ import j50 from "@/assets/jerseys/j50.jpg.asset.json";
 import j51 from "@/assets/jerseys/j51.jpg.asset.json";
 import j52 from "@/assets/jerseys/j52.jpg.asset.json";
 import j53 from "@/assets/jerseys/j53.jpg.asset.json";
+import jTurkey from "@/assets/specials/turkey-pv.jpg.asset.json";
+import jMexico from "@/assets/specials/mexico-oro.jpg.asset.json";
 
 export type Jersey = { id: string; team: string; tag: "Home" | "Away"; image: string };
 
@@ -109,6 +111,8 @@ const RAW: [string, "Home" | "Away", string][] = [
   ["Belgium", "Home", j51.url],
   ["Portugal", "Home", j52.url],
   ["France", "Away", j53.url],
+  ["Turkey", "Home", jTurkey.url],
+  ["Mexico", "Home", jMexico.url],
 ];
 
 export const ALL_JERSEYS: Jersey[] = RAW.map(([team, tag, image], i) => ({
