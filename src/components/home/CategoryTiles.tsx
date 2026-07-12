@@ -5,8 +5,10 @@ import fan from "@/assets/banners/fan-version.jpg.asset.json";
 import shorts from "@/assets/banners/shorts.jpg.asset.json";
 import poster from "@/assets/banners/posters.jpg.asset.json";
 
+import jacketBanner from "@/assets/jackets/dortmund.jpg.asset.json";
+
 type Tile = {
-  to: "/player-version" | "/fan-version" | "/shorts" | "/posters";
+  to: "/player-version" | "/fan-version" | "/jackets" | "/shorts" | "/posters";
   label: string;
   sub: string;
   price: string;
@@ -17,6 +19,7 @@ type Tile = {
 const TILES: Tile[] = [
   { to: "/player-version", label: "Player Version", sub: "Match-grade · WC 2026", price: "₹850", image: pv.url },
   { to: "/fan-version", label: "Fan Version", sub: "Everyday supporter kit", price: "₹750", image: fan.url },
+  { to: "/jackets", label: "Jackets", sub: "Club & country track jackets", price: "₹1750", image: jacketBanner.url },
   { to: "/shorts", label: "Shorts", sub: "Coming soon", price: "Soon", image: shorts.url, soon: true },
   { to: "/posters", label: "Wall Posters", sub: "Legend series prints", price: "₹99", image: poster.url },
 ];
@@ -34,7 +37,7 @@ export function CategoryTiles() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-5">
           {TILES.map((t) => (
             <Link
               key={t.to}

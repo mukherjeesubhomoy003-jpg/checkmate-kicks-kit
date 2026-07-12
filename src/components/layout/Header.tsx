@@ -37,6 +37,7 @@ export function Header() {
             <Link to="/" className="hover:text-[#fa5400] whitespace-nowrap">Home</Link>
             <Link to="/player-version" className="hover:text-[#fa5400] whitespace-nowrap">Player</Link>
             <Link to="/fan-version" className="hover:text-[#fa5400] whitespace-nowrap">Fan</Link>
+            <Link to="/jackets" className="hover:text-[#fa5400] whitespace-nowrap">Jackets</Link>
             <Link to="/shorts" className="hover:text-[#fa5400] whitespace-nowrap">Shorts</Link>
             <Link to="/posters" className="hover:text-[#fa5400] whitespace-nowrap">Posters</Link>
             <Link to="/jersey-admin" className="hover:text-[#fa5400] whitespace-nowrap text-[#fa5400]">Admin</Link>
@@ -107,6 +108,7 @@ export function Header() {
                     {[
                       { l: "Player Version", to: "/player-version" as const },
                       { l: "Fan Version", to: "/fan-version" as const },
+                      { l: "Jackets", to: "/jackets" as const },
                       { l: "Posters", to: "/posters" as const },
                       { l: "Shorts", to: "/shorts" as const },
                     ].map(x => (
