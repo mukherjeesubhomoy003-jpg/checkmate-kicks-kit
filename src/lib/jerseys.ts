@@ -118,14 +118,5 @@ export const ALL_JERSEYS: Jersey[] = RAW.map(([team, tag, image], i) => ({
   image,
 }));
 
-// Hidden from the Player Version catalogue but still manageable in stock admin.
-const HIDDEN_FROM_PV = new Set<string>();
-
-const seen = new Set<string>();
-export const JERSEYS: Jersey[] = ALL_JERSEYS.filter((j) => {
-  if (HIDDEN_FROM_PV.has(j.id)) return false;
-  const key = `${j.team}|${j.tag}`;
-  if (seen.has(key)) return false;
-  seen.add(key);
-  return true;
-});
+// Show every jersey on the Player Version page — no dedup, no hiding.
+export const JERSEYS: Jersey[] = ALL_JERSEYS;
