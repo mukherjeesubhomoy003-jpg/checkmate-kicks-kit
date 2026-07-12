@@ -119,7 +119,7 @@ export const ALL_JERSEYS: Jersey[] = RAW.map(([team, tag, image], i) => ({
 }));
 
 // Hidden from the Player Version catalogue but still manageable in stock admin.
-const HIDDEN_FROM_PV = new Set<string>(["j13"]); // Portugal Away (black)
+const HIDDEN_FROM_PV = new Set<string>();
 
 const seen = new Set<string>();
 export const JERSEYS: Jersey[] = ALL_JERSEYS.filter((j) => {

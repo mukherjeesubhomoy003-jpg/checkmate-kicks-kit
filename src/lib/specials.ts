@@ -3,6 +3,8 @@ import argFs from "@/assets/specials/argentina-fs.jpg.asset.json";
 import porFs from "@/assets/specials/portugal-fs.jpg.asset.json";
 import argPractice from "@/assets/specials/argentina-practice.jpg.asset.json";
 import brasilAway from "@/assets/specials/brazil-away-se.jpg.asset.json";
+import turkeyPv from "@/assets/specials/turkey-pv.jpg.asset.json";
+import mexicoOro from "@/assets/specials/mexico-oro.jpg.asset.json";
 
 export type SpecialSize = "S" | "M" | "L" | "XL" | "XXL";
 
@@ -68,5 +70,29 @@ export const SPECIALS: Special[] = [
     price: 800, mrp: 1499,
     sizes: ["S", "M", "L", "XL"],
     badge: "Deal",
+  },
+  {
+    id: "turkey-pv",
+    key: "turkey-pv",
+    team: "Turkey · Player Version",
+    title: "Turkey Home",
+    subtitle: "Crescent Crest · Player Version",
+    eyebrow: "Player Version",
+    image: turkeyPv.url,
+    price: 999, mrp: 1599,
+    sizes: ["M", "L", "XL"],
+    badge: "New",
+  },
+  {
+    id: "mexico-oro",
+    key: "mexico-oro",
+    team: "Mexico · Oro Edition",
+    title: "Mexico Oro",
+    subtitle: "Gold Trim · Special Edition",
+    eyebrow: "Special · Player",
+    image: mexicoOro.url,
+    price: 999, mrp: 1599,
+    sizes: ["M", "L", "XL"],
+    badge: "Ltd",
   },
 ];
