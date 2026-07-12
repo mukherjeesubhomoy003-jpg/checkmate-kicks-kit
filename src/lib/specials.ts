@@ -3,8 +3,6 @@ import argFs from "@/assets/specials/argentina-fs.jpg.asset.json";
 import porFs from "@/assets/specials/portugal-fs.jpg.asset.json";
 import argPractice from "@/assets/specials/argentina-practice.jpg.asset.json";
 import brasilAway from "@/assets/specials/brazil-away-se.jpg.asset.json";
-import turkeyPv from "@/assets/specials/turkey-pv.jpg.asset.json";
-import mexicoOro from "@/assets/specials/mexico-oro.jpg.asset.json";
 
 export type SpecialSize = "S" | "M" | "L" | "XL" | "XXL";
 
