@@ -46,6 +46,8 @@ type Props = {
   defaultPrintingNumber?: string;
   /** Jersey ID (e.g. "j07") — enables per-size stock display + decrement. */
   jerseyId?: string;
+  /** Optional shipping fee (defaults to free). */
+  shippingOverride?: number;
 };
 
 const PRINT_ADDON = 250;
@@ -68,7 +70,7 @@ export function OrderModal({
   team, image, open, onClose,
   priceOverride, sizesOverride, hideKitSelector,
   defaultPrintingName = "", defaultPrintingNumber = "",
-  jerseyId,
+  jerseyId, shippingOverride,
 }: Props) {
   const availableSizes = sizesOverride ?? (SIZES as readonly Size[] as Size[]);
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -101,7 +103,7 @@ export function OrderModal({
   const unit = priceOverride ?? getKitPrice(team, kit);
   const subtotal = unit * qty;
   const printingFee = addPrint ? PRINT_ADDON : 0;
-  const shipping = 0;
+  const shipping = shippingOverride ?? 0;
   const total = subtotal + printingFee + shipping;
 
   const reset = () => {
@@ -133,7 +135,7 @@ export function OrderModal({
       `*Unit:* ₹${unit}`,
       `*Subtotal:* ₹${subtotal}`,
       ...(addPrint ? [`*Back Printing:* ${printName.toUpperCase()} #${printNumber} (+₹${PRINT_ADDON})`] : []),
-      `*Shipping:* Free`,
+      `*Shipping:* ${shipping === 0 ? "Free" : "₹" + shipping}`,
       `*Total:* ₹${total}`,
       ``,
       `*Buyer*`,
@@ -352,7 +354,7 @@ export function OrderModal({
               <div className="mt-5 rounded-xl border border-black/10 bg-[#f5f5f5] p-4">
                 <Row label={`${hideKitSelector ? team : `${kit} Kit`} × ${qty}`} value={`₹${subtotal}`} />
                 {addPrint && <Row label={`Back printing · ${printName || "—"} #${printNumber || "—"}`} value={`₹${printingFee}`} />}
-                <Row label="Shipping" value="Free" />
+                <Row label="Shipping" value={shipping === 0 ? "Free" : `₹${shipping}`} />
                 <div className="my-2 h-px bg-black/10" />
                 <Row label="Total" value={`₹${total}`} strong />
                 <div className="mt-2 text-[11px] text-muted-foreground">All-India delivery · No COD · Pay via UPI QR on next step.</div>
@@ -427,7 +429,7 @@ export function OrderModal({
                   <div className="mt-3 h-px bg-black/10" />
                   <Row label="Subtotal" value={`₹${subtotal}`} />
                   {addPrint && <Row label="Back printing" value={`₹${printingFee}`} />}
-                  <Row label="Shipping" value="Free" />
+                  <Row label="Shipping" value={shipping === 0 ? "Free" : `₹${shipping}`} />
                   <Row label="Total" value={`₹${total}`} strong />
                   <div className="mt-3 text-[11px] text-muted-foreground leading-relaxed">
                     1. Pay <b>₹{total}</b> using the QR<br />
@@ -740,7 +742,7 @@ function InvoiceView(props: {
         <div className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-2">Summary</div>
         <Row label={`${itemLine} · ${size} × ${qty}`} value={`₹${subtotal}`} />
         {printName && <Row label={`Printing · ${printName} #${printNumber}`} value={`₹${printingFee}`} />}
-        <Row label="Shipping" value="Free" />
+        <Row label="Shipping" value={shipping === 0 ? "Free" : `₹${shipping}`} />
         <Row label="Total Paid" value={`₹${total}`} strong />
         <div className="mt-2 text-[11px] text-muted-foreground leading-relaxed">
           <b>Ship to:</b> {name}, {address}, {city} — {pincode}<br/>
