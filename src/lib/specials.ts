@@ -3,6 +3,8 @@ import argFs from "@/assets/specials/argentina-fs.jpg.asset.json";
 import porFs from "@/assets/specials/portugal-fs.jpg.asset.json";
 import argPractice from "@/assets/specials/argentina-practice.jpg.asset.json";
 import brasilAway from "@/assets/specials/brazil-away-se.jpg.asset.json";
+import manUtdPv from "@/assets/specials/man-united-pv.jpg.asset.json";
+import realMadridPv from "@/assets/specials/real-madrid-pv.jpg.asset.json";
 
 export type SpecialSize = "S" | "M" | "L" | "XL" | "XXL";
 
@@ -68,5 +70,29 @@ export const SPECIALS: Special[] = [
     price: 800, mrp: 1499,
     sizes: ["S", "M", "L", "XL"],
     badge: "Deal",
+  },
+  {
+    id: "man-utd-pv",
+    key: "man-utd-pv",
+    team: "Manchester United · Home PV",
+    title: "Man United Home",
+    subtitle: "Snapdragon · Player Version",
+    eyebrow: "Player Version",
+    image: manUtdPv.url,
+    price: 899, mrp: 1599,
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    badge: "New",
+  },
+  {
+    id: "real-madrid-pv",
+    key: "real-madrid-pv",
+    team: "Real Madrid · Away PV",
+    title: "Real Madrid Away",
+    subtitle: "Emirates Fly Better · Player Version",
+    eyebrow: "Player Version",
+    image: realMadridPv.url,
+    price: 899, mrp: 1599,
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    badge: "New",
   },
 ];
