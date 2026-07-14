@@ -7,6 +7,7 @@ import { Save, LogOut, Lock, Eye, EyeOff, Package, ClipboardList, Truck, Calenda
 import { JERSEYS, ALL_JERSEYS } from "@/lib/jerseys";
 import { FAN_JERSEYS } from "@/lib/fan-jerseys";
 import { JACKETS } from "@/lib/jackets";
+import { SHORTS } from "@/lib/shorts";
 import { SPECIALS } from "@/lib/specials";
 import {
   setAdminSession,
@@ -303,9 +304,11 @@ const SECTIONS: { key: StockSection; label: string; sub: string }[] = [
   { key: "specials", label: "Special Editions", sub: "FS · Practice · Deals" },
   { key: "fan", label: "Fan Version", sub: "Supporter kits · S/M/L/XL/XXL" },
   { key: "jackets", label: "Jackets", sub: "Track jackets · S/M/L/XL/XXL" },
-  { key: "shorts", label: "Shorts", sub: "Coming soon" },
+  { key: "shorts", label: "Shorts", sub: "Football shorts · S/M/L/XL/XXL" },
   { key: "posters", label: "Wall Posters", sub: "Single-unit stock" },
 ];
+
+const SHORT_ITEMS = SHORTS.map((s) => ({ id: s.id, team: `${s.team} · ${s.colour}`, image: s.image }));
 
 const SPECIAL_ITEMS = SPECIALS.map((s) => ({ id: s.id, team: s.title, image: s.image }));
 
@@ -323,6 +326,7 @@ function StockPanel({ token }: { token: string }) {
     : section === "specials" ? SPECIAL_ITEMS
     : section === "fan" ? FAN_JERSEYS
     : section === "jackets" ? JACKETS
+    : section === "shorts" ? SHORT_ITEMS
     : section === "posters" ? POSTER_ITEMS
     : [];
   const sizeCols: SizeKey[] = section === "posters" ? ["M"] : SIZES;
@@ -330,7 +334,7 @@ function StockPanel({ token }: { token: string }) {
   const dirty = useMemo(() => {
     const updates: { jersey_id: string; size: SizeKey; stock: number }[] = [];
     if (!stockMap) return updates;
-    const all = [...ALL_JERSEYS, ...SPECIAL_ITEMS, ...FAN_JERSEYS, ...JACKETS, ...POSTER_ITEMS];
+    const all = [...ALL_JERSEYS, ...SPECIAL_ITEMS, ...FAN_JERSEYS, ...JACKETS, ...SHORT_ITEMS, ...POSTER_ITEMS];
     for (const j of all) {
       const isPoster = j.id.startsWith("p-");
       const cols: SizeKey[] = isPoster ? ["M"] : SIZES;
@@ -364,6 +368,7 @@ function StockPanel({ token }: { token: string }) {
     if (section === "specials") return SPECIAL_ITEMS.some((j) => j.id === u.jersey_id);
     if (section === "fan") return FAN_JERSEYS.some((j) => j.id === u.jersey_id);
     if (section === "jackets") return JACKETS.some((j) => j.id === u.jersey_id);
+    if (section === "shorts") return SHORT_ITEMS.some((j) => j.id === u.jersey_id);
     if (section === "posters") return POSTER_ITEMS.some((j) => j.id === u.jersey_id);
     return false;
   }).length;
