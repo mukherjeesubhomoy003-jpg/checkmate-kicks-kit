@@ -9,6 +9,7 @@ import { FAN_JERSEYS } from "@/lib/fan-jerseys";
 import { JACKETS } from "@/lib/jackets";
 import { SHORTS } from "@/lib/shorts";
 import { SPECIALS } from "@/lib/specials";
+import { POLOS } from "@/lib/polos";
 import {
   setAdminSession,
   clearAdminSession,
@@ -298,17 +299,19 @@ const POSTER_ITEMS = [
   { id: "p-neymar", team: "Neymar · 10", image: "https://placehold.co/60/1a1a1a/fa5400?text=N" },
 ];
 
-type StockSection = "player" | "specials" | "fan" | "jackets" | "shorts" | "posters";
+type StockSection = "player" | "specials" | "fan" | "jackets" | "shorts" | "polos" | "posters";
 const SECTIONS: { key: StockSection; label: string; sub: string }[] = [
   { key: "player", label: "Player Version", sub: "Match-grade · S/M/L/XL/XXL" },
   { key: "specials", label: "Special Editions", sub: "FS · Practice · Deals" },
   { key: "fan", label: "Fan Version", sub: "Supporter kits · S/M/L/XL/XXL" },
   { key: "jackets", label: "Jackets", sub: "Track jackets · S/M/L/XL/XXL" },
   { key: "shorts", label: "Shorts", sub: "Football shorts · S/M/L/XL/XXL" },
+  { key: "polos", label: "Polo T-Shirts", sub: "Football polos · S/M/L/XL/XXL" },
   { key: "posters", label: "Wall Posters", sub: "Single-unit stock" },
 ];
 
 const SHORT_ITEMS = SHORTS.map((s) => ({ id: s.id, team: `${s.team} · ${s.colour}`, image: s.image }));
+const POLO_ITEMS = POLOS.map((p) => ({ id: p.id, team: `${p.team} · ${p.tag}`, image: p.image }));
 
 const SPECIAL_ITEMS = SPECIALS.map((s) => ({ id: s.id, team: s.title, image: s.image }));
 

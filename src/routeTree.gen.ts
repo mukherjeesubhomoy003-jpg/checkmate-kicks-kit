@@ -15,6 +15,7 @@ import { Route as ShortsRouteImport } from './routes/shorts'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PostersRouteImport } from './routes/posters'
+import { Route as PolosRouteImport } from './routes/polos'
 import { Route as PlayerVersionRouteImport } from './routes/player-version'
 import { Route as JerseyAdminRouteImport } from './routes/jersey-admin'
 import { Route as JacketsRouteImport } from './routes/jackets'
@@ -64,6 +65,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const PostersRoute = PostersRouteImport.update({
   id: '/posters',
   path: '/posters',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PolosRoute = PolosRouteImport.update({
+  id: '/polos',
+  path: '/polos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlayerVersionRoute = PlayerVersionRouteImport.update({
@@ -179,6 +185,7 @@ export interface FileRoutesByFullPath {
   '/jackets': typeof JacketsRoute
   '/jersey-admin': typeof JerseyAdminRoute
   '/player-version': typeof PlayerVersionRoute
+  '/polos': typeof PolosRoute
   '/posters': typeof PostersRoute
   '/reset-password': typeof ResetPasswordRoute
   '/shop': typeof ShopRoute
@@ -206,6 +213,7 @@ export interface FileRoutesByTo {
   '/jackets': typeof JacketsRoute
   '/jersey-admin': typeof JerseyAdminRoute
   '/player-version': typeof PlayerVersionRoute
+  '/polos': typeof PolosRoute
   '/posters': typeof PostersRoute
   '/reset-password': typeof ResetPasswordRoute
   '/shop': typeof ShopRoute
@@ -234,6 +242,7 @@ export interface FileRoutesById {
   '/jackets': typeof JacketsRoute
   '/jersey-admin': typeof JerseyAdminRoute
   '/player-version': typeof PlayerVersionRoute
+  '/polos': typeof PolosRoute
   '/posters': typeof PostersRoute
   '/reset-password': typeof ResetPasswordRoute
   '/shop': typeof ShopRoute
@@ -263,6 +272,7 @@ export interface FileRouteTypes {
     | '/jackets'
     | '/jersey-admin'
     | '/player-version'
+    | '/polos'
     | '/posters'
     | '/reset-password'
     | '/shop'
@@ -290,6 +300,7 @@ export interface FileRouteTypes {
     | '/jackets'
     | '/jersey-admin'
     | '/player-version'
+    | '/polos'
     | '/posters'
     | '/reset-password'
     | '/shop'
@@ -317,6 +328,7 @@ export interface FileRouteTypes {
     | '/jackets'
     | '/jersey-admin'
     | '/player-version'
+    | '/polos'
     | '/posters'
     | '/reset-password'
     | '/shop'
@@ -346,6 +358,7 @@ export interface RootRouteChildren {
   JacketsRoute: typeof JacketsRoute
   JerseyAdminRoute: typeof JerseyAdminRoute
   PlayerVersionRoute: typeof PlayerVersionRoute
+  PolosRoute: typeof PolosRoute
   PostersRoute: typeof PostersRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ShopRoute: typeof ShopRoute
@@ -399,6 +412,13 @@ declare module '@tanstack/react-router' {
       path: '/posters'
       fullPath: '/posters'
       preLoaderRoute: typeof PostersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/polos': {
+      id: '/polos'
+      path: '/polos'
+      fullPath: '/polos'
+      preLoaderRoute: typeof PolosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/player-version': {
@@ -610,6 +630,7 @@ const rootRouteChildren: RootRouteChildren = {
   JacketsRoute: JacketsRoute,
   JerseyAdminRoute: JerseyAdminRoute,
   PlayerVersionRoute: PlayerVersionRoute,
+  PolosRoute: PolosRoute,
   PostersRoute: PostersRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ShopRoute: ShopRoute,
