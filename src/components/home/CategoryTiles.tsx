@@ -6,6 +6,7 @@ import pvSpecial from "@/assets/thumbs/player.jpg.asset.json";
 import fanTile from "@/assets/thumbs/fan.jpg.asset.json";
 import jacketBanner from "@/assets/thumbs/jacket.jpg.asset.json";
 import shortsTile from "@/assets/thumbs/shorts.jpg.asset.json";
+import posterTile from "@/assets/thumbs/poster.jpg.asset.json";
 import poloTile from "@/assets/polos/germany-white.jpg.asset.json";
 
 type Tile = {
