@@ -2,11 +2,11 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 
 // Fresh product-forward thumbnails pulled from each section's own catalogue.
-import pvSpecial from "@/assets/specials/portugal-fs.jpg.asset.json";
-import fanTile from "@/assets/fan/real-madrid-white-home.jpg.asset.json";
-import jacketBanner from "@/assets/jackets/dortmund.jpg.asset.json";
-import shortsTile from "@/assets/shorts/portugal-red.jpg.asset.json";
-import posterTile from "@/assets/posters/ronaldo.jpg.asset.json";
+import pvSpecial from "@/assets/thumbs/player.jpg.asset.json";
+import fanTile from "@/assets/thumbs/fan.jpg.asset.json";
+import jacketBanner from "@/assets/thumbs/jacket.jpg.asset.json";
+import shortsTile from "@/assets/thumbs/shorts.jpg.asset.json";
+import posterTile from "@/assets/thumbs/poster.jpg.asset.json";
 
 type Tile = {
   to: "/player-version" | "/fan-version" | "/jackets" | "/shorts" | "/posters";
