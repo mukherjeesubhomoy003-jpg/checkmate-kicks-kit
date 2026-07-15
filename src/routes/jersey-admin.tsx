@@ -330,6 +330,7 @@ function StockPanel({ token }: { token: string }) {
     : section === "fan" ? FAN_JERSEYS
     : section === "jackets" ? JACKETS
     : section === "shorts" ? SHORT_ITEMS
+    : section === "polos" ? POLO_ITEMS
     : section === "posters" ? POSTER_ITEMS
     : [];
   const sizeCols: SizeKey[] = section === "posters" ? ["M"] : SIZES;
@@ -337,7 +338,7 @@ function StockPanel({ token }: { token: string }) {
   const dirty = useMemo(() => {
     const updates: { jersey_id: string; size: SizeKey; stock: number }[] = [];
     if (!stockMap) return updates;
-    const all = [...ALL_JERSEYS, ...SPECIAL_ITEMS, ...FAN_JERSEYS, ...JACKETS, ...SHORT_ITEMS, ...POSTER_ITEMS];
+    const all = [...ALL_JERSEYS, ...SPECIAL_ITEMS, ...FAN_JERSEYS, ...JACKETS, ...SHORT_ITEMS, ...POLO_ITEMS, ...POSTER_ITEMS];
     for (const j of all) {
       const isPoster = j.id.startsWith("p-");
       const cols: SizeKey[] = isPoster ? ["M"] : SIZES;
@@ -372,6 +373,7 @@ function StockPanel({ token }: { token: string }) {
     if (section === "fan") return FAN_JERSEYS.some((j) => j.id === u.jersey_id);
     if (section === "jackets") return JACKETS.some((j) => j.id === u.jersey_id);
     if (section === "shorts") return SHORT_ITEMS.some((j) => j.id === u.jersey_id);
+    if (section === "polos") return POLO_ITEMS.some((j) => j.id === u.jersey_id);
     if (section === "posters") return POSTER_ITEMS.some((j) => j.id === u.jersey_id);
     return false;
   }).length;
