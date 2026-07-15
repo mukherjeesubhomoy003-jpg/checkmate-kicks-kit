@@ -54,6 +54,53 @@ import j52 from "@/assets/jerseys/j52.jpg.asset.json";
 import j53 from "@/assets/jerseys/j53.jpg.asset.json";
 import jTurkey from "@/assets/specials/turkey-pv.jpg.asset.json";
 import jMexico from "@/assets/specials/mexico-oro.jpg.asset.json";
+import j54 from "@/assets/jerseys/j54.jpg.asset.json";
+import j55 from "@/assets/jerseys/j55.jpg.asset.json";
+import j56 from "@/assets/jerseys/j56.jpg.asset.json";
+import j57 from "@/assets/jerseys/j57.jpg.asset.json";
+import j58 from "@/assets/jerseys/j58.jpg.asset.json";
+import j59 from "@/assets/jerseys/j59.jpg.asset.json";
+import j60 from "@/assets/jerseys/j60.jpg.asset.json";
+import j61 from "@/assets/jerseys/j61.jpg.asset.json";
+import j62 from "@/assets/jerseys/j62.jpg.asset.json";
+import j63 from "@/assets/jerseys/j63.jpg.asset.json";
+import j64 from "@/assets/jerseys/j64.jpg.asset.json";
+import j65 from "@/assets/jerseys/j65.jpg.asset.json";
+import j66 from "@/assets/jerseys/j66.jpg.asset.json";
+import j67 from "@/assets/jerseys/j67.jpg.asset.json";
+import j68 from "@/assets/jerseys/j68.jpg.asset.json";
+import j69 from "@/assets/jerseys/j69.jpg.asset.json";
+import j70 from "@/assets/jerseys/j70.jpg.asset.json";
+import j71 from "@/assets/jerseys/j71.jpg.asset.json";
+import j72 from "@/assets/jerseys/j72.jpg.asset.json";
+import j73 from "@/assets/jerseys/j73.jpg.asset.json";
+import j74 from "@/assets/jerseys/j74.jpg.asset.json";
+import j75 from "@/assets/jerseys/j75.jpg.asset.json";
+import j76 from "@/assets/jerseys/j76.jpg.asset.json";
+import j77 from "@/assets/jerseys/j77.jpg.asset.json";
+import j78 from "@/assets/jerseys/j78.jpg.asset.json";
+import j79 from "@/assets/jerseys/j79.jpg.asset.json";
+import j80 from "@/assets/jerseys/j80.jpg.asset.json";
+import j81 from "@/assets/jerseys/j81.jpg.asset.json";
+import j82 from "@/assets/jerseys/j82.jpg.asset.json";
+import j83 from "@/assets/jerseys/j83.jpg.asset.json";
+import j84 from "@/assets/jerseys/j84.jpg.asset.json";
+import j85 from "@/assets/jerseys/j85.jpg.asset.json";
+import j86 from "@/assets/jerseys/j86.jpg.asset.json";
+import j87 from "@/assets/jerseys/j87.jpg.asset.json";
+import j88 from "@/assets/jerseys/j88.jpg.asset.json";
+import j89 from "@/assets/jerseys/j89.jpg.asset.json";
+import j90 from "@/assets/jerseys/j90.jpg.asset.json";
+import j91 from "@/assets/jerseys/j91.jpg.asset.json";
+import j92 from "@/assets/jerseys/j92.jpg.asset.json";
+import j93 from "@/assets/jerseys/j93.jpg.asset.json";
+import j94 from "@/assets/jerseys/j94.jpg.asset.json";
+import j95 from "@/assets/jerseys/j95.jpg.asset.json";
+import j96 from "@/assets/jerseys/j96.jpg.asset.json";
+import j97 from "@/assets/jerseys/j97.jpg.asset.json";
+import j98 from "@/assets/jerseys/j98.jpg.asset.json";
+import j99 from "@/assets/jerseys/j99.jpg.asset.json";
+import j100 from "@/assets/jerseys/j100.jpg.asset.json";
 
 export type Jersey = { id: string; team: string; tag: "Home" | "Away"; image: string };
 
@@ -113,6 +160,53 @@ const RAW: [string, "Home" | "Away", string][] = [
   ["France", "Away", j53.url],
   ["Turkey", "Home", jTurkey.url],
   ["Mexico", "Home", jMexico.url],
+  ["Barcelona", "Away", j54.url],
+  ["Barcelona", "Home", j55.url],
+  ["Real Madrid", "Home", j56.url],
+  ["Barcelona", "Home", j57.url],
+  ["Tottenham", "Away", j58.url],
+  ["Real Madrid", "Away", j59.url],
+  ["Barcelona", "Home", j60.url],
+  ["Barcelona", "Away", j61.url],
+  ["Bayern Munich", "Away", j62.url],
+  ["Barcelona", "Home", j63.url],
+  ["AC Milan", "Home", j64.url],
+  ["Arsenal", "Home", j65.url],
+  ["Barcelona", "Away", j66.url],
+  ["Juventus", "Home", j67.url],
+  ["Manchester City", "Home", j68.url],
+  ["Barcelona", "Away", j69.url],
+  ["Ajax", "Home", j70.url],
+  ["Chelsea", "Away", j71.url],
+  ["Arsenal", "Home", j72.url],
+  ["Barcelona", "Away", j73.url],
+  ["AC Milan", "Home", j74.url],
+  ["Liverpool", "Away", j75.url],
+  ["PSG", "Home", j76.url],
+  ["Manchester United", "Home", j77.url],
+  ["PSG", "Home", j78.url],
+  ["Manchester United", "Home", j79.url],
+  ["Barcelona", "Away", j80.url],
+  ["Bayern Munich", "Home", j81.url],
+  ["Manchester United", "Away", j82.url],
+  ["Liverpool", "Home", j83.url],
+  ["Liverpool", "Home", j84.url],
+  ["Real Madrid", "Away", j85.url],
+  ["Barcelona", "Home", j86.url],
+  ["Bayern Munich", "Home", j87.url],
+  ["Arsenal", "Away", j88.url],
+  ["Liverpool", "Away", j89.url],
+  ["Liverpool", "Away", j90.url],
+  ["Barcelona", "Away", j91.url],
+  ["Manchester United", "Home", j92.url],
+  ["Barcelona", "Home", j93.url],
+  ["Barcelona", "Away", j94.url],
+  ["Newcastle", "Home", j95.url],
+  ["Real Madrid", "Home", j96.url],
+  ["Arsenal", "Home", j97.url],
+  ["Manchester City", "Home", j98.url],
+  ["Tottenham", "Home", j99.url],
+  ["PSG", "Away", j100.url],
 ];
 
 export const ALL_JERSEYS: Jersey[] = RAW.map(([team, tag, image], i) => ({
