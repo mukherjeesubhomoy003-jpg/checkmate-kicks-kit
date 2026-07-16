@@ -55,7 +55,7 @@ export const SPECIALS: Special[] = [
     subtitle: "Sunburst Pre-Match · Player Version",
     eyebrow: "Player Version · New",
     image: argPractice.url,
-    price: 999, mrp: 1599,
+    price: 1200, mrp: 1799,
     sizes: ["M", "L"],
     badge: "New",
   },
