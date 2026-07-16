@@ -48,8 +48,9 @@ export function WorldCupSection({ preview, showBanner: _showBanner = true, headi
             const total = totalStock(stockMap, j.id);
             const out = total === 0;
             const low = typeof total === "number" && total > 0 && total <= 3;
-            const price = 850;
-            const mrp = 1999;
+            const premium = j.team === "Spain" || j.team === "Argentina";
+            const price = premium ? 1300 : 850;
+            const mrp = premium ? 2499 : 1999;
             return (
               <article
                 key={j.id}
@@ -107,6 +108,7 @@ export function WorldCupSection({ preview, showBanner: _showBanner = true, headi
         team={active?.team ?? ""}
         image={active?.image ?? ""}
         jerseyId={active?.id}
+        priceOverride={active && (active.team === "Spain" || active.team === "Argentina") ? 1300 : undefined}
         onClose={() => setActive(null)}
       />
     </section>
