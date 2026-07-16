@@ -45,12 +45,8 @@ import j43 from "@/assets/jerseys/j43.jpg.asset.json";
 import j44 from "@/assets/jerseys/j44.jpg.asset.json";
 import j45 from "@/assets/jerseys/j45.jpg.asset.json";
 import j46 from "@/assets/jerseys/j46.jpg.asset.json";
-import j47 from "@/assets/jerseys/j47.jpg.asset.json";
 
 import j49 from "@/assets/jerseys/j49.jpg.asset.json";
-import j50 from "@/assets/jerseys/j50.jpg.asset.json";
-import j51 from "@/assets/jerseys/j51.jpg.asset.json";
-import j52 from "@/assets/jerseys/j52.jpg.asset.json";
 import j53 from "@/assets/jerseys/j53.jpg.asset.json";
 import jTurkey from "@/assets/specials/turkey-pv.jpg.asset.json";
 import jMexico from "@/assets/specials/mexico-oro.jpg.asset.json";
@@ -151,18 +147,14 @@ const RAW: [string, "Home" | "Away", string][] = [
   ["Mexico", "Home", j44.url],
   ["Netherlands", "Home", j45.url],
   ["Germany", "Home", j46.url],
-  ["Portugal", "Away", j47.url],
   
   ["Germany", "Away", j49.url],
-  ["Germany", "Home", j50.url],
-  ["Belgium", "Home", j51.url],
-  ["Portugal", "Home", j52.url],
   ["France", "Away", j53.url],
   ["Turkey", "Home", jTurkey.url],
   ["Mexico", "Home", jMexico.url],
   ["Barcelona", "Away", j54.url],
-  ["Barcelona", "Home", j55.url],
-  ["Real Madrid", "Home", j56.url],
+  ["Inter Miami", "Home", j55.url],
+  ["Real Madrid", "Away", j56.url],
   ["Barcelona", "Home", j57.url],
   ["Tottenham", "Away", j58.url],
   ["Real Madrid", "Away", j59.url],
@@ -171,25 +163,25 @@ const RAW: [string, "Home" | "Away", string][] = [
   ["Bayern Munich", "Away", j62.url],
   ["Barcelona", "Home", j63.url],
   ["AC Milan", "Home", j64.url],
-  ["Arsenal", "Home", j65.url],
+  ["Arsenal", "Away", j65.url],
   ["Barcelona", "Away", j66.url],
   ["Juventus", "Home", j67.url],
   ["Manchester City", "Home", j68.url],
   ["Barcelona", "Away", j69.url],
   ["Ajax", "Home", j70.url],
   ["Chelsea", "Away", j71.url],
-  ["Arsenal", "Home", j72.url],
+  ["Arsenal", "Away", j72.url],
   ["Barcelona", "Away", j73.url],
   ["AC Milan", "Home", j74.url],
   ["Liverpool", "Away", j75.url],
   ["PSG", "Home", j76.url],
-  ["Manchester United", "Home", j77.url],
+  ["Manchester United", "Away", j77.url],
   ["PSG", "Home", j78.url],
   ["Manchester United", "Home", j79.url],
   ["Barcelona", "Away", j80.url],
   ["Bayern Munich", "Home", j81.url],
   ["Manchester United", "Away", j82.url],
-  ["Liverpool", "Home", j83.url],
+  ["Real Madrid", "Home", j83.url],
   ["Liverpool", "Home", j84.url],
   ["Real Madrid", "Away", j85.url],
   ["Barcelona", "Home", j86.url],
