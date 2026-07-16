@@ -31,7 +31,7 @@ export const SPECIALS: Special[] = [
     subtitle: "Full-Sleeve · Champions Badge · Player Edition",
     eyebrow: "Full Sleeve · Player",
     image: argFs.url,
-    price: 1200, mrp: 1799,
+    price: 1800, mrp: 2499,
     sizes: ["M", "L", "XL"],
     badge: "Ltd",
   },

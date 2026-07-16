@@ -57,6 +57,9 @@ function FanPage() {
           {list.map((j) => {
             const total = totalStock(stockMap, j.id);
             const low = typeof total === "number" && total > 0 && total <= 3;
+            const premium = (j.team === "Argentina" || j.team === "Spain") && (j.tag === "Home" || j.tag === "Away");
+            const price = premium ? 1050 : FAN_PRICE;
+            const mrp = premium ? 1899 : FAN_MRP;
             return (
             <article
               key={j.id}
@@ -90,8 +93,8 @@ function FanPage() {
                   {j.team} {j.tag}
                 </h3>
                 <div className="mt-1 flex items-baseline gap-2">
-                  <span className="font-bebas text-base md:text-lg tracking-wide text-black">₹{FAN_PRICE}</span>
-                  <span className="text-[10px] md:text-[11px] text-neutral-400 line-through">₹{FAN_MRP}</span>
+                  <span className="font-bebas text-base md:text-lg tracking-wide text-black">₹{price}</span>
+                  <span className="text-[10px] md:text-[11px] text-neutral-400 line-through">₹{mrp}</span>
                 </div>
               </div>
             </article>
@@ -108,7 +111,7 @@ function FanPage() {
         open={!!active}
         team={active ? `${active.team} ${active.tag} · Fan Version` : ""}
         image={active?.image ?? ""}
-        priceOverride={FAN_PRICE}
+        priceOverride={active && (active.team === "Argentina" || active.team === "Spain") && (active.tag === "Home" || active.tag === "Away") ? 1050 : FAN_PRICE}
         hideKitSelector
         jerseyId={active?.id}
         onClose={() => setActive(null)}
