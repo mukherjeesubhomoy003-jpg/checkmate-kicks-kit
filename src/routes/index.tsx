@@ -10,10 +10,10 @@ import { HeroSlideshow } from "@/components/home/HeroSlideshow";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "CHECKMATE Jersey — Player, Fan, Shorts & Wall Posters" },
-      { name: "description", content: "Authentic football jerseys · Player ₹850 · Fan ₹750 · Wall Posters ₹99. Free shipping across India. Order on WhatsApp." },
+      { title: "CHECKMATE Jersey — Player, Fan, Shorts & Jackets" },
+      { name: "description", content: "Authentic football jerseys · Player ₹850 · Fan ₹750 · Shorts & Jackets. Free shipping across India. Order on WhatsApp." },
       { property: "og:title", content: "CHECKMATE — Football Jerseys & Merch" },
-      { property: "og:description", content: "Player, Fan, Shorts, Posters · Free all-India shipping · Order on WhatsApp." },
+      { property: "og:description", content: "Player, Fan, Shorts, Jackets · Free all-India shipping · Order on WhatsApp." },
     ],
   }),
   component: Home,
@@ -42,7 +42,7 @@ function Home() {
                 <span className="text-[#fa5400]">PASSION.</span>
               </h1>
               <p className="max-w-md text-zinc-300/90 text-sm sm:text-lg leading-relaxed">
-                Player ₹850 · Fan ₹750 · Wall Posters ₹99. All jerseys, all teams.
+                Player ₹850 · Fan ₹750 · Shorts & Jackets. All jerseys, all teams.
               </p>
             </div>
 
@@ -65,7 +65,8 @@ function Home() {
             {Array.from({ length: 2 }).flatMap((_, loop) => [
               { k: "PLAYER VERSION", v: "₹850" },
               { k: "FAN VERSION", v: "₹750" },
-              { k: "WALL POSTERS", v: "₹99" },
+              { k: "SHORTS", v: "₹250" },
+              { k: "JACKETS", v: "₹1750" },
               { k: "FULL SLEEVE", v: "₹1200" },
               { k: "PRACTICE PV", v: "₹999" },
               { k: "BRASIL AWAY DEAL", v: "₹800" },
