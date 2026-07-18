@@ -42,6 +42,7 @@ export function Header() {
 
           <nav className="flex ml-2 sm:ml-6 items-center gap-3 sm:gap-5 text-[11px] sm:text-sm font-semibold text-neutral-700 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             <Link to="/" className="hover:text-[#fa5400] whitespace-nowrap">Home</Link>
+            <Link to="/sets" className="hover:text-[#fa5400] whitespace-nowrap text-[#fa5400] font-bold">Sets</Link>
             <Link to="/player-version" className="hover:text-[#fa5400] whitespace-nowrap">Player</Link>
             <Link to="/fan-version" className="hover:text-[#fa5400] whitespace-nowrap">Fan</Link>
             <Link to="/jackets" className="hover:text-[#fa5400] whitespace-nowrap">Jackets</Link>
