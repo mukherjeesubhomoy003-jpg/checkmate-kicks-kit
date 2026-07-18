@@ -6,6 +6,7 @@ import { BRAND } from "@/components/order/OrderModal";
 import { JERSEYS } from "@/lib/jerseys";
 import { FAN_JERSEYS } from "@/lib/fan-jerseys";
 import { JACKETS } from "@/lib/jackets";
+import { SETS } from "@/lib/sets";
 
 export function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
