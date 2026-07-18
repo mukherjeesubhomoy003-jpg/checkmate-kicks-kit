@@ -6,11 +6,10 @@ import pvSpecial from "@/assets/thumbs/player.jpg.asset.json";
 import fanTile from "@/assets/thumbs/fan.jpg.asset.json";
 import jacketBanner from "@/assets/thumbs/jacket.jpg.asset.json";
 import shortsTile from "@/assets/thumbs/shorts.jpg.asset.json";
-import posterTile from "@/assets/thumbs/poster.jpg.asset.json";
 import poloTile from "@/assets/polos/germany-white.jpg.asset.json";
 
 type Tile = {
-  to: "/player-version" | "/fan-version" | "/jackets" | "/shorts" | "/polos" | "/posters";
+  to: "/player-version" | "/fan-version" | "/jackets" | "/shorts" | "/polos";
   label: string;
   sub: string;
   price: string;
@@ -24,7 +23,6 @@ const TILES: Tile[] = [
   { to: "/jackets", label: "Jackets", sub: "Club & country track jackets", price: "₹1750", image: jacketBanner.url },
   { to: "/polos", label: "Polo T-Shirts", sub: "Club & country polos", price: "₹1200", image: poloTile.url },
   { to: "/shorts", label: "Shorts", sub: "Club & country · match-grade", price: "₹250 +₹50 ship", image: shortsTile.url },
-  { to: "/posters", label: "Wall Posters", sub: "Legend series prints", price: "₹99", image: posterTile.url },
 ];
 
 export function CategoryTiles() {

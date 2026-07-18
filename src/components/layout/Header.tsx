@@ -23,8 +23,7 @@ export function Header() {
     ...JACKETS.filter(j => `${j.team} ${j.tag} jacket`.toLowerCase().includes(query)).map(j => ({
       id: `jk-${j.id}`, label: `${j.team} — ${j.tag}`, sub: "Jacket · ₹1750", to: "/jackets" as const, image: j.image,
     })),
-    ...("poster wall ronaldo mbappe neymar".includes(query) ? [{ id: "posters", label: "Wall Posters", sub: "Legend Series · ₹99", to: "/posters" as const, image: "" }] : []),
-    ...("shorts".includes(query) ? [{ id: "shorts", label: "Shorts (Coming Soon)", sub: "Notify me", to: "/shorts" as const, image: "" }] : []),
+    ...("shorts".includes(query) ? [{ id: "shorts", label: "Shorts", sub: "Match-grade · ₹250", to: "/shorts" as const, image: "" }] : []),
   ].slice(0, 12) : [];
 
   const closeSearch = () => { setSearchOpen(false); setQ(""); };
@@ -43,7 +42,7 @@ export function Header() {
             <Link to="/fan-version" className="hover:text-[#fa5400] whitespace-nowrap">Fan</Link>
             <Link to="/jackets" className="hover:text-[#fa5400] whitespace-nowrap">Jackets</Link>
             <Link to="/shorts" className="hover:text-[#fa5400] whitespace-nowrap">Shorts</Link>
-            <Link to="/posters" className="hover:text-[#fa5400] whitespace-nowrap">Posters</Link>
+            <Link to="/polos" className="hover:text-[#fa5400] whitespace-nowrap">Polos</Link>
             <Link to="/jersey-admin" className="hover:text-[#fa5400] whitespace-nowrap text-[#fa5400]">Admin</Link>
           </nav>
 
@@ -113,7 +112,7 @@ export function Header() {
                       { l: "Player Version", to: "/player-version" as const },
                       { l: "Fan Version", to: "/fan-version" as const },
                       { l: "Jackets", to: "/jackets" as const },
-                      { l: "Posters", to: "/posters" as const },
+                      { l: "Polos", to: "/polos" as const },
                       { l: "Shorts", to: "/shorts" as const },
                     ].map(x => (
                       <button key={x.l} onClick={() => { closeSearch(); navigate({ to: x.to }); }}
