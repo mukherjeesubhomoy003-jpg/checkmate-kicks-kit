@@ -65,7 +65,8 @@ function Home() {
             {Array.from({ length: 2 }).flatMap((_, loop) => [
               { k: "PLAYER VERSION", v: "₹850" },
               { k: "FAN VERSION", v: "₹750" },
-              { k: "WALL POSTERS", v: "₹99" },
+              { k: "SHORTS", v: "₹250" },
+              { k: "JACKETS", v: "₹1750" },
               { k: "FULL SLEEVE", v: "₹1200" },
               { k: "PRACTICE PV", v: "₹999" },
               { k: "BRASIL AWAY DEAL", v: "₹800" },
