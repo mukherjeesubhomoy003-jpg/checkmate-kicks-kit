@@ -325,11 +325,22 @@ function StockPanel({ token }: { token: string }) {
   const qc = useQueryClient();
   const [draft, setDraft] = useState<Record<string, Partial<Record<SizeKey, number>>>>({});
   const [saving, setSaving] = useState(false);
+  const [initialized, setInitialized] = useState(false);
 
-  useEffect(() => { if (stockMap) setDraft(JSON.parse(JSON.stringify(stockMap))); }, [stockMap]);
+  // Initialize draft once from the first stockMap payload. Subsequent refetches
+  // (window focus, invalidate after save) merge server values only for keys
+  // the admin has NOT touched, so mid-edit values are never clobbered.
+  useEffect(() => {
+    if (!stockMap) return;
+    if (!initialized) {
+      setDraft(JSON.parse(JSON.stringify(stockMap)));
+      setInitialized(true);
+    }
+  }, [stockMap, initialized]);
 
   const items = section === "player" ? ALL_JERSEYS
     : section === "specials" ? SPECIAL_ITEMS
+    : section === "sets" ? SET_ITEMS
     : section === "fan" ? FAN_JERSEYS
     : section === "jackets" ? JACKETS
     : section === "shorts" ? SHORT_ITEMS
@@ -341,7 +352,7 @@ function StockPanel({ token }: { token: string }) {
   const dirty = useMemo(() => {
     const updates: { jersey_id: string; size: SizeKey; stock: number }[] = [];
     if (!stockMap) return updates;
-    const all = [...ALL_JERSEYS, ...SPECIAL_ITEMS, ...FAN_JERSEYS, ...JACKETS, ...SHORT_ITEMS, ...POLO_ITEMS, ...POSTER_ITEMS];
+    const all = [...ALL_JERSEYS, ...SPECIAL_ITEMS, ...SET_ITEMS, ...FAN_JERSEYS, ...JACKETS, ...SHORT_ITEMS, ...POLO_ITEMS, ...POSTER_ITEMS];
     for (const j of all) {
       const isPoster = j.id.startsWith("p-");
       const cols: SizeKey[] = isPoster ? ["M"] : SIZES;
