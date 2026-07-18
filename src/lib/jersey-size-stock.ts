@@ -22,10 +22,10 @@ export function useJerseySizeStock() {
   return useQuery({
     queryKey: ["jersey-size-stock"],
     queryFn: fetchSizeStockMap,
-    staleTime: 0,
+    staleTime: 60_000,
     refetchOnWindowFocus: true,
     refetchOnMount: true,
-    refetchInterval: 15_000,
+    // NOTE: no polling — admin draft edits must not be clobbered by refetches.
   });
 }
 

@@ -7,9 +7,10 @@ import fanTile from "@/assets/thumbs/fan.jpg.asset.json";
 import jacketBanner from "@/assets/thumbs/jacket.jpg.asset.json";
 import shortsTile from "@/assets/thumbs/shorts.jpg.asset.json";
 import poloTile from "@/assets/polos/germany-white.jpg.asset.json";
+import setsTile from "@/assets/sets/set07.jpg.asset.json";
 
 type Tile = {
-  to: "/player-version" | "/fan-version" | "/jackets" | "/shorts" | "/polos";
+  to: "/player-version" | "/fan-version" | "/jackets" | "/shorts" | "/polos" | "/sets";
   label: string;
   sub: string;
   price: string;
@@ -18,6 +19,7 @@ type Tile = {
 };
 
 const TILES: Tile[] = [
+  { to: "/sets", label: "1st Grade Sets", sub: "Jersey + Shorts kit", price: "₹699", image: setsTile.url },
   { to: "/player-version", label: "Player Version", sub: "Match-grade · WC 2026", price: "₹850", image: pvSpecial.url },
   { to: "/fan-version", label: "Fan Version", sub: "Everyday supporter kit", price: "₹750", image: fanTile.url },
   { to: "/jackets", label: "Jackets", sub: "Club & country track jackets", price: "₹1750", image: jacketBanner.url },

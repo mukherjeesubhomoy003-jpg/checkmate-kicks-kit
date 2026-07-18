@@ -6,6 +6,7 @@ import { BRAND } from "@/components/order/OrderModal";
 import { JERSEYS } from "@/lib/jerseys";
 import { FAN_JERSEYS } from "@/lib/fan-jerseys";
 import { JACKETS } from "@/lib/jackets";
+import { SETS } from "@/lib/sets";
 
 export function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -23,6 +24,9 @@ export function Header() {
     ...JACKETS.filter(j => `${j.team} ${j.tag} jacket`.toLowerCase().includes(query)).map(j => ({
       id: `jk-${j.id}`, label: `${j.team} — ${j.tag}`, sub: "Jacket · ₹1750", to: "/jackets" as const, image: j.image,
     })),
+    ...SETS.filter(s => `${s.team} ${s.tag} set`.toLowerCase().includes(query)).map(s => ({
+      id: `set-${s.id}`, label: `${s.team} · ${s.tag}`, sub: "1st Grade Set · ₹699", to: "/sets" as const, image: s.image,
+    })),
     ...("shorts".includes(query) ? [{ id: "shorts", label: "Shorts", sub: "Match-grade · ₹250", to: "/shorts" as const, image: "" }] : []),
   ].slice(0, 12) : [];
 
@@ -38,6 +42,7 @@ export function Header() {
 
           <nav className="flex ml-2 sm:ml-6 items-center gap-3 sm:gap-5 text-[11px] sm:text-sm font-semibold text-neutral-700 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             <Link to="/" className="hover:text-[#fa5400] whitespace-nowrap">Home</Link>
+            <Link to="/sets" className="hover:text-[#fa5400] whitespace-nowrap text-[#fa5400] font-bold">Sets</Link>
             <Link to="/player-version" className="hover:text-[#fa5400] whitespace-nowrap">Player</Link>
             <Link to="/fan-version" className="hover:text-[#fa5400] whitespace-nowrap">Fan</Link>
             <Link to="/jackets" className="hover:text-[#fa5400] whitespace-nowrap">Jackets</Link>
@@ -109,6 +114,7 @@ export function Header() {
                   <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-neutral-500 mb-3">Quick jump</div>
                   <div className="flex flex-wrap gap-2">
                     {[
+                      { l: "1st Grade Sets", to: "/sets" as const },
                       { l: "Player Version", to: "/player-version" as const },
                       { l: "Fan Version", to: "/fan-version" as const },
                       { l: "Jackets", to: "/jackets" as const },

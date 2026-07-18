@@ -10,6 +10,7 @@ import { JACKETS } from "@/lib/jackets";
 import { SHORTS } from "@/lib/shorts";
 import { SPECIALS } from "@/lib/specials";
 import { POLOS } from "@/lib/polos";
+import { SETS } from "@/lib/sets";
 import {
   setAdminSession,
   clearAdminSession,
@@ -299,10 +300,11 @@ const POSTER_ITEMS = [
   { id: "p-neymar", team: "Neymar · 10", image: "https://placehold.co/60/1a1a1a/fa5400?text=N" },
 ];
 
-type StockSection = "player" | "specials" | "fan" | "jackets" | "shorts" | "polos" | "posters";
+type StockSection = "player" | "specials" | "sets" | "fan" | "jackets" | "shorts" | "polos" | "posters";
 const SECTIONS: { key: StockSection; label: string; sub: string }[] = [
   { key: "player", label: "Player Version", sub: "Match-grade · S/M/L/XL/XXL" },
   { key: "specials", label: "Special Editions", sub: "FS · Practice · Deals" },
+  { key: "sets", label: "1st Grade Sets", sub: "Jersey + Shorts · ₹699" },
   { key: "fan", label: "Fan Version", sub: "Supporter kits · S/M/L/XL/XXL" },
   { key: "jackets", label: "Jackets", sub: "Track jackets · S/M/L/XL/XXL" },
   { key: "shorts", label: "Shorts", sub: "Football shorts · S/M/L/XL/XXL" },
@@ -312,6 +314,7 @@ const SECTIONS: { key: StockSection; label: string; sub: string }[] = [
 
 const SHORT_ITEMS = SHORTS.map((s) => ({ id: s.id, team: `${s.team} · ${s.colour}`, image: s.image }));
 const POLO_ITEMS = POLOS.map((p) => ({ id: p.id, team: `${p.team} · ${p.tag}`, image: p.image }));
+const SET_ITEMS = SETS.map((s) => ({ id: s.id, team: s.team, tag: s.tag, image: s.image }));
 
 const SPECIAL_ITEMS = SPECIALS.map((s) => ({ id: s.id, team: s.title, image: s.image }));
 
@@ -322,11 +325,22 @@ function StockPanel({ token }: { token: string }) {
   const qc = useQueryClient();
   const [draft, setDraft] = useState<Record<string, Partial<Record<SizeKey, number>>>>({});
   const [saving, setSaving] = useState(false);
+  const [initialized, setInitialized] = useState(false);
 
-  useEffect(() => { if (stockMap) setDraft(JSON.parse(JSON.stringify(stockMap))); }, [stockMap]);
+  // Initialize draft once from the first stockMap payload. Subsequent refetches
+  // (window focus, invalidate after save) merge server values only for keys
+  // the admin has NOT touched, so mid-edit values are never clobbered.
+  useEffect(() => {
+    if (!stockMap) return;
+    if (!initialized) {
+      setDraft(JSON.parse(JSON.stringify(stockMap)));
+      setInitialized(true);
+    }
+  }, [stockMap, initialized]);
 
   const items = section === "player" ? ALL_JERSEYS
     : section === "specials" ? SPECIAL_ITEMS
+    : section === "sets" ? SET_ITEMS
     : section === "fan" ? FAN_JERSEYS
     : section === "jackets" ? JACKETS
     : section === "shorts" ? SHORT_ITEMS
@@ -338,7 +352,7 @@ function StockPanel({ token }: { token: string }) {
   const dirty = useMemo(() => {
     const updates: { jersey_id: string; size: SizeKey; stock: number }[] = [];
     if (!stockMap) return updates;
-    const all = [...ALL_JERSEYS, ...SPECIAL_ITEMS, ...FAN_JERSEYS, ...JACKETS, ...SHORT_ITEMS, ...POLO_ITEMS, ...POSTER_ITEMS];
+    const all = [...ALL_JERSEYS, ...SPECIAL_ITEMS, ...SET_ITEMS, ...FAN_JERSEYS, ...JACKETS, ...SHORT_ITEMS, ...POLO_ITEMS, ...POSTER_ITEMS];
     for (const j of all) {
       const isPoster = j.id.startsWith("p-");
       const cols: SizeKey[] = isPoster ? ["M"] : SIZES;
@@ -370,6 +384,7 @@ function StockPanel({ token }: { token: string }) {
   const sectionDirty = dirty.filter((u) => {
     if (section === "player") return ALL_JERSEYS.some((j) => j.id === u.jersey_id);
     if (section === "specials") return SPECIAL_ITEMS.some((j) => j.id === u.jersey_id);
+    if (section === "sets") return SET_ITEMS.some((j) => j.id === u.jersey_id);
     if (section === "fan") return FAN_JERSEYS.some((j) => j.id === u.jersey_id);
     if (section === "jackets") return JACKETS.some((j) => j.id === u.jersey_id);
     if (section === "shorts") return SHORT_ITEMS.some((j) => j.id === u.jersey_id);
@@ -394,9 +409,7 @@ function StockPanel({ token }: { token: string }) {
 
       <div className="mt-5 flex items-center justify-between">
         <p className="text-xs text-neutral-500">
-          {section === "shorts"
-            ? "Shorts inventory not launched yet. Add stock rows here when products go live."
-            : `Editing ${items.length} ${section === "posters" ? "posters" : "jerseys"}. Changes apply to the website instantly after Save.`}
+          {`Editing ${items.length} ${section === "posters" ? "posters" : "items"}. Changes apply to the website instantly after Save.`}
         </p>
         <button onClick={saveAll} disabled={saving || !dirty.length}
           className="inline-flex items-center gap-1.5 rounded-full bg-[#fa5400] px-4 py-2 text-xs font-bold uppercase tracking-wider text-white shadow-sm hover:bg-[#e64a00] disabled:opacity-50">
@@ -404,21 +417,13 @@ function StockPanel({ token }: { token: string }) {
         </button>
       </div>
 
-      {section !== "shorts" && sectionDirty > 0 && (
+      {sectionDirty > 0 && (
         <div className="mt-3 rounded-lg border border-[#fa5400]/40 bg-[#fff4ec] px-3 py-2 text-[11px] font-semibold text-[#8a3400]">
           {sectionDirty} unsaved change{sectionDirty > 1 ? "s" : ""} in this section.
         </div>
       )}
 
-      {section === "shorts" ? (
-        <div className="mt-6 rounded-xl border border-dashed border-neutral-300 bg-neutral-50 p-10 text-center">
-          <div className="mx-auto mb-2 grid size-12 place-items-center rounded-full bg-[#1a1a1a] text-[#fa5400]">
-            <Package className="size-5" />
-          </div>
-          <div className="font-bebas text-2xl tracking-wide">SHORTS DROP INCOMING</div>
-          <div className="mt-1 text-xs text-neutral-500">No stockable products yet — the website shows "Coming soon".</div>
-        </div>
-      ) : isLoading ? (
+      {isLoading ? (
         <div className="mt-6 text-sm text-neutral-500">Loading stock…</div>
       ) : (
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
