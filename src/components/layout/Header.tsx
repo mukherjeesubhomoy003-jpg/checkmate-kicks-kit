@@ -114,6 +114,7 @@ export function Header() {
                   <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-neutral-500 mb-3">Quick jump</div>
                   <div className="flex flex-wrap gap-2">
                     {[
+                      { l: "1st Grade Sets", to: "/sets" as const },
                       { l: "Player Version", to: "/player-version" as const },
                       { l: "Fan Version", to: "/fan-version" as const },
                       { l: "Jackets", to: "/jackets" as const },
