@@ -24,6 +24,9 @@ export function Header() {
     ...JACKETS.filter(j => `${j.team} ${j.tag} jacket`.toLowerCase().includes(query)).map(j => ({
       id: `jk-${j.id}`, label: `${j.team} — ${j.tag}`, sub: "Jacket · ₹1750", to: "/jackets" as const, image: j.image,
     })),
+    ...SETS.filter(s => `${s.team} ${s.tag} set`.toLowerCase().includes(query)).map(s => ({
+      id: `set-${s.id}`, label: `${s.team} · ${s.tag}`, sub: "1st Grade Set · ₹699", to: "/sets" as const, image: s.image,
+    })),
     ...("shorts".includes(query) ? [{ id: "shorts", label: "Shorts", sub: "Match-grade · ₹250", to: "/shorts" as const, image: "" }] : []),
   ].slice(0, 12) : [];
 
