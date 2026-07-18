@@ -384,6 +384,7 @@ function StockPanel({ token }: { token: string }) {
   const sectionDirty = dirty.filter((u) => {
     if (section === "player") return ALL_JERSEYS.some((j) => j.id === u.jersey_id);
     if (section === "specials") return SPECIAL_ITEMS.some((j) => j.id === u.jersey_id);
+    if (section === "sets") return SET_ITEMS.some((j) => j.id === u.jersey_id);
     if (section === "fan") return FAN_JERSEYS.some((j) => j.id === u.jersey_id);
     if (section === "jackets") return JACKETS.some((j) => j.id === u.jersey_id);
     if (section === "shorts") return SHORT_ITEMS.some((j) => j.id === u.jersey_id);
@@ -408,9 +409,7 @@ function StockPanel({ token }: { token: string }) {
 
       <div className="mt-5 flex items-center justify-between">
         <p className="text-xs text-neutral-500">
-          {section === "shorts"
-            ? "Shorts inventory not launched yet. Add stock rows here when products go live."
-            : `Editing ${items.length} ${section === "posters" ? "posters" : "jerseys"}. Changes apply to the website instantly after Save.`}
+          {`Editing ${items.length} ${section === "posters" ? "posters" : "items"}. Changes apply to the website instantly after Save.`}
         </p>
         <button onClick={saveAll} disabled={saving || !dirty.length}
           className="inline-flex items-center gap-1.5 rounded-full bg-[#fa5400] px-4 py-2 text-xs font-bold uppercase tracking-wider text-white shadow-sm hover:bg-[#e64a00] disabled:opacity-50">
@@ -418,21 +417,13 @@ function StockPanel({ token }: { token: string }) {
         </button>
       </div>
 
-      {section !== "shorts" && sectionDirty > 0 && (
+      {sectionDirty > 0 && (
         <div className="mt-3 rounded-lg border border-[#fa5400]/40 bg-[#fff4ec] px-3 py-2 text-[11px] font-semibold text-[#8a3400]">
           {sectionDirty} unsaved change{sectionDirty > 1 ? "s" : ""} in this section.
         </div>
       )}
 
-      {section === "shorts" ? (
-        <div className="mt-6 rounded-xl border border-dashed border-neutral-300 bg-neutral-50 p-10 text-center">
-          <div className="mx-auto mb-2 grid size-12 place-items-center rounded-full bg-[#1a1a1a] text-[#fa5400]">
-            <Package className="size-5" />
-          </div>
-          <div className="font-bebas text-2xl tracking-wide">SHORTS DROP INCOMING</div>
-          <div className="mt-1 text-xs text-neutral-500">No stockable products yet — the website shows "Coming soon".</div>
-        </div>
-      ) : isLoading ? (
+      {isLoading ? (
         <div className="mt-6 text-sm text-neutral-500">Loading stock…</div>
       ) : (
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
