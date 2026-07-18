@@ -10,6 +10,7 @@ import { JACKETS } from "@/lib/jackets";
 import { SHORTS } from "@/lib/shorts";
 import { SPECIALS } from "@/lib/specials";
 import { POLOS } from "@/lib/polos";
+import { SETS } from "@/lib/sets";
 import {
   setAdminSession,
   clearAdminSession,

@@ -13,6 +13,7 @@ import { Route as WorldCup2026RouteImport } from './routes/world-cup-2026'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as ShortsRouteImport } from './routes/shorts'
 import { Route as ShopRouteImport } from './routes/shop'
+import { Route as SetsRouteImport } from './routes/sets'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PostersRouteImport } from './routes/posters'
 import { Route as PolosRouteImport } from './routes/polos'
@@ -55,6 +56,11 @@ const ShortsRoute = ShortsRouteImport.update({
 const ShopRoute = ShopRouteImport.update({
   id: '/shop',
   path: '/shop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SetsRoute = SetsRouteImport.update({
+  id: '/sets',
+  path: '/sets',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
@@ -188,6 +194,7 @@ export interface FileRoutesByFullPath {
   '/polos': typeof PolosRoute
   '/posters': typeof PostersRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/sets': typeof SetsRoute
   '/shop': typeof ShopRoute
   '/shorts': typeof ShortsRoute
   '/wishlist': typeof WishlistRoute
@@ -216,6 +223,7 @@ export interface FileRoutesByTo {
   '/polos': typeof PolosRoute
   '/posters': typeof PostersRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/sets': typeof SetsRoute
   '/shop': typeof ShopRoute
   '/shorts': typeof ShortsRoute
   '/wishlist': typeof WishlistRoute
@@ -245,6 +253,7 @@ export interface FileRoutesById {
   '/polos': typeof PolosRoute
   '/posters': typeof PostersRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/sets': typeof SetsRoute
   '/shop': typeof ShopRoute
   '/shorts': typeof ShortsRoute
   '/wishlist': typeof WishlistRoute
@@ -275,6 +284,7 @@ export interface FileRouteTypes {
     | '/polos'
     | '/posters'
     | '/reset-password'
+    | '/sets'
     | '/shop'
     | '/shorts'
     | '/wishlist'
@@ -303,6 +313,7 @@ export interface FileRouteTypes {
     | '/polos'
     | '/posters'
     | '/reset-password'
+    | '/sets'
     | '/shop'
     | '/shorts'
     | '/wishlist'
@@ -331,6 +342,7 @@ export interface FileRouteTypes {
     | '/polos'
     | '/posters'
     | '/reset-password'
+    | '/sets'
     | '/shop'
     | '/shorts'
     | '/wishlist'
@@ -361,6 +373,7 @@ export interface RootRouteChildren {
   PolosRoute: typeof PolosRoute
   PostersRoute: typeof PostersRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  SetsRoute: typeof SetsRoute
   ShopRoute: typeof ShopRoute
   ShortsRoute: typeof ShortsRoute
   WishlistRoute: typeof WishlistRoute
@@ -398,6 +411,13 @@ declare module '@tanstack/react-router' {
       path: '/shop'
       fullPath: '/shop'
       preLoaderRoute: typeof ShopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sets': {
+      id: '/sets'
+      path: '/sets'
+      fullPath: '/sets'
+      preLoaderRoute: typeof SetsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reset-password': {
@@ -633,6 +653,7 @@ const rootRouteChildren: RootRouteChildren = {
   PolosRoute: PolosRoute,
   PostersRoute: PostersRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  SetsRoute: SetsRoute,
   ShopRoute: ShopRoute,
   ShortsRoute: ShortsRoute,
   WishlistRoute: WishlistRoute,
