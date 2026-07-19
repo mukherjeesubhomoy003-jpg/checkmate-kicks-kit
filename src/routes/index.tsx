@@ -137,7 +137,7 @@ function Home() {
             { n: "03", t: "Confirm on WhatsApp", d: "Tap WhatsApp — details sent automatically. Share payment screenshot. We ship.", icon: MessageCircle },
           ].map((s) => (
             <div key={s.n} className="relative bg-[#f5f5f5] p-5 md:p-6 border-t-2 border-black">
-              <div className="font-bebas text-5xl md:text-6xl leading-none text-[#fa5400]">{s.n}</div>
+              <div className="font-bebas text-5xl md:text-6xl leading-none bg-gradient-to-r from-[#75AADB] to-[#AA151B] bg-clip-text text-transparent">{s.n}</div>
               <s.icon className="mt-3 size-6 text-black" />
               <div className="mt-2 font-bebas text-xl md:text-2xl uppercase tracking-wide">{s.t}</div>
               <p className="mt-2 text-sm text-neutral-600">{s.d}</p>
