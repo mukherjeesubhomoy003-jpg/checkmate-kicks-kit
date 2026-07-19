@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Truck, ShieldCheck, MapPin, Zap, MessageCircle, IndianRupee, Banknote } from "lucide-react";
+import { ArrowRight, Truck, ShieldCheck, MapPin, Zap, MessageCircle, IndianRupee, Banknote, Trophy, Star, Flame } from "lucide-react";
 import { FeaturedDrop } from "@/components/home/FeaturedDrop";
 import { CategoryTiles } from "@/components/home/CategoryTiles";
 import { HappyCustomers } from "@/components/home/HappyCustomers";
