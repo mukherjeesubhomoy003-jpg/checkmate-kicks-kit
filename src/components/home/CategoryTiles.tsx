@@ -60,14 +60,14 @@ export function CategoryTiles() {
               ) : (
                 <div className="size-full bg-gradient-to-br from-neutral-800 to-black" />
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
               {t.soon && (
-                <div className="absolute top-2 right-2 bg-[#fa5400] text-white text-[9px] font-bold uppercase tracking-wider px-2 py-1">
+                <div className="absolute top-2 right-2 bg-[#AA151B] text-white text-[9px] font-bold uppercase tracking-wider px-2 py-1">
                   Soon
                 </div>
               )}
               <div className="absolute inset-x-0 bottom-0 p-3 md:p-4 text-white">
-                <div className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] text-[#fa5400]">
+                <div className={`text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] ${ac}`}>
                   {t.sub}
                 </div>
                 <div className="font-bebas text-xl md:text-3xl uppercase leading-tight tracking-wide mt-0.5">
@@ -79,7 +79,8 @@ export function CategoryTiles() {
                 </div>
               </div>
             </Link>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
