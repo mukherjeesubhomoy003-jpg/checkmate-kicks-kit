@@ -23,20 +23,28 @@ const REVIEWS: { text: string; name: string; tag?: string }[] = [
 
 export function HappyCustomers() {
   return (
-    <section className="relative overflow-hidden bg-[#0a0a0a] text-white">
-      {/* subtle orange radial glow */}
-      <div aria-hidden className="absolute inset-0 opacity-40" style={{
-        backgroundImage: "radial-gradient(circle at 15% 15%, rgba(250,84,0,0.25) 0, transparent 45%), radial-gradient(circle at 85% 85%, rgba(250,84,0,0.18) 0, transparent 50%)",
+    <section className="relative overflow-hidden bg-[#050814] text-white">
+      {/* WC final gradient glows */}
+      <div aria-hidden className="absolute inset-0 opacity-60" style={{
+        backgroundImage: "radial-gradient(circle at 12% 15%, rgba(117,170,219,0.28) 0, transparent 45%), radial-gradient(circle at 88% 85%, rgba(170,21,27,0.28) 0, transparent 50%), radial-gradient(circle at 50% 50%, rgba(241,191,0,0.10) 0, transparent 60%)",
       }} />
-      <div className="h-[3px] w-full" style={{ background: "linear-gradient(90deg,transparent,#fa5400,transparent)" }} />
+      {/* Flag ribbon */}
+      <div aria-hidden className="relative h-1 w-full flex">
+        <div className="flex-1 bg-[#75AADB]" />
+        <div className="flex-1 bg-white" />
+        <div className="flex-1 bg-[#75AADB]" />
+        <div className="flex-1 bg-[#AA151B]" />
+        <div className="flex-1 bg-[#F1BF00]" />
+        <div className="flex-1 bg-[#AA151B]" />
+      </div>
 
       <div className="container-x relative py-16 md:py-24">
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 border border-[#fa5400] bg-[#fa5400]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em] text-[#fa5400]">
-            <Flame className="size-3.5" /> Real Reviews
+          <div className="inline-flex items-center gap-2 border border-[#F1BF00]/60 bg-gradient-to-r from-[#75AADB]/15 via-white/5 to-[#AA151B]/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em] text-[#F1BF00]">
+            <Trophy className="size-3.5" /> Final Day Reviews
           </div>
           <h2 className="mt-4 font-bebas text-4xl md:text-6xl leading-[0.9] tracking-tight uppercase">
-            Straight from the <span className="text-[#fa5400]">CHECKMATE family.</span>
+            Straight from the <span className="bg-gradient-to-r from-[#75AADB] via-[#F1BF00] to-[#AA151B] bg-clip-text text-transparent">CHECKMATE family.</span>
           </h2>
           <p className="mt-3 text-sm text-neutral-400 max-w-xl mx-auto">
             Unedited words from buyers across India — copied straight from WhatsApp.
@@ -44,34 +52,42 @@ export function HappyCustomers() {
         </div>
 
         <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {REVIEWS.map((r, i) => (
-            <figure key={i} className="group relative rounded-2xl bg-[#141414] p-5 border border-white/10 hover:border-[#fa5400]/50 transition">
-              <Quote className="absolute right-3 top-3 size-5 text-[#fa5400]/40" />
-              <div className="flex items-center gap-0.5 text-[#fa5400]">
-                {Array.from({ length: 5 }).map((_, k) => (
-                  <Star key={k} className="size-3.5 fill-current" />
-                ))}
-              </div>
-              <blockquote className="mt-3 text-[14px] leading-relaxed text-neutral-200">
-                "{r.text}"
-              </blockquote>
-              <figcaption className="mt-4 flex items-center gap-3">
-                <div className="size-9 rounded-full grid place-items-center text-xs font-bold text-white bg-[#fa5400]">
-                  {r.name.slice(0, 1).toUpperCase()}
+          {REVIEWS.map((r, i) => {
+            const accents = [
+              { border: "hover:border-[#75AADB]/60", quote: "text-[#75AADB]/50", star: "text-[#75AADB]", avatar: "bg-[#75AADB]" },
+              { border: "hover:border-[#F1BF00]/60", quote: "text-[#F1BF00]/50", star: "text-[#F1BF00]", avatar: "bg-[#F1BF00] text-black" },
+              { border: "hover:border-[#AA151B]/60", quote: "text-[#AA151B]/60", star: "text-[#AA151B]", avatar: "bg-[#AA151B]" },
+            ];
+            const a = accents[i % 3];
+            return (
+              <figure key={i} className={`group relative rounded-2xl bg-[#0f1424] p-5 border border-white/10 ${a.border} transition`}>
+                <Quote className={`absolute right-3 top-3 size-5 ${a.quote}`} />
+                <div className={`flex items-center gap-0.5 ${a.star}`}>
+                  {Array.from({ length: 5 }).map((_, k) => (
+                    <Star key={k} className="size-3.5 fill-current" />
+                  ))}
                 </div>
-                <div className="text-xs">
-                  <div className="font-semibold text-white">{r.name}</div>
-                  {r.tag && <div className="text-neutral-500">{r.tag}</div>}
-                </div>
-              </figcaption>
-            </figure>
-          ))}
+                <blockquote className="mt-3 text-[14px] leading-relaxed text-neutral-200">
+                  "{r.text}"
+                </blockquote>
+                <figcaption className="mt-4 flex items-center gap-3">
+                  <div className={`size-9 rounded-full grid place-items-center text-xs font-bold text-white ${a.avatar}`}>
+                    {r.name.slice(0, 1).toUpperCase()}
+                  </div>
+                  <div className="text-xs">
+                    <div className="font-semibold text-white">{r.name}</div>
+                    {r.tag && <div className="text-neutral-500">{r.tag}</div>}
+                  </div>
+                </figcaption>
+              </figure>
+            );
+          })}
         </div>
 
         <AddReview />
 
         <div className="mt-10 text-center text-[11px] uppercase tracking-[0.25em] text-neutral-500">
-          1000+ jerseys delivered · Pan-India
+          🏆 1000+ jerseys delivered · Final Day Live
         </div>
       </div>
     </section>
