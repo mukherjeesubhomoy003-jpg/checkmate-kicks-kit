@@ -100,10 +100,10 @@ function Home() {
       <section className="border-b border-black/10 bg-white">
         <div className="container-x grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 py-5 md:py-6 text-xs md:text-sm">
           {[
+            { i: Trophy, t: "WC Final — kits shipping today" },
             { i: Truck, t: "Free shipping · all India" },
-            { i: Zap, t: "Within 7 days delivery" },
-            { i: MapPin, t: "Delivered to your doorstep" },
-            { i: ShieldCheck, t: "No COD — UPI only" },
+            { i: Flame, t: "Argentina & Spain stock live" },
+            { i: ShieldCheck, t: "UPI only · no COD" },
           ].map((x, i) => (
             <div key={i} className="flex items-center gap-2 text-neutral-700">
               <x.i className="size-4 text-[#fa5400] shrink-0" /> <span className="truncate">{x.t}</span>
