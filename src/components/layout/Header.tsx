@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Instagram, MessageCircle, Search, X } from "lucide-react";
+import { Instagram, MessageCircle, Search, X, Trophy } from "lucide-react";
 import { Logo } from "./Logo";
 import { BRAND } from "@/components/order/OrderModal";
 import { JERSEYS } from "@/lib/jerseys";
@@ -35,37 +35,47 @@ export function Header() {
   return (
     <>
       <header className="sticky top-0 z-50 border-b border-black/10 bg-white/95 backdrop-blur-xl">
+        {/* Flag ribbon */}
+        <div aria-hidden className="h-1 w-full flex">
+          <div className="flex-1 bg-[#75AADB]" />
+          <div className="flex-1 bg-white border-y border-black/5" />
+          <div className="flex-1 bg-[#75AADB]" />
+          <div className="flex-1 bg-[#AA151B]" />
+          <div className="flex-1 bg-[#F1BF00]" />
+          <div className="flex-1 bg-[#AA151B]" />
+        </div>
         <div className="container-x flex h-14 sm:h-16 items-center gap-2 sm:gap-3">
           <Link to="/" className="flex items-center gap-2 shrink-0" aria-label="Checkmate home">
             <Logo className="h-8 sm:h-10 w-auto rounded-md" />
           </Link>
 
           <nav className="flex ml-2 sm:ml-6 items-center gap-3 sm:gap-5 text-[11px] sm:text-sm font-semibold text-neutral-700 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-            <Link to="/" className="hover:text-[#fa5400] whitespace-nowrap">Home</Link>
-            <Link to="/sets" className="hover:text-[#fa5400] whitespace-nowrap text-[#fa5400] font-bold">Sets</Link>
-            <Link to="/player-version" className="hover:text-[#fa5400] whitespace-nowrap">Player</Link>
-            <Link to="/fan-version" className="hover:text-[#fa5400] whitespace-nowrap">Fan</Link>
-            <Link to="/jackets" className="hover:text-[#fa5400] whitespace-nowrap">Jackets</Link>
-            <Link to="/shorts" className="hover:text-[#fa5400] whitespace-nowrap">Shorts</Link>
-            <Link to="/polos" className="hover:text-[#fa5400] whitespace-nowrap">Polos</Link>
-            <Link to="/jersey-admin" className="hover:text-[#fa5400] whitespace-nowrap text-[#fa5400]">Admin</Link>
+            <Link to="/" className="hover:text-[#AA151B] whitespace-nowrap">Home</Link>
+            <Link to="/sets" className="hover:text-[#AA151B] whitespace-nowrap text-[#AA151B] font-bold inline-flex items-center gap-1"><Trophy className="size-3.5 text-[#F1BF00]" />Final</Link>
+            <Link to="/player-version" className="hover:text-[#75AADB] whitespace-nowrap">Player</Link>
+            <Link to="/fan-version" className="hover:text-[#75AADB] whitespace-nowrap">Fan</Link>
+            <Link to="/jackets" className="hover:text-[#AA151B] whitespace-nowrap">Jackets</Link>
+            <Link to="/shorts" className="hover:text-[#AA151B] whitespace-nowrap">Shorts</Link>
+            <Link to="/polos" className="hover:text-[#AA151B] whitespace-nowrap">Polos</Link>
+            <Link to="/jersey-admin" className="hover:text-[#AA151B] whitespace-nowrap text-[#AA151B]">Admin</Link>
           </nav>
 
           <div className="ml-auto flex items-center gap-1 sm:gap-1.5 shrink-0">
             <button
               onClick={() => setSearchOpen(true)}
               aria-label="Search"
-              className="inline-flex p-2 rounded-full text-neutral-700 hover:text-[#fa5400] hover:bg-neutral-100"
+              className="inline-flex p-2 rounded-full text-neutral-700 hover:text-[#AA151B] hover:bg-neutral-100"
             >
               <Search className="size-4" />
             </button>
             <a href={BRAND.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram"
-              className="hidden sm:inline-flex p-2 rounded-full text-neutral-600 hover:text-[#fa5400] hover:bg-neutral-100">
+              className="hidden sm:inline-flex p-2 rounded-full text-neutral-600 hover:text-[#AA151B] hover:bg-neutral-100">
               <Instagram className="size-4" />
             </a>
             <a href={`https://wa.me/${BRAND.whatsappPrimary}`} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-none px-2.5 sm:px-3.5 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-black text-white hover:bg-[#fa5400] transition-colors">
-              <MessageCircle className="size-3.5" /> Order
+              className="inline-flex items-center gap-1.5 rounded-none px-2.5 sm:px-3.5 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-black hover:opacity-90 transition"
+              style={{ background: "linear-gradient(90deg,#75AADB,#F1BF00,#AA151B)" }}>
+              <Trophy className="size-3.5" /> Order Final
             </a>
           </div>
         </div>

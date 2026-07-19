@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Quote, Star, Send, Flame } from "lucide-react";
+import { Quote, Star, Send, Trophy } from "lucide-react";
 
 const WHATSAPP_NUMBER = "917003369589";
 
@@ -23,20 +23,28 @@ const REVIEWS: { text: string; name: string; tag?: string }[] = [
 
 export function HappyCustomers() {
   return (
-    <section className="relative overflow-hidden bg-[#0a0a0a] text-white">
-      {/* subtle orange radial glow */}
-      <div aria-hidden className="absolute inset-0 opacity-40" style={{
-        backgroundImage: "radial-gradient(circle at 15% 15%, rgba(250,84,0,0.25) 0, transparent 45%), radial-gradient(circle at 85% 85%, rgba(250,84,0,0.18) 0, transparent 50%)",
+    <section className="relative overflow-hidden bg-[#050814] text-white">
+      {/* WC final gradient glows */}
+      <div aria-hidden className="absolute inset-0 opacity-60" style={{
+        backgroundImage: "radial-gradient(circle at 12% 15%, rgba(117,170,219,0.28) 0, transparent 45%), radial-gradient(circle at 88% 85%, rgba(170,21,27,0.28) 0, transparent 50%), radial-gradient(circle at 50% 50%, rgba(241,191,0,0.10) 0, transparent 60%)",
       }} />
-      <div className="h-[3px] w-full" style={{ background: "linear-gradient(90deg,transparent,#fa5400,transparent)" }} />
+      {/* Flag ribbon */}
+      <div aria-hidden className="relative h-1 w-full flex">
+        <div className="flex-1 bg-[#75AADB]" />
+        <div className="flex-1 bg-white" />
+        <div className="flex-1 bg-[#75AADB]" />
+        <div className="flex-1 bg-[#AA151B]" />
+        <div className="flex-1 bg-[#F1BF00]" />
+        <div className="flex-1 bg-[#AA151B]" />
+      </div>
 
       <div className="container-x relative py-16 md:py-24">
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 border border-[#fa5400] bg-[#fa5400]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em] text-[#fa5400]">
-            <Flame className="size-3.5" /> Real Reviews
+          <div className="inline-flex items-center gap-2 border border-[#F1BF00]/60 bg-gradient-to-r from-[#75AADB]/15 via-white/5 to-[#AA151B]/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em] text-[#F1BF00]">
+            <Trophy className="size-3.5" /> Final Day Reviews
           </div>
           <h2 className="mt-4 font-bebas text-4xl md:text-6xl leading-[0.9] tracking-tight uppercase">
-            Straight from the <span className="text-[#fa5400]">CHECKMATE family.</span>
+            Straight from the <span className="bg-gradient-to-r from-[#75AADB] via-[#F1BF00] to-[#AA151B] bg-clip-text text-transparent">CHECKMATE family.</span>
           </h2>
           <p className="mt-3 text-sm text-neutral-400 max-w-xl mx-auto">
             Unedited words from buyers across India — copied straight from WhatsApp.
@@ -44,34 +52,42 @@ export function HappyCustomers() {
         </div>
 
         <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {REVIEWS.map((r, i) => (
-            <figure key={i} className="group relative rounded-2xl bg-[#141414] p-5 border border-white/10 hover:border-[#fa5400]/50 transition">
-              <Quote className="absolute right-3 top-3 size-5 text-[#fa5400]/40" />
-              <div className="flex items-center gap-0.5 text-[#fa5400]">
-                {Array.from({ length: 5 }).map((_, k) => (
-                  <Star key={k} className="size-3.5 fill-current" />
-                ))}
-              </div>
-              <blockquote className="mt-3 text-[14px] leading-relaxed text-neutral-200">
-                "{r.text}"
-              </blockquote>
-              <figcaption className="mt-4 flex items-center gap-3">
-                <div className="size-9 rounded-full grid place-items-center text-xs font-bold text-white bg-[#fa5400]">
-                  {r.name.slice(0, 1).toUpperCase()}
+          {REVIEWS.map((r, i) => {
+            const accents = [
+              { border: "hover:border-[#75AADB]/60", quote: "text-[#75AADB]/50", star: "text-[#75AADB]", avatar: "bg-[#75AADB]" },
+              { border: "hover:border-[#F1BF00]/60", quote: "text-[#F1BF00]/50", star: "text-[#F1BF00]", avatar: "bg-[#F1BF00] text-black" },
+              { border: "hover:border-[#AA151B]/60", quote: "text-[#AA151B]/60", star: "text-[#AA151B]", avatar: "bg-[#AA151B]" },
+            ];
+            const a = accents[i % 3];
+            return (
+              <figure key={i} className={`group relative rounded-2xl bg-[#0f1424] p-5 border border-white/10 ${a.border} transition`}>
+                <Quote className={`absolute right-3 top-3 size-5 ${a.quote}`} />
+                <div className={`flex items-center gap-0.5 ${a.star}`}>
+                  {Array.from({ length: 5 }).map((_, k) => (
+                    <Star key={k} className="size-3.5 fill-current" />
+                  ))}
                 </div>
-                <div className="text-xs">
-                  <div className="font-semibold text-white">{r.name}</div>
-                  {r.tag && <div className="text-neutral-500">{r.tag}</div>}
-                </div>
-              </figcaption>
-            </figure>
-          ))}
+                <blockquote className="mt-3 text-[14px] leading-relaxed text-neutral-200">
+                  "{r.text}"
+                </blockquote>
+                <figcaption className="mt-4 flex items-center gap-3">
+                  <div className={`size-9 rounded-full grid place-items-center text-xs font-bold text-white ${a.avatar}`}>
+                    {r.name.slice(0, 1).toUpperCase()}
+                  </div>
+                  <div className="text-xs">
+                    <div className="font-semibold text-white">{r.name}</div>
+                    {r.tag && <div className="text-neutral-500">{r.tag}</div>}
+                  </div>
+                </figcaption>
+              </figure>
+            );
+          })}
         </div>
 
         <AddReview />
 
         <div className="mt-10 text-center text-[11px] uppercase tracking-[0.25em] text-neutral-500">
-          1000+ jerseys delivered · Pan-India
+          🏆 1000+ jerseys delivered · Final Day Live
         </div>
       </div>
     </section>
@@ -109,34 +125,36 @@ function AddReview() {
 
   return (
     <div className="mt-12">
-      <div className="mx-auto max-w-2xl rounded-3xl bg-[#141414] p-6 md:p-8 border border-white/10">
-        <div className="text-center">
-          <div className="inline-flex items-center gap-2 border border-[#fa5400] bg-[#fa5400]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-[#fa5400]">
+      <div className="mx-auto max-w-2xl rounded-3xl bg-[#0f1424] p-6 md:p-8 border border-white/10 relative overflow-hidden">
+        <div aria-hidden className="absolute -top-16 -right-16 size-40 rounded-full opacity-30" style={{ background: "radial-gradient(circle,#F1BF00,transparent 70%)" }} />
+        <div className="relative text-center">
+          <div className="inline-flex items-center gap-2 border border-[#F1BF00]/60 bg-gradient-to-r from-[#75AADB]/15 via-white/5 to-[#AA151B]/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-[#F1BF00]">
             Share your experience
           </div>
           <h3 className="mt-3 font-bebas text-2xl md:text-3xl uppercase tracking-wide">
-            Drop your <span className="text-[#fa5400]">review.</span>
+            Drop your <span className="bg-gradient-to-r from-[#75AADB] via-[#F1BF00] to-[#AA151B] bg-clip-text text-transparent">review.</span>
           </h3>
           <p className="mt-1 text-xs text-neutral-500">Sends to our WhatsApp — we post it here after verification.</p>
         </div>
-        <form onSubmit={submit} className="mt-5 grid gap-3 sm:grid-cols-2">
+        <form onSubmit={submit} className="relative mt-5 grid gap-3 sm:grid-cols-2">
           <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name"
-            className="rounded-md border border-white/15 bg-black/40 px-3 py-2.5 text-sm text-white placeholder-neutral-500 focus:border-[#fa5400] focus:outline-none" />
+            className="rounded-md border border-white/15 bg-black/40 px-3 py-2.5 text-sm text-white placeholder-neutral-500 focus:border-[#75AADB] focus:outline-none" />
           <input value={team} onChange={(e) => setTeam(e.target.value)} placeholder="Jersey (optional)"
-            className="rounded-md border border-white/15 bg-black/40 px-3 py-2.5 text-sm text-white placeholder-neutral-500 focus:border-[#fa5400] focus:outline-none" />
+            className="rounded-md border border-white/15 bg-black/40 px-3 py-2.5 text-sm text-white placeholder-neutral-500 focus:border-[#75AADB] focus:outline-none" />
           <div className="sm:col-span-2 flex items-center gap-2">
             <span className="text-[10px] uppercase tracking-widest text-neutral-500">Rating</span>
             {[1,2,3,4,5].map((n) => (
               <button key={n} type="button" onClick={() => setRating(n)}
-                className={`p-1 ${n <= rating ? "text-[#fa5400]" : "text-neutral-700"}`}>
+                className={`p-1 ${n <= rating ? "text-[#F1BF00]" : "text-neutral-700"}`}>
                 <Star className="size-5 fill-current" />
               </button>
             ))}
           </div>
           <textarea value={text} onChange={(e) => setText(e.target.value)} rows={3} placeholder="Your review…"
-            className="sm:col-span-2 rounded-md border border-white/15 bg-black/40 px-3 py-2.5 text-sm text-white placeholder-neutral-500 focus:border-[#fa5400] focus:outline-none" />
+            className="sm:col-span-2 rounded-md border border-white/15 bg-black/40 px-3 py-2.5 text-sm text-white placeholder-neutral-500 focus:border-[#75AADB] focus:outline-none" />
           <button type="submit" disabled={sent}
-            className="sm:col-span-2 inline-flex items-center justify-center gap-2 rounded-full bg-[#fa5400] px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] text-white hover:bg-[#e64a00] disabled:opacity-60">
+            className="sm:col-span-2 inline-flex items-center justify-center gap-2 rounded-full px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] text-black hover:opacity-90 disabled:opacity-60"
+            style={{ background: "linear-gradient(90deg,#75AADB,#F1BF00,#AA151B)" }}>
             <Send className="size-4" /> {sent ? "Sent — thank you!" : "Send review on WhatsApp"}
           </button>
         </form>

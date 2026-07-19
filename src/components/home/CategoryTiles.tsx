@@ -32,16 +32,19 @@ export function CategoryTiles() {
     <section className="relative bg-white" id="shop">
       <div className="container-x py-14 md:py-20">
         <div className="text-center mb-8 md:mb-10">
-          <div className="inline-block bg-black text-white px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em]">
-            Shop by Category
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#75AADB] via-[#F1BF00] to-[#AA151B] text-black px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em]">
+            🏆 Shop by Category
           </div>
           <h2 className="mt-4 font-bebas text-4xl md:text-6xl uppercase leading-[0.9] tracking-tight">
-            Pick your <span className="text-[#fa5400]">lane.</span>
+            Pick your <span className="bg-gradient-to-r from-[#75AADB] via-[#F1BF00] to-[#AA151B] bg-clip-text text-transparent">lane.</span>
           </h2>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-5">
-          {TILES.map((t) => (
+          {TILES.map((t, idx) => {
+            const accents = ["text-[#75AADB]", "text-[#F1BF00]", "text-[#AA151B]"];
+            const ac = accents[idx % 3];
+            return (
             <Link
               key={t.to}
               to={t.to}
@@ -57,14 +60,14 @@ export function CategoryTiles() {
               ) : (
                 <div className="size-full bg-gradient-to-br from-neutral-800 to-black" />
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
               {t.soon && (
-                <div className="absolute top-2 right-2 bg-[#fa5400] text-white text-[9px] font-bold uppercase tracking-wider px-2 py-1">
+                <div className="absolute top-2 right-2 bg-[#AA151B] text-white text-[9px] font-bold uppercase tracking-wider px-2 py-1">
                   Soon
                 </div>
               )}
               <div className="absolute inset-x-0 bottom-0 p-3 md:p-4 text-white">
-                <div className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] text-[#fa5400]">
+                <div className={`text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] ${ac}`}>
                   {t.sub}
                 </div>
                 <div className="font-bebas text-xl md:text-3xl uppercase leading-tight tracking-wide mt-0.5">
@@ -76,7 +79,8 @@ export function CategoryTiles() {
                 </div>
               </div>
             </Link>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

@@ -97,16 +97,19 @@ function Home() {
 
 
       {/* Perks */}
-      <section className="border-b border-black/10 bg-white">
+      <section className="border-b border-black/10 bg-white relative">
+        <div aria-hidden className="absolute inset-x-0 top-0 h-0.5 flex">
+          <div className="flex-1 bg-[#75AADB]" /><div className="flex-1 bg-[#F1BF00]" /><div className="flex-1 bg-[#AA151B]" />
+        </div>
         <div className="container-x grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 py-5 md:py-6 text-xs md:text-sm">
           {[
-            { i: Trophy, t: "WC Final — kits shipping today" },
-            { i: Truck, t: "Free shipping · all India" },
-            { i: Flame, t: "Argentina & Spain stock live" },
-            { i: ShieldCheck, t: "UPI only · no COD" },
+            { i: Trophy, t: "WC Final — kits shipping today", c: "text-[#F1BF00]" },
+            { i: Truck, t: "Free shipping · all India", c: "text-[#75AADB]" },
+            { i: Flame, t: "Argentina & Spain stock live", c: "text-[#AA151B]" },
+            { i: ShieldCheck, t: "UPI only · no COD", c: "text-black" },
           ].map((x, i) => (
             <div key={i} className="flex items-center gap-2 text-neutral-700">
-              <x.i className="size-4 text-[#fa5400] shrink-0" /> <span className="truncate">{x.t}</span>
+              <x.i className={`size-4 shrink-0 ${x.c}`} /> <span className="truncate">{x.t}</span>
             </div>
           ))}
         </div>
