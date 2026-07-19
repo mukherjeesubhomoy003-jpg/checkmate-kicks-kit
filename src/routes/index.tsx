@@ -127,7 +127,7 @@ function Home() {
       {/* How it works */}
       <section id="how" className="container-x py-16 md:py-20">
         <div className="text-center">
-          <div className="inline-block bg-[#fa5400] text-white px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em]">How it works</div>
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#75AADB] via-[#F1BF00] to-[#AA151B] text-black px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em]"><Trophy className="size-3"/> How it works</div>
           <h2 className="mt-4 font-bebas text-4xl md:text-7xl uppercase leading-[0.9] tracking-tight">Order in three steps.</h2>
         </div>
         <div className="mt-10 grid md:grid-cols-3 gap-4">
