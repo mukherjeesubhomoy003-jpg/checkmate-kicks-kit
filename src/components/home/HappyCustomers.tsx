@@ -125,34 +125,36 @@ function AddReview() {
 
   return (
     <div className="mt-12">
-      <div className="mx-auto max-w-2xl rounded-3xl bg-[#141414] p-6 md:p-8 border border-white/10">
-        <div className="text-center">
-          <div className="inline-flex items-center gap-2 border border-[#fa5400] bg-[#fa5400]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-[#fa5400]">
+      <div className="mx-auto max-w-2xl rounded-3xl bg-[#0f1424] p-6 md:p-8 border border-white/10 relative overflow-hidden">
+        <div aria-hidden className="absolute -top-16 -right-16 size-40 rounded-full opacity-30" style={{ background: "radial-gradient(circle,#F1BF00,transparent 70%)" }} />
+        <div className="relative text-center">
+          <div className="inline-flex items-center gap-2 border border-[#F1BF00]/60 bg-gradient-to-r from-[#75AADB]/15 via-white/5 to-[#AA151B]/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-[#F1BF00]">
             Share your experience
           </div>
           <h3 className="mt-3 font-bebas text-2xl md:text-3xl uppercase tracking-wide">
-            Drop your <span className="text-[#fa5400]">review.</span>
+            Drop your <span className="bg-gradient-to-r from-[#75AADB] via-[#F1BF00] to-[#AA151B] bg-clip-text text-transparent">review.</span>
           </h3>
           <p className="mt-1 text-xs text-neutral-500">Sends to our WhatsApp — we post it here after verification.</p>
         </div>
-        <form onSubmit={submit} className="mt-5 grid gap-3 sm:grid-cols-2">
+        <form onSubmit={submit} className="relative mt-5 grid gap-3 sm:grid-cols-2">
           <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name"
-            className="rounded-md border border-white/15 bg-black/40 px-3 py-2.5 text-sm text-white placeholder-neutral-500 focus:border-[#fa5400] focus:outline-none" />
+            className="rounded-md border border-white/15 bg-black/40 px-3 py-2.5 text-sm text-white placeholder-neutral-500 focus:border-[#75AADB] focus:outline-none" />
           <input value={team} onChange={(e) => setTeam(e.target.value)} placeholder="Jersey (optional)"
-            className="rounded-md border border-white/15 bg-black/40 px-3 py-2.5 text-sm text-white placeholder-neutral-500 focus:border-[#fa5400] focus:outline-none" />
+            className="rounded-md border border-white/15 bg-black/40 px-3 py-2.5 text-sm text-white placeholder-neutral-500 focus:border-[#75AADB] focus:outline-none" />
           <div className="sm:col-span-2 flex items-center gap-2">
             <span className="text-[10px] uppercase tracking-widest text-neutral-500">Rating</span>
             {[1,2,3,4,5].map((n) => (
               <button key={n} type="button" onClick={() => setRating(n)}
-                className={`p-1 ${n <= rating ? "text-[#fa5400]" : "text-neutral-700"}`}>
+                className={`p-1 ${n <= rating ? "text-[#F1BF00]" : "text-neutral-700"}`}>
                 <Star className="size-5 fill-current" />
               </button>
             ))}
           </div>
           <textarea value={text} onChange={(e) => setText(e.target.value)} rows={3} placeholder="Your review…"
-            className="sm:col-span-2 rounded-md border border-white/15 bg-black/40 px-3 py-2.5 text-sm text-white placeholder-neutral-500 focus:border-[#fa5400] focus:outline-none" />
+            className="sm:col-span-2 rounded-md border border-white/15 bg-black/40 px-3 py-2.5 text-sm text-white placeholder-neutral-500 focus:border-[#75AADB] focus:outline-none" />
           <button type="submit" disabled={sent}
-            className="sm:col-span-2 inline-flex items-center justify-center gap-2 rounded-full bg-[#fa5400] px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] text-white hover:bg-[#e64a00] disabled:opacity-60">
+            className="sm:col-span-2 inline-flex items-center justify-center gap-2 rounded-full px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] text-black hover:opacity-90 disabled:opacity-60"
+            style={{ background: "linear-gradient(90deg,#75AADB,#F1BF00,#AA151B)" }}>
             <Send className="size-4" /> {sent ? "Sent — thank you!" : "Send review on WhatsApp"}
           </button>
         </form>
