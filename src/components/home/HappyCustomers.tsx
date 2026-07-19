@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Quote, Star, Send, Flame } from "lucide-react";
+import { Quote, Star, Send, Trophy } from "lucide-react";
 
 const WHATSAPP_NUMBER = "917003369589";
 
