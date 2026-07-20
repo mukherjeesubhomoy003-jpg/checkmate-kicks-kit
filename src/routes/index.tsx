@@ -1,11 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Truck, ShieldCheck, MessageCircle, IndianRupee, Banknote, Trophy, Star, Flame } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight, Truck, ShieldCheck, MessageCircle, IndianRupee, Banknote, Trophy, Star, Flame, Sparkles } from "lucide-react";
 import { FeaturedDrop } from "@/components/home/FeaturedDrop";
 import { CategoryTiles } from "@/components/home/CategoryTiles";
 import { HappyCustomers } from "@/components/home/HappyCustomers";
 import { ShareBanner } from "@/components/home/ShareBanner";
 import { BRAND } from "@/components/order/OrderModal";
 import { HeroSlideshow } from "@/components/home/HeroSlideshow";
+import embRm from "@/assets/embroidery/rm-front.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -22,15 +23,42 @@ export const Route = createFileRoute("/")({
 function Home() {
   return (
     <div>
-      {/* WC FINAL — Today */}
+      {/* Announcement strip — Spain champs + Spain WC soon */}
       <div className="relative z-[3] bg-black text-white overflow-hidden border-b border-[#F1BF00]/40">
         <div className="absolute inset-0 opacity-60" style={{ background: "linear-gradient(90deg,#AA151B 0%,#F1BF00 50%,#AA151B 100%)" }} />
-        <div className="container-x relative flex items-center justify-center gap-2 sm:gap-3 py-2 text-center">
+        <div className="container-x relative flex flex-wrap items-center justify-center gap-x-3 gap-y-1 py-2 text-center">
           <Trophy className="size-4 text-[#F1BF00]" />
           <span className="font-bebas text-sm sm:text-base tracking-[0.2em] uppercase">
-            <span className="text-[#F1BF00]">¡Campeones!</span> · <span className="text-white">Spain</span> are <span className="text-[#F1BF00]">World Champions 🏆</span>
+            <span className="text-[#F1BF00]">¡Campeones!</span> · Spain are <span className="text-[#F1BF00]">World Champions 🏆</span>
+          </span>
+          <span className="hidden sm:inline text-white/40">|</span>
+          <span className="font-bebas text-xs sm:text-sm tracking-[0.18em] uppercase text-white/90">
+            Buy <span className="text-[#F1BF00]">Spain WC Jersey</span> — Coming Soon
           </span>
           <Star className="size-3.5 text-[#F1BF00] fill-[#F1BF00]" />
+        </div>
+      </div>
+
+      {/* Embroidery upcoming-season highlight */}
+      <Link
+        to="/embroidery"
+        className="relative z-[3] block bg-gradient-to-r from-[#0a0a0a] via-[#1a0a2e] to-[#0a0a0a] text-white border-b border-[#F1BF00]/40 overflow-hidden group"
+      >
+        <div aria-hidden className="absolute inset-0 opacity-30 group-hover:opacity-50 transition" style={{ background: "radial-gradient(circle at 15% 50%, rgba(241,191,0,0.5), transparent 45%)" }} />
+        <div className="container-x relative flex items-center gap-3 sm:gap-4 py-2.5 sm:py-3">
+          <img src={embRm.url} alt="" className="size-9 sm:size-11 object-cover shrink-0 border border-[#F1BF00]/50" />
+          <div className="min-w-0 flex-1">
+            <div className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.24em] text-[#F1BF00] inline-flex items-center gap-1">
+              <Sparkles className="size-3" /> New · Upcoming Season
+            </div>
+            <div className="font-bebas text-sm sm:text-lg tracking-[0.14em] uppercase truncate">
+              Real Madrid <span className="text-[#F1BF00]">26/27 Embroidery</span> — <span className="text-[#F1BF00]">₹499 only</span>
+            </div>
+          </div>
+          <span className="hidden sm:inline-flex items-center gap-1.5 bg-[#F1BF00] text-black text-[10px] font-black uppercase tracking-[0.18em] px-3 py-1.5 group-hover:bg-white transition">
+            Shop <ArrowRight className="size-3.5" />
+          </span>
+          <ArrowRight className="sm:hidden size-4 text-[#F1BF00] shrink-0" />
         </div>
       </div>
 
