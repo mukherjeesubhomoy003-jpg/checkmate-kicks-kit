@@ -52,12 +52,12 @@ export function Header() {
           <nav className="flex ml-2 sm:ml-6 items-center gap-3 sm:gap-5 text-[11px] sm:text-sm font-semibold text-neutral-700 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             <Link to="/" className="hover:text-[#AA151B] whitespace-nowrap">Home</Link>
             <Link to="/sets" className="hover:text-[#AA151B] whitespace-nowrap text-[#AA151B] font-bold inline-flex items-center gap-1"><Trophy className="size-3.5 text-[#F1BF00]" />Final</Link>
+            <Link to="/embroidery" className="whitespace-nowrap font-bold text-[#F1BF00] bg-black px-2 py-0.5 rounded-sm inline-flex items-center gap-1"><Sparkles className="size-3.5" />Embroidery</Link>
             <Link to="/player-version" className="hover:text-[#75AADB] whitespace-nowrap">Player</Link>
             <Link to="/fan-version" className="hover:text-[#75AADB] whitespace-nowrap">Fan</Link>
             <Link to="/jackets" className="hover:text-[#AA151B] whitespace-nowrap">Jackets</Link>
             <Link to="/shorts" className="hover:text-[#AA151B] whitespace-nowrap">Shorts</Link>
             <Link to="/polos" className="hover:text-[#AA151B] whitespace-nowrap">Polos</Link>
-            <Link to="/embroidery" className="whitespace-nowrap font-bold text-[#F1BF00] bg-black px-2 py-0.5 rounded-sm inline-flex items-center gap-1"><Sparkles className="size-3.5" />Embroidery</Link>
             <Link to="/jersey-admin" className="hover:text-[#AA151B] whitespace-nowrap text-[#AA151B]">Admin</Link>
           </nav>
 
