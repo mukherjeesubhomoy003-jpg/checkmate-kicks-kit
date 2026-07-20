@@ -8,17 +8,20 @@ import jacketBanner from "@/assets/thumbs/jacket.jpg.asset.json";
 import shortsTile from "@/assets/thumbs/shorts.jpg.asset.json";
 import poloTile from "@/assets/polos/germany-white.jpg.asset.json";
 import setsTile from "@/assets/sets/set07.jpg.asset.json";
+import embTile from "@/assets/embroidery/rm-front.jpg.asset.json";
 
 type Tile = {
-  to: "/player-version" | "/fan-version" | "/jackets" | "/shorts" | "/polos" | "/sets";
+  to: "/player-version" | "/fan-version" | "/jackets" | "/shorts" | "/polos" | "/sets" | "/embroidery";
   label: string;
   sub: string;
   price: string;
   image?: string;
   soon?: boolean;
+  isNew?: boolean;
 };
 
 const TILES: Tile[] = [
+  { to: "/embroidery", label: "Embroidery", sub: "RM 26/27 · Upcoming season", price: "₹499", image: embTile.url, isNew: true },
   { to: "/sets", label: "1st Grade Sets", sub: "Jersey + Shorts kit", price: "₹699", image: setsTile.url },
   { to: "/player-version", label: "Player Version", sub: "Match-grade · WC 2026", price: "₹850", image: pvSpecial.url },
   { to: "/fan-version", label: "Fan Version", sub: "Everyday supporter kit", price: "₹750", image: fanTile.url },
@@ -64,6 +67,11 @@ export function CategoryTiles() {
               {t.soon && (
                 <div className="absolute top-2 right-2 bg-[#AA151B] text-white text-[9px] font-bold uppercase tracking-wider px-2 py-1">
                   Soon
+                </div>
+              )}
+              {t.isNew && (
+                <div className="absolute top-2 right-2 bg-[#F1BF00] text-black text-[9px] font-black uppercase tracking-wider px-2 py-1 animate-pulse">
+                  ✨ New
                 </div>
               )}
               <div className="absolute inset-x-0 bottom-0 p-3 md:p-4 text-white">

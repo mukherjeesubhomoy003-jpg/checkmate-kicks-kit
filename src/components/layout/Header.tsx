@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Instagram, MessageCircle, Search, X, Trophy } from "lucide-react";
+import { Instagram, MessageCircle, Search, X, Trophy, Sparkles } from "lucide-react";
 import { Logo } from "./Logo";
 import { BRAND } from "@/components/order/OrderModal";
 import { JERSEYS } from "@/lib/jerseys";
@@ -57,6 +57,7 @@ export function Header() {
             <Link to="/jackets" className="hover:text-[#AA151B] whitespace-nowrap">Jackets</Link>
             <Link to="/shorts" className="hover:text-[#AA151B] whitespace-nowrap">Shorts</Link>
             <Link to="/polos" className="hover:text-[#AA151B] whitespace-nowrap">Polos</Link>
+            <Link to="/embroidery" className="whitespace-nowrap font-bold text-[#F1BF00] bg-black px-2 py-0.5 rounded-sm inline-flex items-center gap-1"><Sparkles className="size-3.5" />Embroidery</Link>
             <Link to="/jersey-admin" className="hover:text-[#AA151B] whitespace-nowrap text-[#AA151B]">Admin</Link>
           </nav>
 

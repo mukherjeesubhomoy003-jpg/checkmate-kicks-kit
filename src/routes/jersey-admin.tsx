@@ -11,6 +11,7 @@ import { SHORTS } from "@/lib/shorts";
 import { SPECIALS } from "@/lib/specials";
 import { POLOS } from "@/lib/polos";
 import { SETS } from "@/lib/sets";
+import { EMBROIDERY } from "@/lib/embroidery";
 import {
   setAdminSession,
   clearAdminSession,
@@ -300,8 +301,9 @@ const POSTER_ITEMS = [
   { id: "p-neymar", team: "Neymar · 10", image: "https://placehold.co/60/1a1a1a/fa5400?text=N" },
 ];
 
-type StockSection = "player" | "specials" | "sets" | "fan" | "jackets" | "shorts" | "polos" | "posters";
+type StockSection = "player" | "specials" | "sets" | "fan" | "jackets" | "shorts" | "polos" | "embroidery" | "posters";
 const SECTIONS: { key: StockSection; label: string; sub: string }[] = [
+  { key: "embroidery", label: "Embroidery ✨", sub: "New · Upcoming season · ₹499" },
   { key: "player", label: "Player Version", sub: "Match-grade · S/M/L/XL/XXL" },
   { key: "specials", label: "Special Editions", sub: "FS · Practice · Deals" },
   { key: "sets", label: "1st Grade Sets", sub: "Jersey + Shorts · ₹699" },
@@ -315,6 +317,7 @@ const SECTIONS: { key: StockSection; label: string; sub: string }[] = [
 const SHORT_ITEMS = SHORTS.map((s) => ({ id: s.id, team: `${s.team} · ${s.colour}`, image: s.image }));
 const POLO_ITEMS = POLOS.map((p) => ({ id: p.id, team: `${p.team} · ${p.tag}`, image: p.image }));
 const SET_ITEMS = SETS.map((s) => ({ id: s.id, team: s.team, tag: s.tag, image: s.image }));
+const EMB_ITEMS = EMBROIDERY.map((e) => ({ id: e.id, team: e.team, tag: `${e.season} · ${e.tag}`, image: e.image }));
 
 const SPECIAL_ITEMS = SPECIALS.map((s) => ({ id: s.id, team: s.title, image: s.image }));
 
@@ -345,6 +348,7 @@ function StockPanel({ token }: { token: string }) {
     : section === "jackets" ? JACKETS
     : section === "shorts" ? SHORT_ITEMS
     : section === "polos" ? POLO_ITEMS
+    : section === "embroidery" ? EMB_ITEMS
     : section === "posters" ? POSTER_ITEMS
     : [];
   const sizeCols: SizeKey[] = section === "posters" ? ["M"] : SIZES;
@@ -352,7 +356,7 @@ function StockPanel({ token }: { token: string }) {
   const dirty = useMemo(() => {
     const updates: { jersey_id: string; size: SizeKey; stock: number }[] = [];
     if (!stockMap) return updates;
-    const all = [...ALL_JERSEYS, ...SPECIAL_ITEMS, ...SET_ITEMS, ...FAN_JERSEYS, ...JACKETS, ...SHORT_ITEMS, ...POLO_ITEMS, ...POSTER_ITEMS];
+    const all = [...ALL_JERSEYS, ...SPECIAL_ITEMS, ...SET_ITEMS, ...FAN_JERSEYS, ...JACKETS, ...SHORT_ITEMS, ...POLO_ITEMS, ...EMB_ITEMS, ...POSTER_ITEMS];
     for (const j of all) {
       const isPoster = j.id.startsWith("p-");
       const cols: SizeKey[] = isPoster ? ["M"] : SIZES;
@@ -389,6 +393,7 @@ function StockPanel({ token }: { token: string }) {
     if (section === "jackets") return JACKETS.some((j) => j.id === u.jersey_id);
     if (section === "shorts") return SHORT_ITEMS.some((j) => j.id === u.jersey_id);
     if (section === "polos") return POLO_ITEMS.some((j) => j.id === u.jersey_id);
+    if (section === "embroidery") return EMB_ITEMS.some((j) => j.id === u.jersey_id);
     if (section === "posters") return POSTER_ITEMS.some((j) => j.id === u.jersey_id);
     return false;
   }).length;

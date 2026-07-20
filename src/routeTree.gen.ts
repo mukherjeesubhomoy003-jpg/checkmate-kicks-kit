@@ -21,6 +21,7 @@ import { Route as PlayerVersionRouteImport } from './routes/player-version'
 import { Route as JerseyAdminRouteImport } from './routes/jersey-admin'
 import { Route as JacketsRouteImport } from './routes/jackets'
 import { Route as FanVersionRouteImport } from './routes/fan-version'
+import { Route as EmbroideryRouteImport } from './routes/embroidery'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
@@ -96,6 +97,11 @@ const JacketsRoute = JacketsRouteImport.update({
 const FanVersionRoute = FanVersionRouteImport.update({
   id: '/fan-version',
   path: '/fan-version',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmbroideryRoute = EmbroideryRouteImport.update({
+  id: '/embroidery',
+  path: '/embroidery',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CartRoute = CartRouteImport.update({
@@ -187,6 +193,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/embroidery': typeof EmbroideryRoute
   '/fan-version': typeof FanVersionRoute
   '/jackets': typeof JacketsRoute
   '/jersey-admin': typeof JerseyAdminRoute
@@ -216,6 +223,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/embroidery': typeof EmbroideryRoute
   '/fan-version': typeof FanVersionRoute
   '/jackets': typeof JacketsRoute
   '/jersey-admin': typeof JerseyAdminRoute
@@ -246,6 +254,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/embroidery': typeof EmbroideryRoute
   '/fan-version': typeof FanVersionRoute
   '/jackets': typeof JacketsRoute
   '/jersey-admin': typeof JerseyAdminRoute
@@ -277,6 +286,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/cart'
+    | '/embroidery'
     | '/fan-version'
     | '/jackets'
     | '/jersey-admin'
@@ -306,6 +316,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/cart'
+    | '/embroidery'
     | '/fan-version'
     | '/jackets'
     | '/jersey-admin'
@@ -335,6 +346,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/cart'
+    | '/embroidery'
     | '/fan-version'
     | '/jackets'
     | '/jersey-admin'
@@ -366,6 +378,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   CartRoute: typeof CartRoute
+  EmbroideryRoute: typeof EmbroideryRoute
   FanVersionRoute: typeof FanVersionRoute
   JacketsRoute: typeof JacketsRoute
   JerseyAdminRoute: typeof JerseyAdminRoute
@@ -467,6 +480,13 @@ declare module '@tanstack/react-router' {
       path: '/fan-version'
       fullPath: '/fan-version'
       preLoaderRoute: typeof FanVersionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/embroidery': {
+      id: '/embroidery'
+      path: '/embroidery'
+      fullPath: '/embroidery'
+      preLoaderRoute: typeof EmbroideryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cart': {
@@ -646,6 +666,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   CartRoute: CartRoute,
+  EmbroideryRoute: EmbroideryRoute,
   FanVersionRoute: FanVersionRoute,
   JacketsRoute: JacketsRoute,
   JerseyAdminRoute: JerseyAdminRoute,
