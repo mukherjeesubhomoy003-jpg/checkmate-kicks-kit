@@ -60,7 +60,7 @@ function Home() {
           </span>
           <ArrowRight className="sm:hidden size-4 text-[#F1BF00] shrink-0" />
         </div>
-      </div>
+      </Link>
 
       {/* Hero */}
       <section className="relative overflow-hidden bg-[#1a0508] font-outfit">
