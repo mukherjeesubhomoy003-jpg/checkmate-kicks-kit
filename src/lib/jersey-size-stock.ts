@@ -5,14 +5,24 @@ export type SizeKey = "S" | "M" | "L" | "XL" | "XXL";
 export type SizeStockMap = Record<string, Partial<Record<SizeKey, number>>>;
 
 export async function fetchSizeStockMap(): Promise<SizeStockMap> {
-  const { data, error } = await supabase
-    .from("jersey_size_stock")
-    .select("jersey_id, size, stock")
-    .range(0, 9999);
+  const rows: { jersey_id: string; size: string; stock: number }[] = [];
+  const pageSize = 1000;
 
-  if (error) throw error;
+  for (let from = 0; ; from += pageSize) {
+    const { data, error } = await supabase
+      .from("jersey_size_stock")
+      .select("jersey_id, size, stock")
+      .order("jersey_id", { ascending: true })
+      .order("size", { ascending: true })
+      .range(from, from + pageSize - 1);
+
+    if (error) throw error;
+    rows.push(...((data ?? []) as typeof rows));
+    if (!data || data.length < pageSize) break;
+  }
+
   const map: SizeStockMap = {};
-  for (const row of data ?? []) {
+  for (const row of rows) {
     const id = row.jersey_id as string;
     if (!map[id]) map[id] = {};
     map[id]![row.size as SizeKey] = row.stock as number;
