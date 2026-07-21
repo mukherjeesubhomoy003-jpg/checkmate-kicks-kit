@@ -7,7 +7,9 @@ export type SizeStockMap = Record<string, Partial<Record<SizeKey, number>>>;
 export async function fetchSizeStockMap(): Promise<SizeStockMap> {
   const { data, error } = await supabase
     .from("jersey_size_stock")
-    .select("jersey_id, size, stock");
+    .select("jersey_id, size, stock")
+    .range(0, 9999);
+
   if (error) throw error;
   const map: SizeStockMap = {};
   for (const row of data ?? []) {
