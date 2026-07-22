@@ -21,7 +21,7 @@ type Tile = {
 };
 
 const TILES: Tile[] = [
-  { to: "/embroidery", label: "Embroidery", sub: "RM 26/27 · Upcoming season", price: "₹499", image: embTile.url, isNew: true },
+  { to: "/embroidery", label: "Embroidery", sub: "RM 26/27 · Upcoming season", price: "₹450", image: embTile.url, isNew: true },
   { to: "/sets", label: "1st Grade Sets", sub: "Jersey + Shorts kit", price: "₹699", image: setsTile.url },
   { to: "/player-version", label: "Player Version", sub: "Match-grade · WC 2026", price: "₹850", image: pvSpecial.url },
   { to: "/fan-version", label: "Fan Version", sub: "Everyday supporter kit", price: "₹750", image: fanTile.url },

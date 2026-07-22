@@ -16,9 +16,9 @@ export const Route = createFileRoute("/embroidery")({
   head: () => ({
     meta: [
       { title: "Embroidery Edition — Real Madrid 26/27 · CHECKMATE" },
-      { name: "description", content: "Upcoming season embroidery jersey — Real Madrid 26/27 Home edition. Premium stitched crest & sponsor. Only ₹499." },
+      { name: "description", content: "Upcoming season embroidery jersey — Real Madrid 26/27 Home edition. Premium stitched crest & sponsor. Only ₹450." },
       { property: "og:title", content: "CHECKMATE — Embroidery Editions" },
-      { property: "og:description", content: "Real Madrid 26/27 Embroidery — ₹499 only. Upcoming season drop." },
+      { property: "og:description", content: "Real Madrid 26/27 Embroidery — ₹450 only. Upcoming season drop." },
     ],
   }),
   component: EmbroideryPage,
@@ -100,7 +100,7 @@ function EmbroideryPage() {
                   <div className="mt-2 flex items-baseline gap-2">
                     <span className="font-bebas text-xl tracking-wide text-black">₹{EMBROIDERY_PRICE}</span>
                     <span className="text-[11px] text-neutral-400 line-through">₹{EMBROIDERY_MRP}</span>
-                    <span className="ml-auto text-[10px] font-bold uppercase tracking-wider text-[#AA151B]">-67%</span>
+                    <span className="ml-auto text-[10px] font-bold uppercase tracking-wider text-[#AA151B]">-70%</span>
                   </div>
                 </div>
               </article>

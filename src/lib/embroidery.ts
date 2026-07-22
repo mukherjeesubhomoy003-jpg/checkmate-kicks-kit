@@ -12,7 +12,7 @@ export type Embroidery = {
   gallery: string[];
 };
 
-export const EMBROIDERY_PRICE = 499;
+export const EMBROIDERY_PRICE = 450;
 export const EMBROIDERY_MRP = 1499;
 
 export const EMBROIDERY: Embroidery[] = [

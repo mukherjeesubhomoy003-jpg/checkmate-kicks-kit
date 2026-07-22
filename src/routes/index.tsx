@@ -52,7 +52,7 @@ function Home() {
               <Sparkles className="size-3" /> New · Upcoming Season
             </div>
             <div className="font-bebas text-sm sm:text-lg tracking-[0.14em] uppercase truncate">
-              Real Madrid <span className="text-[#F1BF00]">26/27 Embroidery</span> — <span className="text-[#F1BF00]">₹499 only</span>
+              Real Madrid <span className="text-[#F1BF00]">26/27 Embroidery</span> — <span className="text-[#F1BF00]">₹450 only</span>
             </div>
           </div>
           <span className="hidden sm:inline-flex items-center gap-1.5 bg-[#F1BF00] text-black text-[10px] font-black uppercase tracking-[0.18em] px-3 py-1.5 group-hover:bg-white transition">
