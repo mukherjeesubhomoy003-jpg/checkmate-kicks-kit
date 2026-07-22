@@ -4,6 +4,7 @@ import { ArrowLeft, Sparkles, Trophy, Flame } from "lucide-react";
 import { EMBROIDERY, EMBROIDERY_PRICE, EMBROIDERY_MRP, type Embroidery } from "@/lib/embroidery";
 import { OrderModal } from "@/components/order/OrderModal";
 import { useJerseySizeStock, type SizeKey } from "@/lib/jersey-size-stock";
+import embroideryBanner from "@/assets/banners/embroidery.jpg.asset.json";
 
 const SIZES: SizeKey[] = ["S", "M", "L", "XL", "XXL"];
 function totalStock(map: Record<string, Partial<Record<SizeKey, number>>> | undefined, id: string) {
