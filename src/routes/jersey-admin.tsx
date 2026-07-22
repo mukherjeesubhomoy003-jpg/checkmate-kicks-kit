@@ -303,7 +303,7 @@ const POSTER_ITEMS = [
 
 type StockSection = "player" | "specials" | "sets" | "fan" | "jackets" | "shorts" | "polos" | "embroidery" | "posters";
 const SECTIONS: { key: StockSection; label: string; sub: string }[] = [
-  { key: "embroidery", label: "Embroidery ✨", sub: "New · Upcoming season · ₹499" },
+  { key: "embroidery", label: "Embroidery ✨", sub: "New · Upcoming season · ₹450" },
   { key: "player", label: "Player Version", sub: "Match-grade · S/M/L/XL/XXL" },
   { key: "specials", label: "Special Editions", sub: "FS · Practice · Deals" },
   { key: "sets", label: "1st Grade Sets", sub: "Jersey + Shorts · ₹699" },
