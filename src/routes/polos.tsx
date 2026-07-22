@@ -35,24 +35,32 @@ function PolosPage() {
 
   return (
     <div>
-      <div className="container-x pt-5">
-        <Link to="/" className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] bg-black text-white hover:bg-[#fa5400] transition">
-          <ArrowLeft className="size-3.5" /> Back
-        </Link>
+      <div
+        className="relative w-full overflow-hidden"
+        style={{ backgroundImage: `url(${polosBanner.url})`, backgroundSize: "cover", backgroundPosition: "center" }}
+      >
+        <div className="bg-gradient-to-r from-black/85 via-black/60 to-black/30">
+          <div className="container-x py-10 md:py-16">
+            <Link to="/" className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] bg-white/10 backdrop-blur text-white hover:bg-[#fa5400] transition">
+              <ArrowLeft className="size-3.5" /> Back
+            </Link>
+            <div className="mt-6 max-w-2xl text-white">
+              <div className="inline-flex items-center gap-2 bg-[#fa5400] text-white px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em]">
+                <Trophy className="size-3.5" /> {list.length} Polo T-Shirts Live
+              </div>
+              <h1 className="mt-4 font-bebas text-5xl md:text-7xl lg:text-8xl uppercase leading-[0.9] tracking-tight">
+                Polo <span className="text-[#fa5400]">T-Shirts.</span>
+              </h1>
+              <p className="mt-3 text-sm md:text-base text-white/85 max-w-lg">
+                Premium club & country polos · <b className="text-[#fa5400]">₹{POLO_PRICE} flat</b> · Free all-India shipping.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <section className="container-x py-10 md:py-16">
-        <div className="flex flex-col items-center text-center">
-          <div className="inline-flex items-center gap-2 bg-[#fa5400] text-white px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em]">
-            <Trophy className="size-3.5" /> {list.length} Polo T-Shirts
-          </div>
-          <h1 className="mt-4 font-bebas text-4xl md:text-6xl lg:text-7xl uppercase leading-[0.9] tracking-tight">
-            Polo <span className="text-[#fa5400]">T-Shirts.</span>
-          </h1>
-          <p className="mt-3 max-w-lg text-sm text-neutral-600">
-            Premium club & country polos · <b>₹{POLO_PRICE} flat</b> · Free all-India shipping.
-          </p>
-        </div>
+
 
         <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5">
           {list.map((p) => {
