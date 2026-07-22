@@ -31,31 +31,35 @@ function EmbroideryPage() {
 
   return (
     <div className="bg-white">
-      <div className="container-x pt-5">
-        <Link to="/" className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] bg-black text-white hover:bg-[#F1BF00] hover:text-black transition">
-          <ArrowLeft className="size-3.5" /> Back
-        </Link>
+      {/* Hero banner */}
+      <div
+        className="relative w-full overflow-hidden"
+        style={{ backgroundImage: `url(${embroideryBanner.url})`, backgroundSize: "cover", backgroundPosition: "center" }}
+      >
+        <div className="bg-gradient-to-r from-black/90 via-black/70 to-black/40">
+          <div className="container-x py-10 md:py-16">
+            <Link to="/" className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] bg-white/10 backdrop-blur text-white hover:bg-[#F1BF00] hover:text-black transition">
+              <ArrowLeft className="size-3.5" /> Back
+            </Link>
+            <div className="mt-6 max-w-2xl text-white">
+              <div className="inline-flex items-center gap-2 border border-[#F1BF00]/60 bg-[#F1BF00]/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.24em] text-[#F1BF00]">
+                <Sparkles className="size-3.5" /> New · Upcoming Season Drop
+              </div>
+              <h1 className="mt-4 font-bebas text-5xl md:text-7xl lg:text-8xl uppercase leading-[0.9] tracking-tight">
+                Embroidery <span className="bg-gradient-to-r from-[#F1BF00] via-white to-[#F1BF00] bg-clip-text text-transparent">Edition.</span>
+              </h1>
+              <p className="mt-3 text-sm md:text-base text-white/85 max-w-lg">
+                Real Madrid <b className="text-white">26/27 Home</b> — stitched crest, embroidered sponsor, match-day feel.
+                <br />
+                <span className="text-[#F1BF00] font-bold">₹{EMBROIDERY_PRICE} only</span> · Launch price · Limited units.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0a0a0a] via-[#111] to-[#1a0a2e] text-white">
-        <div aria-hidden className="absolute inset-0 opacity-30" style={{ background: "radial-gradient(circle at 30% 40%, rgba(241,191,0,0.35), transparent 55%)" }} />
-        <div className="container-x relative py-12 md:py-20 text-center">
-          <div className="inline-flex items-center gap-2 border border-[#F1BF00]/60 bg-[#F1BF00]/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.24em] text-[#F1BF00]">
-            <Sparkles className="size-3.5" /> New · Upcoming Season Drop
-          </div>
-          <h1 className="mt-5 font-bebas text-5xl md:text-7xl lg:text-8xl uppercase leading-[0.9] tracking-tight">
-            Embroidery <span className="bg-gradient-to-r from-[#F1BF00] via-white to-[#F1BF00] bg-clip-text text-transparent">Edition.</span>
-          </h1>
-          <p className="mt-4 max-w-xl mx-auto text-sm md:text-base text-zinc-300">
-            Real Madrid <b className="text-white">26/27 Home</b> — stitched crest, embroidered sponsor, match-day feel.
-            <br />
-            <span className="text-[#F1BF00] font-bold">₹{EMBROIDERY_PRICE} only</span> · Launch price · Limited units.
-          </p>
-        </div>
-      </section>
-
       <section className="container-x py-10 md:py-14">
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
           {EMBROIDERY.map((p) => {
             const total = totalStock(stockMap, p.id);
