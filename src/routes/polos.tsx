@@ -4,6 +4,7 @@ import { ArrowLeft, Trophy } from "lucide-react";
 import { POLOS, POLO_PRICE, POLO_MRP, type Polo } from "@/lib/polos";
 import { OrderModal } from "@/components/order/OrderModal";
 import { useJerseySizeStock, type SizeKey } from "@/lib/jersey-size-stock";
+import polosBanner from "@/assets/banners/polos.jpg.asset.json";
 
 const SIZES: SizeKey[] = ["S", "M", "L", "XL", "XXL"];
 function totalStock(map: Record<string, Partial<Record<SizeKey, number>>> | undefined, id: string) {
