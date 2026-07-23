@@ -13,6 +13,8 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CartProvider } from "@/lib/cart-context";
+import { BulkCartProvider } from "@/lib/bulk-cart";
+
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/sonner";
@@ -116,15 +118,18 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <CartProvider>
-        <div className="min-h-screen flex flex-col">
-          {!isChromeless && <Header />}
-          <main className="flex-1">
-            <Outlet />
-          </main>
-          {!isChromeless && <Footer />}
-        </div>
-        <Toaster />
+        <BulkCartProvider>
+          <div className="min-h-screen flex flex-col">
+            {!isChromeless && <Header />}
+            <main className="flex-1">
+              <Outlet />
+            </main>
+            {!isChromeless && <Footer />}
+          </div>
+          <Toaster />
+        </BulkCartProvider>
       </CartProvider>
+
     </QueryClientProvider>
   );
 }
