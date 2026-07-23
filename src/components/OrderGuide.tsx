@@ -12,7 +12,7 @@ const STEPS = [
 
 export function OrderGuide() {
   const [activeIdx, setActiveIdx] = useState(0);
-  const refs = useRef<(HTMLDivElement | null)[]>([]);
+  const refs = useRef<(HTMLLIElement | null)[]>([]);
 
   useEffect(() => {
     const io = new IntersectionObserver(
