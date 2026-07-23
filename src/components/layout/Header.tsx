@@ -1,17 +1,32 @@
 import { useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Instagram, MessageCircle, Search, X, Trophy, Sparkles } from "lucide-react";
+import { Instagram, Search, X, Trophy, Sparkles, Menu, ShoppingCart } from "lucide-react";
 import { Logo } from "./Logo";
 import { BRAND } from "@/components/order/OrderModal";
 import { JERSEYS } from "@/lib/jerseys";
 import { FAN_JERSEYS } from "@/lib/fan-jerseys";
 import { JACKETS } from "@/lib/jackets";
 import { SETS } from "@/lib/sets";
+import { useBulkCart } from "@/lib/bulk-cart";
+
+const NAV_LINKS: { to: "/" | "/sets" | "/embroidery" | "/player-version" | "/fan-version" | "/jackets" | "/shorts" | "/polos" | "/jersey-admin"; label: string; badge?: string; }[] = [
+  { to: "/", label: "Home" },
+  { to: "/sets", label: "Final · Sets", badge: "hot" },
+  { to: "/embroidery", label: "Embroidery" },
+  { to: "/player-version", label: "Player" },
+  { to: "/fan-version", label: "Fan" },
+  { to: "/jackets", label: "Jackets" },
+  { to: "/shorts", label: "Shorts" },
+  { to: "/polos", label: "Polos" },
+  { to: "/jersey-admin", label: "Admin" },
+];
 
 export function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [q, setQ] = useState("");
   const navigate = useNavigate();
+  const cart = useBulkCart();
 
   const query = q.trim().toLowerCase();
   const results = query.length >= 1 ? [
@@ -35,7 +50,6 @@ export function Header() {
   return (
     <>
       <header className="sticky top-0 z-50 border-b border-black/10 bg-white/95 backdrop-blur-xl">
-        {/* Flag ribbon */}
         <div aria-hidden className="h-1 w-full flex">
           <div className="flex-1 bg-[#75AADB]" />
           <div className="flex-1 bg-white border-y border-black/5" />
@@ -45,20 +59,32 @@ export function Header() {
           <div className="flex-1 bg-[#AA151B]" />
         </div>
         <div className="container-x flex h-14 sm:h-16 items-center gap-2 sm:gap-3">
+          {/* Mobile hamburger */}
+          <button
+            onClick={() => setMenuOpen(true)}
+            aria-label="Menu"
+            className="lg:hidden inline-flex p-2 -ml-2 rounded-md text-neutral-800 hover:bg-neutral-100"
+          >
+            <Menu className="size-5" />
+          </button>
+
           <Link to="/" className="flex items-center gap-2 shrink-0" aria-label="Checkmate home">
             <Logo className="h-8 sm:h-10 w-auto rounded-md" />
           </Link>
 
-          <nav className="flex ml-2 sm:ml-6 items-center gap-3 sm:gap-5 text-[11px] sm:text-sm font-semibold text-neutral-700 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-            <Link to="/" className="hover:text-[#AA151B] whitespace-nowrap">Home</Link>
-            <Link to="/sets" className="hover:text-[#AA151B] whitespace-nowrap text-[#AA151B] font-bold inline-flex items-center gap-1"><Trophy className="size-3.5 text-[#F1BF00]" />Final</Link>
-            <Link to="/embroidery" className="whitespace-nowrap font-bold text-[#F1BF00] bg-black px-2 py-0.5 rounded-sm inline-flex items-center gap-1"><Sparkles className="size-3.5" />Embroidery</Link>
-            <Link to="/player-version" className="hover:text-[#75AADB] whitespace-nowrap">Player</Link>
-            <Link to="/fan-version" className="hover:text-[#75AADB] whitespace-nowrap">Fan</Link>
-            <Link to="/jackets" className="hover:text-[#AA151B] whitespace-nowrap">Jackets</Link>
-            <Link to="/shorts" className="hover:text-[#AA151B] whitespace-nowrap">Shorts</Link>
-            <Link to="/polos" className="hover:text-[#AA151B] whitespace-nowrap">Polos</Link>
-            <Link to="/jersey-admin" className="hover:text-[#AA151B] whitespace-nowrap text-[#AA151B]">Admin</Link>
+          {/* Desktop nav */}
+          <nav className="hidden lg:flex ml-6 items-center gap-5 text-sm font-semibold text-neutral-700">
+            {NAV_LINKS.map((l) => (
+              <Link
+                key={l.to}
+                to={l.to}
+                className={`whitespace-nowrap hover:text-[#AA151B] ${l.badge === "hot" ? "text-[#AA151B] font-bold inline-flex items-center gap-1" : ""} ${l.to === "/embroidery" ? "font-bold text-[#F1BF00] bg-black px-2 py-0.5 rounded-sm inline-flex items-center gap-1" : ""}`}
+              >
+                {l.badge === "hot" && <Trophy className="size-3.5 text-[#F1BF00]" />}
+                {l.to === "/embroidery" && <Sparkles className="size-3.5" />}
+                {l.label}
+              </Link>
+            ))}
           </nav>
 
           <div className="ml-auto flex items-center gap-1 sm:gap-1.5 shrink-0">
@@ -69,18 +95,76 @@ export function Header() {
             >
               <Search className="size-4" />
             </button>
+            <Link
+              to="/bulk-cart"
+              aria-label="Cart"
+              className="relative inline-flex p-2 rounded-full text-neutral-700 hover:text-[#AA151B] hover:bg-neutral-100"
+            >
+              <ShoppingCart className="size-4" />
+              {cart.count > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 grid place-items-center text-[10px] font-bold bg-[#fa5400] text-white rounded-full">
+                  {cart.count}
+                </span>
+              )}
+            </Link>
             <a href={BRAND.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram"
               className="hidden sm:inline-flex p-2 rounded-full text-neutral-600 hover:text-[#AA151B] hover:bg-neutral-100">
               <Instagram className="size-4" />
             </a>
             <a href={`https://wa.me/${BRAND.whatsappPrimary}`} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-none px-2.5 sm:px-3.5 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-black hover:opacity-90 transition"
+              className="hidden sm:inline-flex items-center gap-1.5 rounded-none px-2.5 sm:px-3.5 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-black hover:opacity-90 transition"
               style={{ background: "linear-gradient(90deg,#75AADB,#F1BF00,#AA151B)" }}>
               <Trophy className="size-3.5" /> Order Final
             </a>
           </div>
         </div>
       </header>
+
+      {/* Mobile drawer */}
+      {menuOpen && (
+        <div className="fixed inset-0 z-[100] lg:hidden">
+          <button className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMenuOpen(false)} aria-label="Close menu" />
+          <aside className="absolute left-0 top-0 h-full w-[82%] max-w-sm bg-white shadow-2xl flex flex-col animate-[slide-in-right_.25s_ease-out]" style={{ animationName: "slide-in-left" }}>
+            <div className="flex items-center justify-between border-b border-black/10 px-4 py-3">
+              <div className="flex items-center gap-2"><Logo className="h-8 w-auto rounded-md" /></div>
+              <button onClick={() => setMenuOpen(false)} className="p-2 rounded-full hover:bg-neutral-100" aria-label="Close">
+                <X className="size-4" />
+              </button>
+            </div>
+            <nav className="flex-1 overflow-y-auto py-2">
+              {NAV_LINKS.map((l) => (
+                <Link
+                  key={l.to}
+                  to={l.to}
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center justify-between px-5 py-3.5 border-b border-black/5 text-[15px] font-semibold text-neutral-800 hover:bg-neutral-50"
+                >
+                  <span className="inline-flex items-center gap-2">
+                    {l.badge === "hot" && <Trophy className="size-4 text-[#F1BF00]" />}
+                    {l.to === "/embroidery" && <Sparkles className="size-4 text-[#F1BF00]" />}
+                    {l.label}
+                  </span>
+                  <span className="text-neutral-300">›</span>
+                </Link>
+              ))}
+              <Link to="/bulk-cart" onClick={() => setMenuOpen(false)} className="flex items-center justify-between px-5 py-3.5 border-b border-black/5 text-[15px] font-semibold text-[#fa5400] hover:bg-neutral-50">
+                <span className="inline-flex items-center gap-2"><ShoppingCart className="size-4" /> My Cart</span>
+                {cart.count > 0 && <span className="min-w-[22px] h-[22px] px-1.5 grid place-items-center text-[11px] font-bold bg-[#fa5400] text-white rounded-full">{cart.count}</span>}
+              </Link>
+            </nav>
+            <div className="border-t border-black/10 p-4 space-y-2">
+              <a href={`https://wa.me/${BRAND.whatsappPrimary}`} target="_blank" rel="noopener noreferrer"
+                className="block text-center rounded-md px-3 py-2.5 text-xs font-bold uppercase tracking-wider text-black"
+                style={{ background: "linear-gradient(90deg,#75AADB,#F1BF00,#AA151B)" }}>
+                WhatsApp · Order Final
+              </a>
+              <a href={BRAND.instagram} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 rounded-md border border-black/15 px-3 py-2 text-xs font-semibold text-neutral-700">
+                <Instagram className="size-4" /> @checkmate.jersey
+              </a>
+            </div>
+          </aside>
+        </div>
+      )}
 
       {searchOpen && (
         <div className="fixed inset-0 z-[100]">
@@ -92,7 +176,7 @@ export function Header() {
                 autoFocus
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Search team or category (e.g. Argentina, Portugal, Posters)…"
+                placeholder="Search team or category…"
                 className="flex-1 min-w-0 bg-transparent text-sm outline-none placeholder:text-neutral-400"
               />
               <button onClick={closeSearch} className="ml-2 p-1.5 hover:bg-neutral-100 rounded-full shrink-0">

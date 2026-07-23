@@ -23,6 +23,7 @@ import { Route as JacketsRouteImport } from './routes/jackets'
 import { Route as FanVersionRouteImport } from './routes/fan-version'
 import { Route as EmbroideryRouteImport } from './routes/embroidery'
 import { Route as CartRouteImport } from './routes/cart'
+import { Route as BulkCartRouteImport } from './routes/bulk-cart'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -109,6 +110,11 @@ const CartRoute = CartRouteImport.update({
   path: '/cart',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BulkCartRoute = BulkCartRouteImport.update({
+  id: '/bulk-cart',
+  path: '/bulk-cart',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -192,6 +198,7 @@ const AuthenticatedAccountOrdersIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/bulk-cart': typeof BulkCartRoute
   '/cart': typeof CartRoute
   '/embroidery': typeof EmbroideryRoute
   '/fan-version': typeof FanVersionRoute
@@ -222,6 +229,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/bulk-cart': typeof BulkCartRoute
   '/cart': typeof CartRoute
   '/embroidery': typeof EmbroideryRoute
   '/fan-version': typeof FanVersionRoute
@@ -253,6 +261,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/bulk-cart': typeof BulkCartRoute
   '/cart': typeof CartRoute
   '/embroidery': typeof EmbroideryRoute
   '/fan-version': typeof FanVersionRoute
@@ -285,6 +294,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/bulk-cart'
     | '/cart'
     | '/embroidery'
     | '/fan-version'
@@ -315,6 +325,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/bulk-cart'
     | '/cart'
     | '/embroidery'
     | '/fan-version'
@@ -345,6 +356,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/bulk-cart'
     | '/cart'
     | '/embroidery'
     | '/fan-version'
@@ -377,6 +389,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  BulkCartRoute: typeof BulkCartRoute
   CartRoute: typeof CartRoute
   EmbroideryRoute: typeof EmbroideryRoute
   FanVersionRoute: typeof FanVersionRoute
@@ -494,6 +507,13 @@ declare module '@tanstack/react-router' {
       path: '/cart'
       fullPath: '/cart'
       preLoaderRoute: typeof CartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bulk-cart': {
+      id: '/bulk-cart'
+      path: '/bulk-cart'
+      fullPath: '/bulk-cart'
+      preLoaderRoute: typeof BulkCartRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -665,6 +685,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  BulkCartRoute: BulkCartRoute,
   CartRoute: CartRoute,
   EmbroideryRoute: EmbroideryRoute,
   FanVersionRoute: FanVersionRoute,
