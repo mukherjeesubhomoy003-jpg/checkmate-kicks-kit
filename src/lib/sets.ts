@@ -35,6 +35,28 @@ import s33 from "@/assets/sets/set33.jpg.asset.json";
 import s34 from "@/assets/sets/set34.jpg.asset.json";
 import s35 from "@/assets/sets/set35.jpg.asset.json";
 import s36 from "@/assets/sets/set36.jpg.asset.json";
+import s37 from "@/assets/sets/set37.jpg.asset.json";
+import s38 from "@/assets/sets/set38.jpg.asset.json";
+import s39 from "@/assets/sets/set39.jpg.asset.json";
+import s40 from "@/assets/sets/set40.jpg.asset.json";
+import s41 from "@/assets/sets/set41.jpg.asset.json";
+import s42 from "@/assets/sets/set42.jpg.asset.json";
+import s43 from "@/assets/sets/set43.jpg.asset.json";
+import s44 from "@/assets/sets/set44.jpg.asset.json";
+import s45 from "@/assets/sets/set45.jpg.asset.json";
+import s46 from "@/assets/sets/set46.jpg.asset.json";
+import s47 from "@/assets/sets/set47.jpg.asset.json";
+import s48 from "@/assets/sets/set48.jpg.asset.json";
+import s49 from "@/assets/sets/set49.jpg.asset.json";
+import s50 from "@/assets/sets/set50.jpg.asset.json";
+import s51 from "@/assets/sets/set51.jpg.asset.json";
+import s52 from "@/assets/sets/set52.jpg.asset.json";
+import s53 from "@/assets/sets/set53.jpg.asset.json";
+import s54 from "@/assets/sets/set54.jpg.asset.json";
+import s55 from "@/assets/sets/set55.jpg.asset.json";
+import s56 from "@/assets/sets/set56.jpg.asset.json";
+import s57 from "@/assets/sets/set57.jpg.asset.json";
+
 
 export type SetItem = { id: string; team: string; tag: string; image: string };
 
@@ -78,4 +100,26 @@ export const SETS: SetItem[] = [
   { id: "set34", team: "Arsenal", tag: "Visit Rwanda", image: s34.url },
   { id: "set35", team: "Arsenal", tag: "Lightning Away", image: s35.url },
   { id: "set36", team: "Manchester United", tag: "Third Kit", image: s36.url },
+  { id: "set37", team: "Arsenal", tag: "Third Navy Emirates", image: s37.url },
+  { id: "set38", team: "Inter Milan", tag: "Home Betsson", image: s38.url },
+  { id: "set39", team: "Chelsea", tag: "Away Black Gold", image: s39.url },
+  { id: "set40", team: "Manchester City", tag: "Home Etihad", image: s40.url },
+  { id: "set41", team: "Liverpool", tag: "Home Splatter Red", image: s41.url },
+  { id: "set42", team: "PSG", tag: "Home Qatar Airways", image: s42.url },
+  { id: "set43", team: "Chelsea", tag: "Home Blue Polo", image: s43.url },
+  { id: "set44", team: "AC Milan", tag: "Home Emirates", image: s44.url },
+  { id: "set45", team: "FC Barcelona", tag: "Leaf Pattern Special", image: s45.url },
+  { id: "set46", team: "Juventus", tag: "Home Jeep", image: s46.url },
+  { id: "set47", team: "Bayern Munich", tag: "Away White Retro", image: s47.url },
+  { id: "set48", team: "Real Madrid", tag: "Away White Pink", image: s48.url },
+  { id: "set49", team: "Bayern Munich", tag: "Home Red T-Mobile", image: s49.url },
+  { id: "set50", team: "Arsenal", tag: "Home Emirates", image: s50.url },
+  { id: "set51", team: "FC Barcelona", tag: "Spotify Retro Stripes", image: s51.url },
+  { id: "set52", team: "Portugal", tag: "Black Crest Edition", image: s52.url },
+  { id: "set53", team: "Portugal", tag: "Home Red Teal Trim", image: s53.url },
+  { id: "set54", team: "FC Barcelona", tag: "Kobe Purple Gradient", image: s54.url },
+  { id: "set55", team: "Argentina", tag: "Baroque Black Blue", image: s55.url },
+  { id: "set56", team: "Spain", tag: "Home Red", image: s56.url },
+  { id: "set57", team: "Portugal", tag: "Away Teal White", image: s57.url },
 ];
+
