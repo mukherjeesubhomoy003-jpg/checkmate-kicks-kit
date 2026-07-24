@@ -99,6 +99,7 @@ export function OrderModal({
 
   const { data: sizeStockMap } = useJerseySizeStock();
   const placeOrder = useServerFn(createJerseyOrder);
+  const bulkCart = useBulkCart();
   const sizeStock: Partial<Record<SizeKey, number>> | undefined = jerseyId ? sizeStockMap?.[jerseyId] : undefined;
   const currentSizeStock = sizeStock?.[size as SizeKey];
 
