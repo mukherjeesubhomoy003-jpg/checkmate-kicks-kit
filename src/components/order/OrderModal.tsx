@@ -385,10 +385,30 @@ export function OrderModal({
                   style={{ background: "linear-gradient(135deg,#1a1a1a,#2b2b2b)", color: "#ffffff", border: "1px solid #fa5400" }}>
                   Continue to Payment
                 </button>
+                <button
+                  type="button"
+                  disabled={!printingValid || !stockOk}
+                  onClick={() => {
+                    const itemName = hideKitSelector ? team : `${team} — ${kit} Kit`;
+                    bulkCart.add({
+                      itemId: `${jerseyId ?? team}__${hideKitSelector ? "one" : kit}${addPrint ? `__${printName || "X"}${printNumber || "0"}` : ""}`,
+                      name: itemName + (addPrint ? ` · Print ${printName || "-"} #${printNumber || "-"}` : ""),
+                      image,
+                      price: unit + (addPrint ? PRINT_ADDON : 0),
+                      size,
+                      quantity: qty,
+                      category: category ?? "Jersey",
+                    });
+                    toast.success(`Added ${itemName} (Size ${size} × ${qty}) to cart`);
+                  }}
+                  className="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3.5 text-sm font-bold uppercase tracking-[0.18em] border border-[#fa5400] text-[#fa5400] hover:bg-[#fa5400] hover:text-white transition disabled:opacity-50"
+                >
+                  + Add to Cart
+                </button>
                 <a href={`https://wa.me/${BRAND.whatsappPrimary}?text=${encodeURIComponent(`Hi, I have a question about the ${team} ${kit} kit.`)}`}
                   target="_blank" rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3.5 text-sm font-semibold border border-border hover:border-black/30">
-                  <Phone className="size-4" /> Ask first
+                  <Phone className="size-4" /> Ask
                 </a>
               </div>
             </div>
