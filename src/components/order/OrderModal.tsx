@@ -74,7 +74,7 @@ export function OrderModal({
   team, image, open, onClose,
   priceOverride, sizesOverride, hideKitSelector,
   defaultPrintingName = "", defaultPrintingNumber = "",
-  jerseyId, shippingOverride,
+  jerseyId, shippingOverride, category,
 }: Props) {
   const availableSizes = sizesOverride ?? (SIZES as readonly Size[] as Size[]);
   const [step, setStep] = useState<1 | 2 | 3>(1);
