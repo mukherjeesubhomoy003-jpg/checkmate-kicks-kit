@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, Sparkles, Trophy, Flame } from "lucide-react";
+import { ArrowLeft, Sparkles, Trophy, Flame, ShoppingCart } from "lucide-react";
 import { EMBROIDERY, EMBROIDERY_PRICE, EMBROIDERY_MRP, type Embroidery } from "@/lib/embroidery";
 import { OrderModal } from "@/components/order/OrderModal";
+import { OrderGuide } from "@/components/OrderGuide";
+import { AddToCartModal } from "@/components/AddToCartModal";
 import { useJerseySizeStock, type SizeKey } from "@/lib/jersey-size-stock";
+import { useBulkCart } from "@/lib/bulk-cart";
+import { toast } from "sonner";
 import embroideryBanner from "@/assets/banners/embroidery.jpg.asset.json";
 
 const SIZES: SizeKey[] = ["S", "M", "L", "XL", "XXL"];
@@ -27,15 +31,13 @@ export const Route = createFileRoute("/embroidery")({
 
 function EmbroideryPage() {
   const [active, setActive] = useState<Embroidery | null>(null);
+  const [addingTo, setAddingTo] = useState<Embroidery | null>(null);
   const { data: stockMap } = useJerseySizeStock();
+  const cart = useBulkCart();
 
   return (
     <div className="bg-white">
-      {/* Hero banner */}
-      <div
-        className="relative w-full overflow-hidden"
-        style={{ backgroundImage: `url(${embroideryBanner.url})`, backgroundSize: "cover", backgroundPosition: "center" }}
-      >
+      <div className="relative w-full overflow-hidden" style={{ backgroundImage: `url(${embroideryBanner.url})`, backgroundSize: "cover", backgroundPosition: "center" }}>
         <div className="bg-gradient-to-r from-black/90 via-black/70 to-black/40">
           <div className="container-x py-10 md:py-16">
             <Link to="/" className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] bg-white/10 backdrop-blur text-white hover:bg-[#F1BF00] hover:text-black transition">
@@ -53,69 +55,80 @@ function EmbroideryPage() {
                 <br />
                 <span className="text-[#F1BF00] font-bold">₹{EMBROIDERY_PRICE} only</span> · Launch price · Limited units.
               </p>
+              <div className="mt-4">
+                <Link to="/bulk-cart" className="inline-flex items-center gap-2 bg-[#F1BF00] text-black px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-white transition">
+                  <ShoppingCart className="size-3.5" /> View Cart {cart.count > 0 && `· ${cart.count}`}
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       <section className="container-x py-10 md:py-14">
+        <div className="grid lg:grid-cols-[1fr_280px] gap-8 lg:gap-12">
+          <div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+              {EMBROIDERY.map((p) => {
+                const total = totalStock(stockMap, p.id);
+                const low = typeof total === "number" && total > 0 && total <= 3;
+                const soldOut = total === 0;
+                return (
+                  <article key={p.id} className={`group relative bg-[#f5f5f5] flex flex-col ${soldOut ? "opacity-70" : ""}`}>
+                    <div className={`relative overflow-hidden bg-[#f5f5f5] ${soldOut ? "" : "cursor-pointer"}`} onClick={() => !soldOut && setActive(p)}>
+                      <div className="absolute right-2 top-2 z-10 bg-[#F1BF00] px-2 py-1 text-[9px] md:text-[10px] font-bold uppercase tracking-wider text-black inline-flex items-center gap-1">
+                        <Sparkles className="size-3" /> Embroidery
+                      </div>
+                      {soldOut ? (
+                        <div className="absolute left-2 top-2 z-10 bg-red-600 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white">Sold out</div>
+                      ) : low ? (
+                        <div className="absolute left-2 top-2 z-10 bg-black px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white">Only {total} left</div>
+                      ) : (
+                        <div className="absolute left-2 top-2 z-10 bg-black px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-[#F1BF00] inline-flex items-center gap-1">
+                          <Flame className="size-3" /> New
+                        </div>
+                      )}
+                      <div className="aspect-[4/5] w-full">
+                        <img src={p.image} alt={`${p.team} ${p.season} embroidery jersey`} loading="lazy" decoding="async"
+                          className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
+                      </div>
+                    </div>
+                    <div className="px-2 pt-3 pb-2 flex-1">
+                      <div className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.16em] text-[#F1BF00]">{p.season}</div>
+                      <h3 className="mt-0.5 font-bebas text-lg md:text-2xl leading-tight tracking-wide uppercase text-black">{p.team}</h3>
+                      <div className="text-[10px] uppercase tracking-wider text-neutral-500">{p.tag}</div>
+                      <div className="mt-2 flex items-baseline gap-2">
+                        <span className="font-bebas text-xl tracking-wide text-black">₹{EMBROIDERY_PRICE}</span>
+                        <span className="text-[11px] text-neutral-400 line-through">₹{EMBROIDERY_MRP}</span>
+                        <span className="ml-auto text-[10px] font-bold uppercase tracking-wider text-[#AA151B]">-70%</span>
+                      </div>
+                    </div>
+                    {!soldOut && (
+                      <button
+                        onClick={() => setAddingTo(p)}
+                        className="mx-2 mb-3 inline-flex items-center justify-center gap-1.5 bg-black text-white px-2 py-2.5 text-[11px] font-bold uppercase tracking-[0.14em] hover:bg-[#F1BF00] hover:text-black transition"
+                      >
+                        <ShoppingCart className="size-3.5" /> Add to Cart
+                      </button>
+                    )}
+                  </article>
+                );
+              })}
+            </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
-          {EMBROIDERY.map((p) => {
-            const total = totalStock(stockMap, p.id);
-            const low = typeof total === "number" && total > 0 && total <= 3;
-            const soldOut = total === 0;
-            return (
-              <article
-                key={p.id}
-                className={`group relative bg-[#f5f5f5] ${soldOut ? "opacity-70" : "cursor-pointer"}`}
-                onClick={() => !soldOut && setActive(p)}
-              >
-                <div className="relative overflow-hidden bg-[#f5f5f5]">
-                  <div className="absolute right-2 top-2 z-10 bg-[#F1BF00] px-2 py-1 text-[9px] md:text-[10px] font-bold uppercase tracking-wider text-black inline-flex items-center gap-1">
-                    <Sparkles className="size-3" /> Embroidery
-                  </div>
-                  {soldOut ? (
-                    <div className="absolute left-2 top-2 z-10 bg-red-600 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white">Sold out</div>
-                  ) : low ? (
-                    <div className="absolute left-2 top-2 z-10 bg-black px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
-                      Only {total} left
-                    </div>
-                  ) : (
-                    <div className="absolute left-2 top-2 z-10 bg-black px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-[#F1BF00] inline-flex items-center gap-1">
-                      <Flame className="size-3" /> New
-                    </div>
-                  )}
-                  <div className="aspect-[4/5] w-full">
-                    <img
-                      src={p.image}
-                      alt={`${p.team} ${p.season} embroidery jersey`}
-                      loading="lazy"
-                      decoding="async"
-                      className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                    />
-                  </div>
-                </div>
-                <div className="px-2 pt-3 pb-4">
-                  <div className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.16em] text-[#F1BF00]">{p.season}</div>
-                  <h3 className="mt-0.5 font-bebas text-lg md:text-2xl leading-tight tracking-wide uppercase text-black">
-                    {p.team}
-                  </h3>
-                  <div className="text-[10px] uppercase tracking-wider text-neutral-500">{p.tag}</div>
-                  <div className="mt-2 flex items-baseline gap-2">
-                    <span className="font-bebas text-xl tracking-wide text-black">₹{EMBROIDERY_PRICE}</span>
-                    <span className="text-[11px] text-neutral-400 line-through">₹{EMBROIDERY_MRP}</span>
-                    <span className="ml-auto text-[10px] font-bold uppercase tracking-wider text-[#AA151B]">-70%</span>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
+            <div className="mt-10 text-center text-[11px] uppercase tracking-[0.25em] text-neutral-500">
+              <Trophy className="inline size-3.5 mr-1 text-[#F1BF00]" />
+              Free shipping · All-India delivery · Launch pricing
+            </div>
+          </div>
+
+          <div className="hidden lg:block">
+            <OrderGuide />
+          </div>
         </div>
 
-        <div className="mt-10 text-center text-[11px] uppercase tracking-[0.25em] text-neutral-500">
-          <Trophy className="inline size-3.5 mr-1 text-[#F1BF00]" />
-          Free shipping · All-India delivery · Launch pricing
+        <div className="lg:hidden mt-12 border-t border-black/10 pt-8">
+          <OrderGuide />
         </div>
       </section>
 
@@ -126,8 +139,39 @@ function EmbroideryPage() {
         priceOverride={EMBROIDERY_PRICE}
         hideKitSelector
         jerseyId={active?.id}
+        category="Embroidery"
         onClose={() => setActive(null)}
       />
+
+      {addingTo && (
+        <AddToCartModal
+          item={{
+            id: addingTo.id,
+            title: `${addingTo.team} · ${addingTo.season}`,
+            image: addingTo.image,
+            price: EMBROIDERY_PRICE,
+            mrp: EMBROIDERY_MRP,
+            category: "Embroidery",
+          }}
+          stock={stockMap?.[addingTo.id]}
+          onClose={() => setAddingTo(null)}
+          onAdd={({ size, qty, name, itemId }) => {
+            cart.add({
+              itemId,
+              name: `${name} · Embroidery`,
+              image: addingTo.image,
+              price: EMBROIDERY_PRICE,
+              size,
+              quantity: qty,
+              category: "Embroidery",
+            });
+            toast.success(`Added to cart: ${name} · ${size} × ${qty}`, {
+              action: { label: "View Cart", onClick: () => { window.location.href = "/bulk-cart"; } },
+            });
+            setAddingTo(null);
+          }}
+        />
+      )}
     </div>
   );
 }

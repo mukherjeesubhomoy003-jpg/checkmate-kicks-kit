@@ -1,14 +1,21 @@
 import { useState } from "react";
-import { Trophy } from "lucide-react";
+import { Trophy, ShoppingCart } from "lucide-react";
 import { OrderModal } from "@/components/order/OrderModal";
+import { AddToCartModal } from "@/components/AddToCartModal";
 import { JERSEYS, type Jersey } from "@/lib/jerseys";
 import { useJerseySizeStock, type SizeKey } from "@/lib/jersey-size-stock";
+import { useBulkCart } from "@/lib/bulk-cart";
+import { toast } from "sonner";
 
 const SIZES: SizeKey[] = ["S", "M", "L", "XL", "XXL"];
 function totalStock(map: Record<string, Partial<Record<SizeKey, number>>> | undefined, id: string) {
   const row = map?.[id];
   if (!row) return undefined;
   return SIZES.reduce((s, k) => s + (row[k] ?? 0), 0);
+}
+function priceFor(j: Jersey) {
+  const premium = j.team === "Spain" || j.team === "Argentina";
+  return { price: premium ? 1300 : 850, mrp: premium ? 2499 : 1999 };
 }
 
 type Props = {
@@ -19,7 +26,9 @@ type Props = {
 
 export function WorldCupSection({ preview, showBanner: _showBanner = true, heading }: Props) {
   const [active, setActive] = useState<Jersey | null>(null);
+  const [addingTo, setAddingTo] = useState<Jersey | null>(null);
   const { data: stockMap } = useJerseySizeStock();
+  const cart = useBulkCart();
   const available = JERSEYS.filter((j) => {
     const t = totalStock(stockMap, j.id);
     return t === undefined || t > 0;
@@ -41,6 +50,11 @@ export function WorldCupSection({ preview, showBanner: _showBanner = true, headi
           <p className="mt-3 max-w-xl text-xs md:text-sm text-neutral-600 px-4">
             Match-grade fabric · federation badges · heat-pressed numbers · <b>₹850 flat</b>.
           </p>
+          {!preview && cart.count > 0 && (
+            <a href="/bulk-cart" className="mt-4 inline-flex items-center gap-2 bg-black text-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-[#fa5400] transition">
+              <ShoppingCart className="size-3.5" /> View Cart · {cart.count}
+            </a>
+          )}
         </div>
 
         <div id="jersey-grid" className="mt-8 md:mt-10 scroll-mt-24 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5">
@@ -48,16 +62,10 @@ export function WorldCupSection({ preview, showBanner: _showBanner = true, headi
             const total = totalStock(stockMap, j.id);
             const out = total === 0;
             const low = typeof total === "number" && total > 0 && total <= 3;
-            const premium = j.team === "Spain" || j.team === "Argentina";
-            const price = premium ? 1300 : 850;
-            const mrp = premium ? 2499 : 1999;
+            const { price, mrp } = priceFor(j);
             return (
-              <article
-                key={j.id}
-                className={`group relative bg-[#f5f5f5] ${out ? "cursor-not-allowed" : "cursor-pointer"}`}
-                onClick={() => !out && setActive(j)}
-              >
-                <div className="relative overflow-hidden bg-[#f5f5f5]">
+              <article key={j.id} className={`group relative bg-[#f5f5f5] flex flex-col ${out ? "cursor-not-allowed" : ""}`}>
+                <div className={`relative overflow-hidden bg-[#f5f5f5] ${out ? "" : "cursor-pointer"}`} onClick={() => !out && setActive(j)}>
                   {out && (
                     <div className="absolute left-1.5 top-1.5 md:left-2 md:top-2 z-10 bg-black px-1.5 py-0.5 md:px-2 md:py-1 text-[9px] md:text-[10px] font-bold uppercase tracking-wider text-white">
                       Sold out
@@ -72,19 +80,12 @@ export function WorldCupSection({ preview, showBanner: _showBanner = true, headi
                     -50%
                   </div>
                   <div className={`aspect-[4/5] w-full ${out ? "opacity-40" : ""}`}>
-                    <img
-                      src={j.image}
-                      alt={`${j.team} ${j.tag} player edition jersey`}
-                      loading="lazy"
-                      decoding="async"
-                      className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                    />
+                    <img src={j.image} alt={`${j.team} ${j.tag} player edition jersey`} loading="lazy" decoding="async"
+                      className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
                   </div>
                 </div>
-                <div className="px-1 pt-2 pb-3 md:pt-3 md:pb-4">
-                  <div className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.14em] text-[#fa5400]">
-                    Player Edition
-                  </div>
+                <div className="px-1 pt-2 pb-2 md:pt-3 flex-1">
+                  <div className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.14em] text-[#fa5400]">Player Edition</div>
                   <h3 className="mt-0.5 font-bebas text-base md:text-xl leading-tight tracking-wide uppercase text-black line-clamp-2">
                     {j.team} {j.tag}
                   </h3>
@@ -93,6 +94,14 @@ export function WorldCupSection({ preview, showBanner: _showBanner = true, headi
                     <span className="text-[10px] md:text-[11px] text-neutral-400 line-through">₹{mrp}</span>
                   </div>
                 </div>
+                {!out && (
+                  <button
+                    onClick={() => setAddingTo(j)}
+                    className="mx-1 mb-2 md:mb-3 inline-flex items-center justify-center gap-1.5 bg-black text-white px-2 py-2 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.14em] hover:bg-[#fa5400] transition"
+                  >
+                    <ShoppingCart className="size-3.5" /> Add to Cart
+                  </button>
+                )}
               </article>
             );
           })}
@@ -108,9 +117,41 @@ export function WorldCupSection({ preview, showBanner: _showBanner = true, headi
         team={active?.team ?? ""}
         image={active?.image ?? ""}
         jerseyId={active?.id}
-        priceOverride={active && (active.team === "Spain" || active.team === "Argentina") ? 1300 : undefined}
+        priceOverride={active ? priceFor(active).price : undefined}
+        category="Player Version"
         onClose={() => setActive(null)}
       />
+
+      {addingTo && (
+        <AddToCartModal
+          item={{
+            id: addingTo.id,
+            title: `${addingTo.team} ${addingTo.tag}`,
+            image: addingTo.image,
+            price: priceFor(addingTo).price,
+            mrp: priceFor(addingTo).mrp,
+            category: "Player Version",
+          }}
+          stock={stockMap?.[addingTo.id]}
+          onClose={() => setAddingTo(null)}
+          onAdd={({ size, qty, name, itemId }) => {
+            const { price } = priceFor(addingTo);
+            cart.add({
+              itemId,
+              name: `${name} · Player Version`,
+              image: addingTo.image,
+              price,
+              size,
+              quantity: qty,
+              category: "Player Version",
+            });
+            toast.success(`Added to cart: ${name} · ${size} × ${qty}`, {
+              action: { label: "View Cart", onClick: () => { window.location.href = "/bulk-cart"; } },
+            });
+            setAddingTo(null);
+          }}
+        />
+      )}
     </section>
   );
 }
