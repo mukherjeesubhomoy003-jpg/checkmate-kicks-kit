@@ -50,6 +50,8 @@ type Props = {
   jerseyId?: string;
   /** Optional shipping fee (defaults to free). */
   shippingOverride?: number;
+  /** Category label used when adding to bulk cart. */
+  category?: string;
 };
 
 const PRINT_ADDON = 250;
