@@ -56,6 +56,28 @@ import s54 from "@/assets/sets/set54.jpg.asset.json";
 import s55 from "@/assets/sets/set55.jpg.asset.json";
 import s56 from "@/assets/sets/set56.jpg.asset.json";
 import s57 from "@/assets/sets/set57.jpg.asset.json";
+import s58 from "@/assets/sets/set58.jpg.asset.json";
+import s59 from "@/assets/sets/set59.jpg.asset.json";
+import s60 from "@/assets/sets/set60.jpg.asset.json";
+import s61 from "@/assets/sets/set61.jpg.asset.json";
+import s62 from "@/assets/sets/set62.jpg.asset.json";
+import s63 from "@/assets/sets/set63.jpg.asset.json";
+import s64 from "@/assets/sets/set64.jpg.asset.json";
+import s65 from "@/assets/sets/set65.jpg.asset.json";
+import s66 from "@/assets/sets/set66.jpg.asset.json";
+import s67 from "@/assets/sets/set67.jpg.asset.json";
+import s68 from "@/assets/sets/set68.jpg.asset.json";
+import s69 from "@/assets/sets/set69.jpg.asset.json";
+import s70 from "@/assets/sets/set70.jpg.asset.json";
+import s71 from "@/assets/sets/set71.jpg.asset.json";
+import s72 from "@/assets/sets/set72.jpg.asset.json";
+import s73 from "@/assets/sets/set73.jpg.asset.json";
+import s74 from "@/assets/sets/set74.jpg.asset.json";
+import s75 from "@/assets/sets/set75.jpg.asset.json";
+import s76 from "@/assets/sets/set76.jpg.asset.json";
+import s77 from "@/assets/sets/set77.jpg.asset.json";
+import s78 from "@/assets/sets/set78.jpg.asset.json";
+
 
 
 export type SetItem = { id: string; team: string; tag: string; image: string };
