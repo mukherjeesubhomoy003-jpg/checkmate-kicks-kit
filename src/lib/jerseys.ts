@@ -98,6 +98,20 @@ import j98 from "@/assets/jerseys/j98.jpg.asset.json";
 import j99 from "@/assets/jerseys/j99.jpg.asset.json";
 import j100 from "@/assets/jerseys/j100.jpg.asset.json";
 
+import j101 from "@/assets/jerseys/j101.jpg.asset.json";
+import j102 from "@/assets/jerseys/j102.jpg.asset.json";
+import j103 from "@/assets/jerseys/j103.jpg.asset.json";
+import j104 from "@/assets/jerseys/j104.jpg.asset.json";
+import j105 from "@/assets/jerseys/j105.jpg.asset.json";
+import j106 from "@/assets/jerseys/j106.jpg.asset.json";
+import j107 from "@/assets/jerseys/j107.jpg.asset.json";
+import j108 from "@/assets/jerseys/j108.jpg.asset.json";
+import j109 from "@/assets/jerseys/j109.jpg.asset.json";
+import j110 from "@/assets/jerseys/j110.jpg.asset.json";
+import j111 from "@/assets/jerseys/j111.jpg.asset.json";
+import j112 from "@/assets/jerseys/j112.jpg.asset.json";
+import j113 from "@/assets/jerseys/j113.jpg.asset.json";
+
 export type Jersey = { id: string; team: string; tag: "Home" | "Away"; image: string };
 
 const RAW: [string, "Home" | "Away", string][] = [
@@ -199,7 +213,21 @@ const RAW: [string, "Home" | "Away", string][] = [
   ["Manchester City", "Home", j98.url],
   ["Tottenham", "Home", j99.url],
   ["PSG", "Away", j100.url],
+  ["Napoli", "Away", j101.url],
+  ["Liverpool", "Home", j102.url],
+  ["Manchester City", "Home", j103.url],
+  ["AC Milan", "Home", j104.url],
+  ["Manchester City", "Away", j105.url],
+  ["Bayern Munich", "Home", j106.url],
+  ["France", "Away", j107.url],
+  ["India", "Home", j108.url],
+  ["Arsenal", "Away", j109.url],
+  ["Arsenal", "Home", j110.url],
+  ["PSG", "Home", j111.url],
+  ["Real Madrid", "Home", j112.url],
+  ["Real Madrid", "Away", j113.url],
 ];
+
 
 export const ALL_JERSEYS: Jersey[] = RAW.map(([team, tag, image], i) => ({
   id: `j${String(i + 1).padStart(2, "0")}`,

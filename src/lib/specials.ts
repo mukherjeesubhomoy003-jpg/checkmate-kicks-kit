@@ -2,7 +2,7 @@
 import argFs from "@/assets/specials/argentina-fs.jpg.asset.json";
 import porFs from "@/assets/specials/portugal-fs.jpg.asset.json";
 import argPractice from "@/assets/specials/argentina-practice.jpg.asset.json";
-import brasilAway from "@/assets/specials/brazil-away-se.jpg.asset.json";
+
 import manUtdPv from "@/assets/specials/man-united-pv.jpg.asset.json";
 import realMadridPv from "@/assets/specials/real-madrid-pv.jpg.asset.json";
 
@@ -60,18 +60,7 @@ export const SPECIALS: Special[] = [
     badge: "New",
   },
   {
-    id: "brasil-away-se",
-    key: "brasil-away-se",
-    team: "Brasil · Away Player Version",
-    title: "Brasil Away",
-    subtitle: "Jordan Silhouette · Player Version",
-    eyebrow: "Special · Player",
-    image: brasilAway.url,
-    price: 800, mrp: 1499,
-    sizes: ["S", "M", "L", "XL"],
-    badge: "Deal",
-  },
-  {
+
     id: "man-utd-pv",
     key: "man-utd-pv",
     team: "Manchester United · Home PV",

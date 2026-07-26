@@ -13,10 +13,14 @@ function totalStock(map: Record<string, Partial<Record<SizeKey, number>>> | unde
   if (!row) return undefined;
   return SIZES.reduce((s, k) => s + (row[k] ?? 0), 0);
 }
+const FULL_SLEEVE_IDS = new Set(["j112", "j113"]);
+function isFullSleeve(id: string) { return FULL_SLEEVE_IDS.has(id); }
 function priceFor(j: Jersey) {
+  if (isFullSleeve(j.id)) return { price: 1200, mrp: 1999 };
   const premium = j.team === "Spain" || j.team === "Argentina";
   return { price: premium ? 1300 : 850, mrp: premium ? 2499 : 1999 };
 }
+
 
 type Props = {
   preview?: number;
@@ -87,8 +91,9 @@ export function WorldCupSection({ preview, showBanner: _showBanner = true, headi
                 <div className="px-1 pt-2 pb-2 md:pt-3 flex-1">
                   <div className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.14em] text-[#fa5400]">Player Edition</div>
                   <h3 className="mt-0.5 font-bebas text-base md:text-xl leading-tight tracking-wide uppercase text-black line-clamp-2">
-                    {j.team} {j.tag}
+                    {j.team} {j.tag}{isFullSleeve(j.id) ? " · Full Sleeve" : ""}
                   </h3>
+
                   <div className="mt-1 flex items-baseline gap-1.5 md:gap-2 flex-wrap">
                     <span className="font-bebas text-base md:text-lg tracking-wide text-black">₹{price}</span>
                     <span className="text-[10px] md:text-[11px] text-neutral-400 line-through">₹{mrp}</span>

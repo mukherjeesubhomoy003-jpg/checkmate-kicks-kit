@@ -16,8 +16,8 @@ export const Route = createFileRoute("/bulk-cart")({
   component: BulkCartPage,
 });
 
-const SHIP_FREE_ABOVE = 1499;
-const SHIP_FEE = 99;
+// Free shipping across India — no shipping charge on bulk orders.
+
 
 type Details = {
   name: string; phone: string; altPhone: string;
@@ -44,8 +44,9 @@ function BulkCartPage() {
   const [d, setD] = useState<Details>(EMPTY_DETAILS);
   const [orderNo, setOrderNo] = useState("");
 
-  const shipping = cart.subtotal === 0 || cart.subtotal >= SHIP_FREE_ABOVE ? 0 : SHIP_FEE;
+  const shipping = 0;
   const total = cart.subtotal + shipping;
+
 
   const validDetails =
     d.name.trim().length > 1 &&
@@ -172,10 +173,8 @@ function BulkCartPage() {
             <h2 className="font-bebas text-2xl uppercase tracking-tight">Order Summary</h2>
             <dl className="mt-3 space-y-2 text-sm">
               <Row k={`Subtotal (${cart.count} items)`} v={`₹${cart.subtotal}`} />
-              <Row k="Shipping" v={shipping === 0 ? "Free" : `₹${shipping}`} />
-              {shipping > 0 && (
-                <div className="text-[11px] text-[#fa5400] font-semibold">Add ₹{SHIP_FREE_ABOVE - cart.subtotal} more for free shipping</div>
-              )}
+              <Row k="Shipping" v="Free · All India" />
+
               <div className="border-t border-black/10 my-2" />
               <Row k="Total" v={`₹${total}`} strong />
             </dl>
