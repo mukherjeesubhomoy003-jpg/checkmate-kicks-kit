@@ -213,7 +213,21 @@ const RAW: [string, "Home" | "Away", string][] = [
   ["Manchester City", "Home", j98.url],
   ["Tottenham", "Home", j99.url],
   ["PSG", "Away", j100.url],
+  ["Napoli", "Away", j101.url],
+  ["Liverpool", "Home", j102.url],
+  ["Manchester City", "Home", j103.url],
+  ["AC Milan", "Home", j104.url],
+  ["Manchester City", "Away", j105.url],
+  ["Bayern Munich", "Home", j106.url],
+  ["France", "Away", j107.url],
+  ["India", "Home", j108.url],
+  ["Arsenal", "Away", j109.url],
+  ["Arsenal", "Home", j110.url],
+  ["PSG", "Home", j111.url],
+  ["Real Madrid", "Home", j112.url],
+  ["Real Madrid", "Away", j113.url],
 ];
+
 
 export const ALL_JERSEYS: Jersey[] = RAW.map(([team, tag, image], i) => ({
   id: `j${String(i + 1).padStart(2, "0")}`,
