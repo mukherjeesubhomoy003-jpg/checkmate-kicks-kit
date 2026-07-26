@@ -98,6 +98,20 @@ import j98 from "@/assets/jerseys/j98.jpg.asset.json";
 import j99 from "@/assets/jerseys/j99.jpg.asset.json";
 import j100 from "@/assets/jerseys/j100.jpg.asset.json";
 
+import j101 from "@/assets/jerseys/j101.jpg.asset.json";
+import j102 from "@/assets/jerseys/j102.jpg.asset.json";
+import j103 from "@/assets/jerseys/j103.jpg.asset.json";
+import j104 from "@/assets/jerseys/j104.jpg.asset.json";
+import j105 from "@/assets/jerseys/j105.jpg.asset.json";
+import j106 from "@/assets/jerseys/j106.jpg.asset.json";
+import j107 from "@/assets/jerseys/j107.jpg.asset.json";
+import j108 from "@/assets/jerseys/j108.jpg.asset.json";
+import j109 from "@/assets/jerseys/j109.jpg.asset.json";
+import j110 from "@/assets/jerseys/j110.jpg.asset.json";
+import j111 from "@/assets/jerseys/j111.jpg.asset.json";
+import j112 from "@/assets/jerseys/j112.jpg.asset.json";
+import j113 from "@/assets/jerseys/j113.jpg.asset.json";
+
 export type Jersey = { id: string; team: string; tag: "Home" | "Away"; image: string };
 
 const RAW: [string, "Home" | "Away", string][] = [
