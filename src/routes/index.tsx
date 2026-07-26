@@ -23,17 +23,17 @@ export const Route = createFileRoute("/")({
 function Home() {
   return (
     <div>
-      {/* Announcement strip — Spain champs + Spain WC soon */}
+      {/* Announcement strip — Club season is here */}
       <div className="relative z-[3] bg-black text-white overflow-hidden border-b border-[#F1BF00]/40">
-        <div className="absolute inset-0 opacity-60" style={{ background: "linear-gradient(90deg,#AA151B 0%,#F1BF00 50%,#AA151B 100%)" }} />
+        <div className="absolute inset-0 opacity-70" style={{ background: "linear-gradient(90deg,#0b132b 0%,#fa5400 50%,#0b132b 100%)" }} />
         <div className="container-x relative flex flex-wrap items-center justify-center gap-x-3 gap-y-1 py-2 text-center">
-          <Trophy className="size-4 text-[#F1BF00]" />
+          <Flame className="size-4 text-[#fa5400]" />
           <span className="font-bebas text-sm sm:text-base tracking-[0.2em] uppercase">
-            <span className="text-[#F1BF00]">¡Campeones!</span> · Spain are <span className="text-[#F1BF00]">World Champions 🏆</span>
+            <span className="text-[#F1BF00]">Club Season</span> is here — <span className="text-[#F1BF00]">25/26 kits</span> live
           </span>
           <span className="hidden sm:inline text-white/40">|</span>
           <span className="font-bebas text-xs sm:text-sm tracking-[0.18em] uppercase text-white/90">
-            Buy <span className="text-[#F1BF00]">Spain WC Jersey</span> — Coming Soon
+            La Liga · <span className="text-[#F1BF00]">Premier League</span> · Serie A · <span className="text-[#F1BF00]">UCL</span>
           </span>
           <Star className="size-3.5 text-[#F1BF00] fill-[#F1BF00]" />
         </div>
@@ -62,34 +62,35 @@ function Home() {
         </div>
       </Link>
 
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-[#1a0508] font-outfit">
+      {/* Hero — Club Season */}
+      <section className="relative overflow-hidden bg-[#050a1a] font-outfit">
         <HeroSlideshow />
-        <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[#1a0508] via-[#1a0508]/70 to-transparent z-[1]" />
-        <div aria-hidden className="absolute inset-0 z-[1]" style={{ background: "radial-gradient(circle at 72% 50%, rgba(241,191,0,0.22), transparent 55%)" }} />
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[#050a1a] via-[#050a1a]/75 to-transparent z-[1]" />
+        <div aria-hidden className="absolute inset-0 z-[1]" style={{ background: "radial-gradient(circle at 78% 40%, rgba(250,84,0,0.28), transparent 55%)" }} />
 
         <div className="container-x relative z-[2] grid grid-cols-5 lg:grid-cols-2 gap-4 sm:gap-8 lg:gap-12 items-center py-14 sm:py-20 md:py-28">
           <div className="col-span-3 lg:col-span-1 space-y-5 sm:space-y-7 text-left">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 border border-[#F1BF00]/60 bg-gradient-to-r from-[#AA151B]/40 via-[#F1BF00]/15 to-[#AA151B]/40 backdrop-blur-md">
-              <Trophy className="size-3.5 text-[#F1BF00]" />
-              <span className="text-white text-[10px] sm:text-xs font-bold uppercase tracking-[0.22em]">Champions · La Roja 🇪🇸</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 border border-[#fa5400]/60 bg-gradient-to-r from-[#fa5400]/25 via-[#F1BF00]/10 to-[#fa5400]/25 backdrop-blur-md">
+              <Flame className="size-3.5 text-[#fa5400]" />
+              <span className="text-white text-[10px] sm:text-xs font-bold uppercase tracking-[0.22em]">Club Season · 25/26 Drops</span>
             </div>
 
             <div className="space-y-3">
               <h1 className="font-bebas text-white leading-[0.88] tracking-tight text-[32px] xs:text-5xl sm:text-7xl md:text-8xl lg:text-[128px]">
-                SPAIN LIFT
+                CLUB WARS.
                 <br />
-                <span className="bg-gradient-to-r from-[#AA151B] via-[#F1BF00] to-[#AA151B] bg-clip-text text-transparent">THE CUP.</span>
+                <span className="bg-gradient-to-r from-[#fa5400] via-[#F1BF00] to-[#fa5400] bg-clip-text text-transparent">NEW KITS.</span>
               </h1>
               <p className="max-w-md text-zinc-200/90 text-sm sm:text-lg leading-relaxed">
-                Champions kits flying out. Spain Player ₹1300 · Fan ₹1050 · Champion editions live now.
+                Real Madrid, Barça, Arsenal, City, Bayern, Milan, PSG — every 25/26 kit is in.
+                Player ₹850 · Fan ₹750 · Sets ₹699.
               </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-2.5 sm:gap-4">
               <a href="#shop"
-                className="px-5 sm:px-8 py-3 sm:py-4 bg-[#F1BF00] text-black font-bold uppercase tracking-[0.16em] sm:tracking-[0.18em] text-[11px] sm:text-sm transition-all duration-300 hover:bg-white hover:-translate-y-0.5 inline-flex items-center gap-2">
-                <Trophy className="size-4" /> Shop Champions Kits <ArrowRight className="size-4" />
+                className="px-5 sm:px-8 py-3 sm:py-4 bg-[#fa5400] text-white font-bold uppercase tracking-[0.16em] sm:tracking-[0.18em] text-[11px] sm:text-sm transition-all duration-300 hover:bg-[#F1BF00] hover:text-black hover:-translate-y-0.5 inline-flex items-center gap-2">
+                <Flame className="size-4" /> Shop Club Kits <ArrowRight className="size-4" />
               </a>
               <a href={`https://wa.me/${BRAND.whatsappPrimary}`} target="_blank" rel="noopener noreferrer"
                 className="group px-5 sm:px-8 py-3 sm:py-4 border border-white/40 text-white font-bold uppercase tracking-[0.16em] sm:tracking-[0.18em] text-[11px] sm:text-sm hover:bg-white/10 transition-all inline-flex items-center gap-2">
@@ -100,22 +101,23 @@ function Home() {
 
         </div>
 
-        <div className="relative z-[3] w-full border-y border-[#F1BF00]/40 bg-black/85 backdrop-blur-md overflow-hidden">
+        <div className="relative z-[3] w-full border-y border-[#fa5400]/40 bg-black/85 backdrop-blur-md overflow-hidden">
           <div className="animate-hero-marquee py-3">
             {Array.from({ length: 2 }).flatMap((_, loop) => [
-              { k: "🏆 SPAIN CHAMPIONS", v: "2026" },
-              { k: "SPAIN PV", v: "₹1300" },
-              { k: "SPAIN FAN", v: "₹1050" },
-              { k: "SPAIN CHAMPION EDITION", v: "LIVE" },
-              { k: "ARGENTINA PV", v: "₹1300" },
-              { k: "ARG FULL SLEEVE", v: "₹1800" },
+              { k: "🔥 25/26 CLUB DROPS", v: "LIVE" },
+              { k: "REAL MADRID · BARÇA", v: "₹850" },
+              { k: "ARSENAL · CITY · UTD", v: "₹850" },
+              { k: "AC MILAN · BAYERN", v: "₹850" },
+              { k: "FULL SLEEVE RM", v: "₹1200" },
+              { k: "FAN VERSION", v: "₹750" },
               { k: "1ST GRADE SETS", v: "₹699" },
+              { k: "FREE SHIPPING", v: "ALL INDIA" },
             ].map((it, i) => (
               <span key={`${loop}-${i}`} className="inline-flex items-center gap-4 px-8 whitespace-nowrap">
                 <span className="text-white font-bold text-[11px] sm:text-xs uppercase tracking-[0.22em]">{it.k}</span>
                 <span className="text-zinc-600">/</span>
                 <span className="text-[#F1BF00] font-bebas tracking-[0.14em] text-lg">{it.v}</span>
-                <Star className="size-3 text-[#F1BF00] fill-[#F1BF00]" />
+                <Star className="size-3 text-[#fa5400] fill-[#fa5400]" />
               </span>
             )))}
           </div>
@@ -127,13 +129,13 @@ function Home() {
       {/* Perks */}
       <section className="border-b border-black/10 bg-white relative">
         <div aria-hidden className="absolute inset-x-0 top-0 h-0.5 flex">
-          <div className="flex-1 bg-[#AA151B]" /><div className="flex-1 bg-[#F1BF00]" /><div className="flex-1 bg-[#AA151B]" />
+          <div className="flex-1 bg-[#fa5400]" /><div className="flex-1 bg-[#F1BF00]" /><div className="flex-1 bg-black" />
         </div>
         <div className="container-x grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 py-5 md:py-6 text-xs md:text-sm">
           {[
-            { i: Trophy, t: "Spain — 2026 World Champions 🏆", c: "text-[#F1BF00]" },
-            { i: Truck, t: "Free shipping · all India", c: "text-[#AA151B]" },
-            { i: Flame, t: "Champion kits shipping today", c: "text-[#F1BF00]" },
+            { i: Flame, t: "25/26 Club kits — live", c: "text-[#fa5400]" },
+            { i: Truck, t: "Free shipping · all India", c: "text-black" },
+            { i: Trophy, t: "Player · Fan · Sets · Jackets", c: "text-[#F1BF00]" },
             { i: ShieldCheck, t: "UPI only · no COD", c: "text-black" },
           ].map((x, i) => (
             <div key={i} className="flex items-center gap-2 text-neutral-700">
@@ -142,6 +144,7 @@ function Home() {
           ))}
         </div>
       </section>
+
 
       {/* Special Editions */}
       <FeaturedDrop />
