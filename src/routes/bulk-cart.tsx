@@ -16,8 +16,8 @@ export const Route = createFileRoute("/bulk-cart")({
   component: BulkCartPage,
 });
 
-const SHIP_FREE_ABOVE = 1499;
-const SHIP_FEE = 99;
+// Free shipping across India — no shipping charge on bulk orders.
+
 
 type Details = {
   name: string; phone: string; altPhone: string;
