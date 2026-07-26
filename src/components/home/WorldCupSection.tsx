@@ -13,10 +13,14 @@ function totalStock(map: Record<string, Partial<Record<SizeKey, number>>> | unde
   if (!row) return undefined;
   return SIZES.reduce((s, k) => s + (row[k] ?? 0), 0);
 }
+const FULL_SLEEVE_IDS = new Set(["j112", "j113"]);
+function isFullSleeve(id: string) { return FULL_SLEEVE_IDS.has(id); }
 function priceFor(j: Jersey) {
+  if (isFullSleeve(j.id)) return { price: 1200, mrp: 1999 };
   const premium = j.team === "Spain" || j.team === "Argentina";
   return { price: premium ? 1300 : 850, mrp: premium ? 2499 : 1999 };
 }
+
 
 type Props = {
   preview?: number;
