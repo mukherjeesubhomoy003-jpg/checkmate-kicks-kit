@@ -173,10 +173,8 @@ function BulkCartPage() {
             <h2 className="font-bebas text-2xl uppercase tracking-tight">Order Summary</h2>
             <dl className="mt-3 space-y-2 text-sm">
               <Row k={`Subtotal (${cart.count} items)`} v={`₹${cart.subtotal}`} />
-              <Row k="Shipping" v={shipping === 0 ? "Free" : `₹${shipping}`} />
-              {shipping > 0 && (
-                <div className="text-[11px] text-[#fa5400] font-semibold">Add ₹{SHIP_FREE_ABOVE - cart.subtotal} more for free shipping</div>
-              )}
+              <Row k="Shipping" v="Free · All India" />
+
               <div className="border-t border-black/10 my-2" />
               <Row k="Total" v={`₹${total}`} strong />
             </dl>
