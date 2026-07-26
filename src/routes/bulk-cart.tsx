@@ -44,8 +44,9 @@ function BulkCartPage() {
   const [d, setD] = useState<Details>(EMPTY_DETAILS);
   const [orderNo, setOrderNo] = useState("");
 
-  const shipping = cart.subtotal === 0 || cart.subtotal >= SHIP_FREE_ABOVE ? 0 : SHIP_FEE;
+  const shipping = 0;
   const total = cart.subtotal + shipping;
+
 
   const validDetails =
     d.name.trim().length > 1 &&
