@@ -46,6 +46,42 @@ import bayernHomeRed from "@/assets/fan/bayern-home-red.jpg.asset.json";
 import fcbHome from "@/assets/fan/barcelona-home.jpg.asset.json";
 import juventusHome from "@/assets/fan/juventus-home.jpg.asset.json";
 
+// Batch 3 (PDF · 34 items)
+import fcbP1 from "@/assets/fan/fcb-p1.jpg.asset.json";
+import arsenalP2 from "@/assets/fan/arsenal-p2.jpg.asset.json";
+import brYellowP3 from "@/assets/fan/brazil-yellow-p3.jpg.asset.json";
+import brBlueP4 from "@/assets/fan/brazil-blue-p4.jpg.asset.json";
+import fcbP5 from "@/assets/fan/fcb-p5.jpg.asset.json";
+import manuP6 from "@/assets/fan/manu-p6.jpg.asset.json";
+import porBlackPatP7 from "@/assets/fan/portugal-black-pattern-p7.jpg.asset.json";
+import rmEmiratesP8 from "@/assets/fan/rm-emirates-p8.jpg.asset.json";
+import argChampP9 from "@/assets/fan/argentina-champions-p9.jpg.asset.json";
+import mancityP10 from "@/assets/fan/mancity-p10.jpg.asset.json";
+import acmWhiteP11 from "@/assets/fan/acmilan-white-p11.jpg.asset.json";
+import mancityStripeP12 from "@/assets/fan/mancity-stripe-p12.jpg.asset.json";
+import fcbP13 from "@/assets/fan/fcb-p13.jpg.asset.json";
+import chelNavyP14 from "@/assets/fan/chelsea-navy-p14.jpg.asset.json";
+import bayernRedP15 from "@/assets/fan/bayern-red-p15.jpg.asset.json";
+import lfcRedP16 from "@/assets/fan/liverpool-red-p16.jpg.asset.json";
+import acmP17 from "@/assets/fan/acmilan-p17.jpg.asset.json";
+import brWhiteP19 from "@/assets/fan/brazil-white-p19.jpg.asset.json";
+import acmP20 from "@/assets/fan/acmilan-p20.jpg.asset.json";
+import rmEmiratesP21 from "@/assets/fan/rm-emirates-p21.jpg.asset.json";
+import arsenalP22 from "@/assets/fan/arsenal-p22.jpg.asset.json";
+import arsenalP23 from "@/assets/fan/arsenal-p23.jpg.asset.json";
+import lfcAdidasP24 from "@/assets/fan/liverpool-adidas-p24.jpg.asset.json";
+import argPoloP25 from "@/assets/fan/argentina-polo-p25.jpg.asset.json";
+import brBlackP26 from "@/assets/fan/brazil-black-p26.jpg.asset.json";
+import fcbFloralP27 from "@/assets/fan/fcb-floral-p27.jpg.asset.json";
+import arsenalEmiratesP28 from "@/assets/fan/arsenal-emirates-p28.jpg.asset.json";
+import manuRoseP29 from "@/assets/fan/manu-rose-p29.jpg.asset.json";
+import fcbSpotifyYellowP30 from "@/assets/fan/fcb-spotify-yellow-p30.jpg.asset.json";
+import rmEmiratesP31 from "@/assets/fan/rm-emirates-p31.jpg.asset.json";
+import rmLvGreenP32 from "@/assets/fan/rm-lv-green-p32.jpg.asset.json";
+import arsenalEmiratesP33 from "@/assets/fan/arsenal-emirates-p33.jpg.asset.json";
+import fcbKobePurpleP34 from "@/assets/fan/fcb-kobe-purple-p34.jpg.asset.json";
+import chelseaPoloP35 from "@/assets/fan/chelsea-polo-p35.jpg.asset.json";
+
 export type FanJersey = { id: string; team: string; tag: string; image: string };
 
 export const FAN_JERSEYS: FanJersey[] = [
@@ -94,6 +130,41 @@ export const FAN_JERSEYS: FanJersey[] = [
   { id: "f42", team: "Bayern Munich", tag: "Home", image: bayernHomeRed.url },
   { id: "f43", team: "Barcelona", tag: "Home", image: fcbHome.url },
   { id: "f44", team: "Juventus", tag: "Home", image: juventusHome.url },
+
+  { id: "f45", team: "Barcelona", tag: "Classic", image: fcbP1.url },
+  { id: "f46", team: "Arsenal", tag: "Home", image: arsenalP2.url },
+  { id: "f47", team: "Brasil", tag: "Home Yellow", image: brYellowP3.url },
+  { id: "f48", team: "Brasil", tag: "Blue Kit", image: brBlueP4.url },
+  { id: "f49", team: "Barcelona", tag: "Classic II", image: fcbP5.url },
+  { id: "f50", team: "Man United", tag: "Home", image: manuP6.url },
+  { id: "f51", team: "Portugal", tag: "Black Crest", image: porBlackPatP7.url },
+  { id: "f52", team: "Real Madrid", tag: "Emirates Home", image: rmEmiratesP8.url },
+  { id: "f53", team: "Argentina", tag: "3-Star Champions", image: argChampP9.url },
+  { id: "f54", team: "Man City", tag: "Home", image: mancityP10.url },
+  { id: "f55", team: "AC Milan", tag: "White Away", image: acmWhiteP11.url },
+  { id: "f56", team: "Man City", tag: "Blue Stripe", image: mancityStripeP12.url },
+  { id: "f57", team: "Barcelona", tag: "Classic III", image: fcbP13.url },
+  { id: "f58", team: "Chelsea", tag: "Navy Yellow", image: chelNavyP14.url },
+  { id: "f59", team: "Bayern Munich", tag: "Red Stripes", image: bayernRedP15.url },
+  { id: "f60", team: "Liverpool", tag: "Home", image: lfcRedP16.url },
+  { id: "f61", team: "AC Milan", tag: "Home", image: acmP17.url },
+  { id: "f62", team: "Brasil", tag: "White Away", image: brWhiteP19.url },
+  { id: "f63", team: "AC Milan", tag: "Home II", image: acmP20.url },
+  { id: "f64", team: "Real Madrid", tag: "Emirates II", image: rmEmiratesP21.url },
+  { id: "f65", team: "Arsenal", tag: "Home II", image: arsenalP22.url },
+  { id: "f66", team: "Arsenal", tag: "Home III", image: arsenalP23.url },
+  { id: "f67", team: "Liverpool", tag: "Adidas Retro", image: lfcAdidasP24.url },
+  { id: "f68", team: "Argentina", tag: "Champions Polo", image: argPoloP25.url },
+  { id: "f69", team: "Brasil", tag: "Black Edition", image: brBlackP26.url },
+  { id: "f70", team: "Barcelona", tag: "Floral", image: fcbFloralP27.url },
+  { id: "f71", team: "Arsenal", tag: "Emirates", image: arsenalEmiratesP28.url },
+  { id: "f72", team: "Man United", tag: "Rose Edition", image: manuRoseP29.url },
+  { id: "f73", team: "Barcelona", tag: "Spotify Yellow", image: fcbSpotifyYellowP30.url },
+  { id: "f74", team: "Real Madrid", tag: "Emirates III", image: rmEmiratesP31.url },
+  { id: "f75", team: "Real Madrid", tag: "LV Green", image: rmLvGreenP32.url },
+  { id: "f76", team: "Arsenal", tag: "Emirates II", image: arsenalEmiratesP33.url },
+  { id: "f77", team: "Barcelona", tag: "Kobe Purple", image: fcbKobePurpleP34.url },
+  { id: "f78", team: "Chelsea", tag: "Polo", image: chelseaPoloP35.url },
 ];
 
 export const FAN_PRICE = 750;

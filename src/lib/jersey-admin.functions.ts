@@ -136,6 +136,64 @@ export const createJerseyOrder = createServerFn({ method: "POST" })
     return { order_number };
   });
 
+// Public bulk-cart entry point. Writes one jersey_orders row per line item so
+// the admin panel sees every bulk order (including guest checkouts).
+export const createBulkJerseyOrders = createServerFn({ method: "POST" })
+  .inputValidator(
+    z.object({
+      orderNumber: z.string().trim().min(3).max(40),
+      buyer_name: z.string().trim().min(1).max(120),
+      buyer_phone: z.string().trim().min(6).max(20),
+      address: z.string().trim().min(1).max(400),
+      city: z.string().trim().min(1).max(80),
+      pincode: z.string().trim().min(3).max(20),
+      landmark: z.string().trim().max(200).optional().nullable(),
+      post_office: z.string().trim().max(160).optional().nullable(),
+      notes: z.string().trim().max(1000).optional().nullable(),
+      paid: z.boolean().default(false),
+      items: z
+        .array(
+          z.object({
+            name: z.string().trim().min(1).max(200),
+            kit: z.string().trim().max(60).optional().nullable(),
+            size: z.string().trim().min(1).max(8),
+            qty: z.number().int().min(1).max(50),
+            unit_price: z.number().int().min(1).max(100000),
+          }),
+        )
+        .min(1)
+        .max(50),
+    }),
+  )
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const suffix = (i: number) => (data.items.length === 1 ? "" : `-${String.fromCharCode(65 + i)}`);
+    const rows = data.items.map((it, i) => ({
+      order_number: `${data.orderNumber}${suffix(i)}`,
+      buyer_name: data.buyer_name,
+      buyer_phone: data.buyer_phone,
+      address: data.address,
+      city: data.city,
+      pincode: data.pincode,
+      landmark: data.landmark || null,
+      post_office: data.post_office || "NA",
+      item_name: it.name,
+      kit: it.kit || null,
+      size: it.size,
+      qty: it.qty,
+      unit_price: it.unit_price,
+      printing_name: null,
+      printing_number: null,
+      printing_fee: 0,
+      total: it.unit_price * it.qty,
+      payment_status: data.paid ? "paid_screenshot_pending" : "awaiting_screenshot",
+      notes: data.notes || null,
+    }));
+    const { error } = await supabaseAdmin.from("jersey_orders").insert(rows);
+    if (error) throw new Error(error.message);
+    return { inserted: rows.length };
+  });
+
 export const adminListJerseyOrders = createServerFn({ method: "POST" })
   .inputValidator(z.object({ token: z.string().min(1).max(200) }))
   .handler(async ({ data }) => {
