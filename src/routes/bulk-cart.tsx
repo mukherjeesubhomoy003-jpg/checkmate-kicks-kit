@@ -94,11 +94,42 @@ function BulkCartPage() {
   }
 
   const placeOrder = useServerFn(placeBulkOrder);
+  const placeJerseyOrders = useServerFn(createBulkJerseyOrders);
 
   async function persistOrder(num: string, paid: boolean) {
+    // Always mirror bulk orders into jersey_orders so the admin panel sees
+    // every order — including guest checkouts.
+    try {
+      await placeJerseyOrders({
+        data: {
+          orderNumber: num,
+          paid,
+          buyer_name: d.name,
+          buyer_phone: d.phone,
+          address: d.address,
+          city: d.city,
+          pincode: d.pincode,
+          landmark: d.landmark || null,
+          post_office: d.postOffice || null,
+          notes: d.notes || null,
+          items: cart.items.map((it) => ({
+            name: it.name,
+            kit: it.category ?? null,
+            size: it.size,
+            qty: it.quantity,
+            unit_price: Math.round(it.price),
+          })),
+        },
+      });
+    } catch (err) {
+      console.error("bulk jersey_orders persist failed", err);
+    }
+
+    // Additionally: for signed-in users, also persist to the richer `orders`
+    // table so it shows in their "My Orders" history.
     try {
       const { data: sess } = await supabase.auth.getSession();
-      if (!sess.session) return; // guest checkout: skip DB persistence
+      if (!sess.session) return;
       const email = sess.session.user.email ?? null;
       await placeOrder({
         data: {
