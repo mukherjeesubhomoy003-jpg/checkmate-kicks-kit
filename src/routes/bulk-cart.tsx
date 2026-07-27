@@ -307,10 +307,11 @@ function BulkCartPage() {
                   <MessageCircle className="size-4" /> I've paid · Send slip on WhatsApp
                 </button>
                 <button
-                  onClick={() => {
+                  onClick={async () => {
                     const num = orderNo || nextOrderNumber();
                     setOrderNo(num);
                     openWA(buildMessage(num, false));
+                    await persistOrder(num, false);
                     setStep(4);
                   }}
                   className="w-full text-[11px] font-bold uppercase tracking-[0.18em] text-neutral-500 hover:text-black"
