@@ -5,6 +5,7 @@ import { Minus, Plus, Trash2, ShoppingBag, MessageCircle, QrCode, Check, ArrowRi
 import { useBulkCart } from "@/lib/bulk-cart";
 import { BRAND, PAYMENT_QR_URL, UPI_ID, UPI_NAME } from "@/components/order/OrderModal";
 import { placeBulkOrder } from "@/lib/bulk-checkout.functions";
+import { createBulkJerseyOrders } from "@/lib/jersey-admin.functions";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/bulk-cart")({
