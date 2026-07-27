@@ -93,10 +93,48 @@ function BulkCartPage() {
     window.open(url, "_blank", "noopener,noreferrer");
   }
 
-  function confirmPaid() {
+  const placeOrder = useServerFn(placeBulkOrder);
+
+  async function persistOrder(num: string, paid: boolean) {
+    try {
+      const { data: sess } = await supabase.auth.getSession();
+      if (!sess.session) return; // guest checkout: skip DB persistence
+      const email = sess.session.user.email ?? null;
+      await placeOrder({
+        data: {
+          orderNumber: num,
+          paid,
+          email,
+          notes: d.notes || null,
+          address: {
+            full_name: d.name,
+            phone: d.phone,
+            line1: d.address,
+            line2: [d.landmark, d.postOffice].filter(Boolean).join(" · "),
+            city: d.city,
+            state: "",
+            postal_code: d.pincode,
+            country: "India",
+          },
+          items: cart.items.map((it) => ({
+            name: it.name,
+            image: it.image ?? null,
+            variantLabel: `Size ${it.size}${it.category ? " · " + it.category : ""}`,
+            unitPrice: it.price,
+            quantity: it.quantity,
+          })),
+        },
+      });
+    } catch (err) {
+      console.error("bulk order persist failed", err);
+    }
+  }
+
+  async function confirmPaid() {
     const num = orderNo || nextOrderNumber();
     setOrderNo(num);
     openWA(buildMessage(num, true));
+    await persistOrder(num, true);
     setStep(4);
   }
 
