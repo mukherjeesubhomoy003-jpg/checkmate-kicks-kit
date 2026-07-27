@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { Minus, Plus, Trash2, ShoppingBag, MessageCircle, QrCode, Check, ArrowRight, Copy } from "lucide-react";
 import { useBulkCart } from "@/lib/bulk-cart";
 import { BRAND, PAYMENT_QR_URL, UPI_ID, UPI_NAME } from "@/components/order/OrderModal";
+import { placeBulkOrder } from "@/lib/bulk-checkout.functions";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/bulk-cart")({
   head: () => ({
