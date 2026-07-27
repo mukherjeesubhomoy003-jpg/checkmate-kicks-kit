@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { Minus, Plus, Trash2, ShoppingBag, MessageCircle, QrCode, Check, ArrowRight, Copy } from "lucide-react";
 import { useBulkCart } from "@/lib/bulk-cart";
 import { BRAND, PAYMENT_QR_URL, UPI_ID, UPI_NAME } from "@/components/order/OrderModal";
+import { placeBulkOrder } from "@/lib/bulk-checkout.functions";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/bulk-cart")({
   head: () => ({
@@ -90,10 +93,48 @@ function BulkCartPage() {
     window.open(url, "_blank", "noopener,noreferrer");
   }
 
-  function confirmPaid() {
+  const placeOrder = useServerFn(placeBulkOrder);
+
+  async function persistOrder(num: string, paid: boolean) {
+    try {
+      const { data: sess } = await supabase.auth.getSession();
+      if (!sess.session) return; // guest checkout: skip DB persistence
+      const email = sess.session.user.email ?? null;
+      await placeOrder({
+        data: {
+          orderNumber: num,
+          paid,
+          email,
+          notes: d.notes || null,
+          address: {
+            full_name: d.name,
+            phone: d.phone,
+            line1: d.address,
+            line2: [d.landmark, d.postOffice].filter(Boolean).join(" · "),
+            city: d.city,
+            state: "",
+            postal_code: d.pincode,
+            country: "India",
+          },
+          items: cart.items.map((it) => ({
+            name: it.name,
+            image: it.image ?? null,
+            variantLabel: `Size ${it.size}${it.category ? " · " + it.category : ""}`,
+            unitPrice: it.price,
+            quantity: it.quantity,
+          })),
+        },
+      });
+    } catch (err) {
+      console.error("bulk order persist failed", err);
+    }
+  }
+
+  async function confirmPaid() {
     const num = orderNo || nextOrderNumber();
     setOrderNo(num);
     openWA(buildMessage(num, true));
+    await persistOrder(num, true);
     setStep(4);
   }
 
@@ -266,10 +307,11 @@ function BulkCartPage() {
                   <MessageCircle className="size-4" /> I've paid · Send slip on WhatsApp
                 </button>
                 <button
-                  onClick={() => {
+                  onClick={async () => {
                     const num = orderNo || nextOrderNumber();
                     setOrderNo(num);
                     openWA(buildMessage(num, false));
+                    await persistOrder(num, false);
                     setStep(4);
                   }}
                   className="w-full text-[11px] font-bold uppercase tracking-[0.18em] text-neutral-500 hover:text-black"
