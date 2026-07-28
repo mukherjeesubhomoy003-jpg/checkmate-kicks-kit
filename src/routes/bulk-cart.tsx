@@ -135,11 +135,11 @@ function BulkCartPage() {
     // table so it shows in their "My Orders" history.
     try {
       const { data: sess } = await supabase.auth.getSession();
-      if (!sess.session) return;
+      if (!sess.session) return savedOrderNumber;
       const email = sess.session.user.email ?? null;
       await placeOrder({
         data: {
-          orderNumber: num,
+          orderNumber: savedOrderNumber,
           paid,
           email,
           notes: d.notes || null,
