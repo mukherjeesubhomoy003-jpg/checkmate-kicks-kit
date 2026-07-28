@@ -143,6 +143,24 @@ type OrderRow = {
 
 const DISPATCH_STATES = ["pending", "ready", "dispatched", "delivered", "cancelled"] as const;
 type DispatchState = typeof DISPATCH_STATES[number];
+const INDIA_TIME_ZONE = "Asia/Kolkata";
+
+function indiaDayKey(value: string | Date) {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: INDIA_TIME_ZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date(value));
+}
+
+function orderGroupKey(orderNumber: string) {
+  return orderNumber.replace(/-([A-Z]|[2-9][0-9]*)$/, "");
+}
+
+function countOrderGroups(rows: OrderRow[]) {
+  return new Set(rows.map((row) => orderGroupKey(row.order_number))).size;
+}
 
 function OrdersPanel({ token }: { token: string }) {
   const list = useServerFn(adminListJerseyOrders);
@@ -161,20 +179,20 @@ function OrdersPanel({ token }: { token: string }) {
 
   const rows = useMemo(() => {
     if (filter === "today") {
-      const today = new Date(); today.setHours(0, 0, 0, 0);
-      return visible.filter((r) => new Date(r.created_at) >= today);
+      const today = indiaDayKey(new Date());
+      return visible.filter((r) => indiaDayKey(r.created_at) === today);
     }
     if (filter === "pending") return visible.filter((r) => r.dispatch_status === "pending" || r.dispatch_status === "ready");
     return visible;
   }, [visible, filter]);
 
   const todaysCount = useMemo(() => {
-    const t = new Date(); t.setHours(0, 0, 0, 0);
-    return visible.filter((r) => new Date(r.created_at) >= t).length;
+    const today = indiaDayKey(new Date());
+    return countOrderGroups(visible.filter((r) => indiaDayKey(r.created_at) === today));
   }, [visible]);
   const todaysRevenue = useMemo(() => {
-    const t = new Date(); t.setHours(0, 0, 0, 0);
-    return visible.filter((r) => new Date(r.created_at) >= t).reduce((s, r) => s + r.total, 0);
+    const today = indiaDayKey(new Date());
+    return visible.filter((r) => indiaDayKey(r.created_at) === today).reduce((s, r) => s + r.total, 0);
   }, [visible]);
   const pendingCount = useMemo(() => visible.filter((r) => r.dispatch_status === "pending").length, [visible]);
 
