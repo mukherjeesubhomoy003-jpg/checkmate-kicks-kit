@@ -199,8 +199,10 @@ export function OrderModal({
           },
         });
         num = res.order_number;
-      } catch {
-        num = nextOrderNumber(); // local fallback so customer can still get an invoice
+      } catch (error) {
+        toast.error((error as Error).message || "Order could not be saved. Please try again.");
+        setPlacing(false);
+        return;
       }
       setOrderNo(num);
     }

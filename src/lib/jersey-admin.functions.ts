@@ -82,40 +82,44 @@ export const createJerseyOrder = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-    // Reserve sequential order number from DB sequence
-    const { data: nextNum, error: seqErr } = await supabaseAdmin.rpc(
-      "next_jersey_order_number",
-    );
-    let order_number: string;
-    if (seqErr || !nextNum) {
-      const { count } = await supabaseAdmin
-        .from("jersey_orders")
-        .select("*", { count: "exact", head: true });
-      order_number = `CHKM-${String((count ?? 0) + 1).padStart(4, "0")}`;
-    } else {
-      order_number = String(nextNum);
-    }
+    let order_number = "";
+    let saved = false;
+    let lastError = "Failed to save order";
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      const { data: nextNum, error: seqErr } = await supabaseAdmin.rpc(
+        "next_jersey_order_number",
+      );
+      order_number = seqErr || !nextNum
+        ? `CHKM-${Date.now().toString(36).toUpperCase()}-${attempt + 1}`
+        : String(nextNum);
 
-    const { error } = await supabaseAdmin.from("jersey_orders").insert({
-      order_number,
-      buyer_name: data.buyer_name,
-      buyer_phone: data.buyer_phone,
-      address: data.address,
-      city: data.city,
-      pincode: data.pincode,
-      landmark: data.landmark || null,
-      post_office: data.post_office || "NA",
-      item_name: data.item_name,
-      kit: data.kit || null,
-      size: data.size,
-      qty: data.qty,
-      unit_price: data.unit_price,
-      printing_name: data.printing_name || null,
-      printing_number: data.printing_number || null,
-      printing_fee: data.printing_fee,
-      total: data.total,
-    });
-    if (error) throw new Error(error.message);
+      const { error } = await supabaseAdmin.from("jersey_orders").insert({
+        order_number,
+        buyer_name: data.buyer_name,
+        buyer_phone: data.buyer_phone,
+        address: data.address,
+        city: data.city,
+        pincode: data.pincode,
+        landmark: data.landmark || null,
+        post_office: data.post_office || "NA",
+        item_name: data.item_name,
+        kit: data.kit || null,
+        size: data.size,
+        qty: data.qty,
+        unit_price: data.unit_price,
+        printing_name: data.printing_name || null,
+        printing_number: data.printing_number || null,
+        printing_fee: data.printing_fee,
+        total: data.total,
+      });
+      if (!error) {
+        saved = true;
+        break;
+      }
+      lastError = error.message;
+      if (error.code !== "23505") break;
+    }
+    if (!saved) throw new Error(lastError);
 
     // Best-effort stock decrement (won't go negative due to CHECK)
     if (data.jersey_id) {
@@ -141,7 +145,7 @@ export const createJerseyOrder = createServerFn({ method: "POST" })
 export const createBulkJerseyOrders = createServerFn({ method: "POST" })
   .inputValidator(
     z.object({
-      orderNumber: z.string().trim().min(3).max(40),
+      orderNumber: z.string().trim().min(3).max(40).optional(),
       buyer_name: z.string().trim().min(1).max(120),
       buyer_phone: z.string().trim().min(6).max(20),
       address: z.string().trim().min(1).max(400),
@@ -167,31 +171,65 @@ export const createBulkJerseyOrders = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const suffix = (i: number) => (data.items.length === 1 ? "" : `-${String.fromCharCode(65 + i)}`);
-    const rows = data.items.map((it, i) => ({
-      order_number: `${data.orderNumber}${suffix(i)}`,
-      buyer_name: data.buyer_name,
-      buyer_phone: data.buyer_phone,
-      address: data.address,
-      city: data.city,
-      pincode: data.pincode,
-      landmark: data.landmark || null,
-      post_office: data.post_office || "NA",
-      item_name: it.name,
-      kit: it.kit || null,
-      size: it.size,
-      qty: it.qty,
-      unit_price: it.unit_price,
-      printing_name: null,
-      printing_number: null,
-      printing_fee: 0,
-      total: it.unit_price * it.qty,
-      payment_status: data.paid ? "paid_screenshot_pending" : "awaiting_screenshot",
-      notes: data.notes || null,
-    }));
-    const { error } = await supabaseAdmin.from("jersey_orders").insert(rows);
-    if (error) throw new Error(error.message);
-    return { inserted: rows.length };
+    let inserted: { order_number: string }[] = [];
+    let baseOrderNumber = "";
+    let lastError = "Failed to save bulk order";
+
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      const { data: nextNum, error: seqErr } = await supabaseAdmin.rpc(
+        "next_jersey_order_number",
+      );
+      baseOrderNumber = seqErr || !nextNum
+        ? `CHKM-${Date.now().toString(36).toUpperCase()}-${attempt + 1}`
+        : String(nextNum);
+
+      const rows = data.items.map((it, i) => {
+        const suffix = data.items.length === 1
+          ? ""
+          : i < 26
+            ? `-${String.fromCharCode(65 + i)}`
+            : `-${i + 1}`;
+        return {
+          order_number: `${baseOrderNumber}${suffix}`,
+          buyer_name: data.buyer_name,
+          buyer_phone: data.buyer_phone,
+          address: data.address,
+          city: data.city,
+          pincode: data.pincode,
+          landmark: data.landmark || null,
+          post_office: data.post_office || "NA",
+          item_name: it.name,
+          kit: it.kit || null,
+          size: it.size,
+          qty: it.qty,
+          unit_price: it.unit_price,
+          printing_name: null,
+          printing_number: null,
+          printing_fee: 0,
+          total: it.unit_price * it.qty,
+          payment_status: data.paid ? "paid_screenshot_pending" : "awaiting_screenshot",
+          notes: data.notes || null,
+        };
+      });
+
+      const { data: savedRows, error } = await supabaseAdmin
+        .from("jersey_orders")
+        .insert(rows)
+        .select("order_number");
+      if (!error) {
+        inserted = savedRows ?? [];
+        break;
+      }
+      lastError = error.message;
+      if (error.code !== "23505") break;
+    }
+
+    if (inserted.length === 0) throw new Error(lastError);
+    return {
+      inserted: inserted.length,
+      orderNumber: baseOrderNumber,
+      orderNumbers: inserted.map((row) => row.order_number),
+    };
   });
 
 export const adminListJerseyOrders = createServerFn({ method: "POST" })
@@ -203,7 +241,7 @@ export const adminListJerseyOrders = createServerFn({ method: "POST" })
       .from("jersey_orders")
       .select("*")
       .order("created_at", { ascending: false })
-      .limit(500);
+      .limit(5000);
     if (error) throw new Error(error.message);
     return rows ?? [];
   });

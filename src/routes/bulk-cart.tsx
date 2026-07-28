@@ -7,6 +7,7 @@ import { BRAND, PAYMENT_QR_URL, UPI_ID, UPI_NAME } from "@/components/order/Orde
 import { placeBulkOrder } from "@/lib/bulk-checkout.functions";
 import { createBulkJerseyOrders } from "@/lib/jersey-admin.functions";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/bulk-cart")({
   head: () => ({
@@ -47,6 +48,7 @@ function BulkCartPage() {
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
   const [d, setD] = useState<Details>(EMPTY_DETAILS);
   const [orderNo, setOrderNo] = useState("");
+  const [placing, setPlacing] = useState(false);
 
   const shipping = 0;
   const total = cart.subtotal + shipping;
@@ -97,11 +99,12 @@ function BulkCartPage() {
   const placeOrder = useServerFn(placeBulkOrder);
   const placeJerseyOrders = useServerFn(createBulkJerseyOrders);
 
-  async function persistOrder(num: string, paid: boolean) {
+  async function persistOrder(num: string, paid: boolean): Promise<string> {
+    let savedOrderNumber = num;
     // Always mirror bulk orders into jersey_orders so the admin panel sees
     // every order — including guest checkouts.
     try {
-      await placeJerseyOrders({
+      const saved = await placeJerseyOrders({
         data: {
           orderNumber: num,
           paid,
@@ -122,8 +125,10 @@ function BulkCartPage() {
           })),
         },
       });
+      savedOrderNumber = saved.orderNumber || saved.orderNumbers?.[0] || num;
     } catch (err) {
       console.error("bulk jersey_orders persist failed", err);
+      throw err;
     }
 
     // Additionally: for signed-in users, also persist to the richer `orders`
@@ -160,14 +165,24 @@ function BulkCartPage() {
     } catch (err) {
       console.error("bulk order persist failed", err);
     }
+
+    return savedOrderNumber;
   }
 
   async function confirmPaid() {
-    const num = orderNo || nextOrderNumber();
-    setOrderNo(num);
-    openWA(buildMessage(num, true));
-    await persistOrder(num, true);
-    setStep(4);
+    if (placing) return;
+    setPlacing(true);
+    try {
+      const initialNum = orderNo || nextOrderNumber();
+      const savedNum = await persistOrder(initialNum, true);
+      setOrderNo(savedNum);
+      openWA(buildMessage(savedNum, true));
+      setStep(4);
+    } catch {
+      toast.error("Order could not be saved. Please try again before sending WhatsApp.");
+    } finally {
+      setPlacing(false);
+    }
   }
 
   // ---------- EMPTY ----------
@@ -334,21 +349,31 @@ function BulkCartPage() {
 
                 <button
                   onClick={confirmPaid}
+                  disabled={placing}
                   className="w-full inline-flex items-center justify-center gap-2 rounded-none bg-[#25D366] px-5 py-3.5 text-xs font-bold uppercase tracking-[0.2em] text-white hover:brightness-110"
                 >
-                  <MessageCircle className="size-4" /> I've paid · Send slip on WhatsApp
+                  <MessageCircle className="size-4" /> {placing ? "Saving order…" : "I've paid · Send slip on WhatsApp"}
                 </button>
                 <button
                   onClick={async () => {
-                    const num = orderNo || nextOrderNumber();
-                    setOrderNo(num);
-                    openWA(buildMessage(num, false));
-                    await persistOrder(num, false);
-                    setStep(4);
+                    if (placing) return;
+                    setPlacing(true);
+                    try {
+                      const initialNum = orderNo || nextOrderNumber();
+                      const savedNum = await persistOrder(initialNum, false);
+                      setOrderNo(savedNum);
+                      openWA(buildMessage(savedNum, false));
+                      setStep(4);
+                    } catch {
+                      toast.error("Order could not be saved. Please try again before sending WhatsApp.");
+                    } finally {
+                      setPlacing(false);
+                    }
                   }}
+                  disabled={placing}
                   className="w-full text-[11px] font-bold uppercase tracking-[0.18em] text-neutral-500 hover:text-black"
                 >
-                  or send slip first, pay after
+                  {placing ? "Saving order…" : "or send slip first, pay after"}
                 </button>
               </div>
             </div>
