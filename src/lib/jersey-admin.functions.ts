@@ -1,12 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
-const ADMIN_ID = "ANKUSHKHATIK123";
-const ADMIN_PW = "ANKUSH@123";
-const ADMIN_TOKEN = "cm-jersey-admin-ok-ankush-2026";
-
-const SIZE = z.enum(["S", "M", "L", "XL", "XXL"]);
-
 export const loginJerseyAdmin = createServerFn({ method: "POST" })
   .inputValidator(
     z.object({
@@ -15,10 +9,10 @@ export const loginJerseyAdmin = createServerFn({ method: "POST" })
     }),
   )
   .handler(async ({ data }) => {
-    if (data.id.trim() !== ADMIN_ID || data.password !== ADMIN_PW) {
+    if (data.id.trim() !== "ANKUSHKHATIK123" || data.password !== "ANKUSH@123") {
       throw new Error("Invalid credentials");
     }
-    return { token: ADMIN_TOKEN };
+    return { token: "cm-jersey-admin-ok-ankush-2026" };
   });
 
 // ============ Per-size stock ============
@@ -31,7 +25,7 @@ export const updateJerseySizeStock = createServerFn({ method: "POST" })
         .array(
           z.object({
             jersey_id: z.string().regex(/^[a-z0-9-]{2,24}$/i),
-            size: SIZE,
+            size: z.enum(["S", "M", "L", "XL", "XXL"]),
             stock: z.number().int().min(0).max(9999),
           }),
         )
@@ -40,7 +34,7 @@ export const updateJerseySizeStock = createServerFn({ method: "POST" })
     }),
   )
   .handler(async ({ data }) => {
-    if (data.token !== ADMIN_TOKEN) throw new Error("Admin session expired");
+    if (data.token !== "cm-jersey-admin-ok-ankush-2026") throw new Error("Admin session expired");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const rows = data.updates.map((u) => ({
       jersey_id: u.jersey_id,
@@ -69,7 +63,7 @@ export const createJerseyOrder = createServerFn({ method: "POST" })
       post_office: z.string().trim().max(120).optional().nullable(),
       item_name: z.string().trim().min(1).max(160),
       kit: z.string().trim().max(20).optional().nullable(),
-      size: SIZE,
+      size: z.enum(["S", "M", "L", "XL", "XXL"]),
       qty: z.number().int().min(1).max(20),
       unit_price: z.number().int().min(1).max(100000),
       printing_name: z.string().trim().max(40).optional().nullable(),
@@ -235,7 +229,7 @@ export const createBulkJerseyOrders = createServerFn({ method: "POST" })
 export const adminListJerseyOrders = createServerFn({ method: "POST" })
   .inputValidator(z.object({ token: z.string().min(1).max(200) }))
   .handler(async ({ data }) => {
-    if (data.token !== ADMIN_TOKEN) throw new Error("Admin session expired");
+    if (data.token !== "cm-jersey-admin-ok-ankush-2026") throw new Error("Admin session expired");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: rows, error } = await supabaseAdmin
       .from("jersey_orders")
@@ -255,7 +249,7 @@ export const updateJerseyOrderDispatch = createServerFn({ method: "POST" })
     }),
   )
   .handler(async ({ data }) => {
-    if (data.token !== ADMIN_TOKEN) throw new Error("Admin session expired");
+    if (data.token !== "cm-jersey-admin-ok-ankush-2026") throw new Error("Admin session expired");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin
       .from("jersey_orders")
@@ -268,7 +262,7 @@ export const updateJerseyOrderDispatch = createServerFn({ method: "POST" })
 export const deleteJerseyOrder = createServerFn({ method: "POST" })
   .inputValidator(z.object({ token: z.string().min(1).max(200), id: z.string().uuid() }))
   .handler(async ({ data }) => {
-    if (data.token !== ADMIN_TOKEN) throw new Error("Admin session expired");
+    if (data.token !== "cm-jersey-admin-ok-ankush-2026") throw new Error("Admin session expired");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin.from("jersey_orders").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
