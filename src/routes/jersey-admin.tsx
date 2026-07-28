@@ -154,6 +154,14 @@ function indiaDayKey(value: string | Date) {
   }).format(new Date(value));
 }
 
+function orderGroupKey(orderNumber: string) {
+  return orderNumber.replace(/-([A-Z]|[2-9][0-9]*)$/, "");
+}
+
+function countOrderGroups(rows: OrderRow[]) {
+  return new Set(rows.map((row) => orderGroupKey(row.order_number))).size;
+}
+
 function OrdersPanel({ token }: { token: string }) {
   const list = useServerFn(adminListJerseyOrders);
   const updateDispatch = useServerFn(updateJerseyOrderDispatch);
@@ -180,7 +188,7 @@ function OrdersPanel({ token }: { token: string }) {
 
   const todaysCount = useMemo(() => {
     const today = indiaDayKey(new Date());
-    return visible.filter((r) => indiaDayKey(r.created_at) === today).length;
+    return countOrderGroups(visible.filter((r) => indiaDayKey(r.created_at) === today));
   }, [visible]);
   const todaysRevenue = useMemo(() => {
     const today = indiaDayKey(new Date());
