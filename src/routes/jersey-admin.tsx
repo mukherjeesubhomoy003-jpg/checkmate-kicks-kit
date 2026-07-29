@@ -12,6 +12,8 @@ import { SPECIALS } from "@/lib/specials";
 import { POLOS } from "@/lib/polos";
 import { SETS } from "@/lib/sets";
 import { EMBROIDERY } from "@/lib/embroidery";
+import { CLUB_PV } from "@/lib/club-pv";
+import { FAN_FS } from "@/lib/fan-fs";
 import {
   setAdminSession,
   clearAdminSession,

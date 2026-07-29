@@ -21,7 +21,9 @@ import { Route as PlayerVersionRouteImport } from './routes/player-version'
 import { Route as JerseyAdminRouteImport } from './routes/jersey-admin'
 import { Route as JacketsRouteImport } from './routes/jackets'
 import { Route as FanVersionRouteImport } from './routes/fan-version'
+import { Route as FanFsRouteImport } from './routes/fan-fs'
 import { Route as EmbroideryRouteImport } from './routes/embroidery'
+import { Route as ClubPvRouteImport } from './routes/club-pv'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as BulkCartRouteImport } from './routes/bulk-cart'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -100,9 +102,19 @@ const FanVersionRoute = FanVersionRouteImport.update({
   path: '/fan-version',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FanFsRoute = FanFsRouteImport.update({
+  id: '/fan-fs',
+  path: '/fan-fs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EmbroideryRoute = EmbroideryRouteImport.update({
   id: '/embroidery',
   path: '/embroidery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClubPvRoute = ClubPvRouteImport.update({
+  id: '/club-pv',
+  path: '/club-pv',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CartRoute = CartRouteImport.update({
@@ -200,7 +212,9 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/bulk-cart': typeof BulkCartRoute
   '/cart': typeof CartRoute
+  '/club-pv': typeof ClubPvRoute
   '/embroidery': typeof EmbroideryRoute
+  '/fan-fs': typeof FanFsRoute
   '/fan-version': typeof FanVersionRoute
   '/jackets': typeof JacketsRoute
   '/jersey-admin': typeof JerseyAdminRoute
@@ -231,7 +245,9 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/bulk-cart': typeof BulkCartRoute
   '/cart': typeof CartRoute
+  '/club-pv': typeof ClubPvRoute
   '/embroidery': typeof EmbroideryRoute
+  '/fan-fs': typeof FanFsRoute
   '/fan-version': typeof FanVersionRoute
   '/jackets': typeof JacketsRoute
   '/jersey-admin': typeof JerseyAdminRoute
@@ -263,7 +279,9 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/bulk-cart': typeof BulkCartRoute
   '/cart': typeof CartRoute
+  '/club-pv': typeof ClubPvRoute
   '/embroidery': typeof EmbroideryRoute
+  '/fan-fs': typeof FanFsRoute
   '/fan-version': typeof FanVersionRoute
   '/jackets': typeof JacketsRoute
   '/jersey-admin': typeof JerseyAdminRoute
@@ -296,7 +314,9 @@ export interface FileRouteTypes {
     | '/auth'
     | '/bulk-cart'
     | '/cart'
+    | '/club-pv'
     | '/embroidery'
+    | '/fan-fs'
     | '/fan-version'
     | '/jackets'
     | '/jersey-admin'
@@ -327,7 +347,9 @@ export interface FileRouteTypes {
     | '/auth'
     | '/bulk-cart'
     | '/cart'
+    | '/club-pv'
     | '/embroidery'
+    | '/fan-fs'
     | '/fan-version'
     | '/jackets'
     | '/jersey-admin'
@@ -358,7 +380,9 @@ export interface FileRouteTypes {
     | '/auth'
     | '/bulk-cart'
     | '/cart'
+    | '/club-pv'
     | '/embroidery'
+    | '/fan-fs'
     | '/fan-version'
     | '/jackets'
     | '/jersey-admin'
@@ -391,7 +415,9 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BulkCartRoute: typeof BulkCartRoute
   CartRoute: typeof CartRoute
+  ClubPvRoute: typeof ClubPvRoute
   EmbroideryRoute: typeof EmbroideryRoute
+  FanFsRoute: typeof FanFsRoute
   FanVersionRoute: typeof FanVersionRoute
   JacketsRoute: typeof JacketsRoute
   JerseyAdminRoute: typeof JerseyAdminRoute
@@ -495,11 +521,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FanVersionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/fan-fs': {
+      id: '/fan-fs'
+      path: '/fan-fs'
+      fullPath: '/fan-fs'
+      preLoaderRoute: typeof FanFsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/embroidery': {
       id: '/embroidery'
       path: '/embroidery'
       fullPath: '/embroidery'
       preLoaderRoute: typeof EmbroideryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/club-pv': {
+      id: '/club-pv'
+      path: '/club-pv'
+      fullPath: '/club-pv'
+      preLoaderRoute: typeof ClubPvRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cart': {
@@ -687,7 +727,9 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BulkCartRoute: BulkCartRoute,
   CartRoute: CartRoute,
+  ClubPvRoute: ClubPvRoute,
   EmbroideryRoute: EmbroideryRoute,
+  FanFsRoute: FanFsRoute,
   FanVersionRoute: FanVersionRoute,
   JacketsRoute: JacketsRoute,
   JerseyAdminRoute: JerseyAdminRoute,
