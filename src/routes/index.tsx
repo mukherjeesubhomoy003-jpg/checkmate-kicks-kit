@@ -62,6 +62,29 @@ function Home() {
         </div>
       </Link>
 
+      {/* Club Edition PV upcoming drop banner */}
+      <Link
+        to="/club-pv"
+        className="relative z-[3] block bg-gradient-to-r from-[#fa5400] via-black to-[#fa5400] text-white border-b border-[#F1BF00]/40 overflow-hidden group"
+      >
+        <div aria-hidden className="absolute inset-0 opacity-40 group-hover:opacity-60 transition" style={{ background: "radial-gradient(circle at 85% 50%, rgba(241,191,0,0.6), transparent 50%)" }} />
+        <div className="container-x relative flex items-center gap-3 sm:gap-4 py-2.5 sm:py-3">
+          <Flame className="size-5 sm:size-6 text-[#F1BF00] shrink-0" />
+          <div className="min-w-0 flex-1">
+            <div className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.24em] text-[#F1BF00] inline-flex items-center gap-1">
+              <Sparkles className="size-3" /> Upcoming Club Edition · 25/26
+            </div>
+            <div className="font-bebas text-sm sm:text-lg tracking-[0.14em] uppercase truncate">
+              Hurry Up — <span className="text-[#F1BF00]">Limited Stock</span> · Player Version <span className="text-[#F1BF00]">₹899</span> only
+            </div>
+          </div>
+          <span className="hidden sm:inline-flex items-center gap-1.5 bg-[#F1BF00] text-black text-[10px] font-black uppercase tracking-[0.18em] px-3 py-1.5 group-hover:bg-white transition">
+            Shop Now <ArrowRight className="size-3.5" />
+          </span>
+          <ArrowRight className="sm:hidden size-4 text-[#F1BF00] shrink-0" />
+        </div>
+      </Link>
+
       {/* Hero — Club Season */}
       <section className="relative overflow-hidden bg-[#050a1a] font-outfit">
         <HeroSlideshow />
