@@ -9,9 +9,11 @@ import { JACKETS } from "@/lib/jackets";
 import { SETS } from "@/lib/sets";
 import { useBulkCart } from "@/lib/bulk-cart";
 
-const NAV_LINKS: { to: "/" | "/sets" | "/embroidery" | "/player-version" | "/fan-version" | "/jackets" | "/shorts" | "/polos" | "/jersey-admin"; label: string; badge?: string; }[] = [
+const NAV_LINKS: { to: "/" | "/sets" | "/embroidery" | "/player-version" | "/club-pv" | "/fan-version" | "/fan-fs" | "/jackets" | "/shorts" | "/polos" | "/jersey-admin"; label: string; badge?: string; }[] = [
   { to: "/", label: "Home" },
-  { to: "/sets", label: "Final · Sets", badge: "hot" },
+  { to: "/club-pv", label: "Club PV 25/26", badge: "new" },
+  { to: "/fan-fs", label: "Fan Full Sleeve", badge: "new" },
+  { to: "/sets", label: "Sets" },
   { to: "/embroidery", label: "Embroidery" },
   { to: "/player-version", label: "Player" },
   { to: "/fan-version", label: "Fan" },
