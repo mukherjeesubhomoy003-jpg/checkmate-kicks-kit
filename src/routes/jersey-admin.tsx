@@ -12,6 +12,8 @@ import { SPECIALS } from "@/lib/specials";
 import { POLOS } from "@/lib/polos";
 import { SETS } from "@/lib/sets";
 import { EMBROIDERY } from "@/lib/embroidery";
+import { CLUB_PV } from "@/lib/club-pv";
+import { FAN_FS } from "@/lib/fan-fs";
 import {
   setAdminSession,
   clearAdminSession,
@@ -319,13 +321,15 @@ const POSTER_ITEMS = [
   { id: "p-neymar", team: "Neymar · 10", image: "https://placehold.co/60/1a1a1a/fa5400?text=N" },
 ];
 
-type StockSection = "player" | "specials" | "sets" | "fan" | "jackets" | "shorts" | "polos" | "embroidery" | "posters";
+type StockSection = "player" | "clubpv" | "specials" | "sets" | "fan" | "fanfs" | "jackets" | "shorts" | "polos" | "embroidery" | "posters";
 const SECTIONS: { key: StockSection; label: string; sub: string }[] = [
   { key: "embroidery", label: "Embroidery ✨", sub: "New · Upcoming season · ₹450" },
   { key: "player", label: "Player Version", sub: "Match-grade · S/M/L/XL/XXL" },
+  { key: "clubpv", label: "Club Edition PV", sub: "Upcoming club 25/26 · ₹899" },
   { key: "specials", label: "Special Editions", sub: "FS · Practice · Deals" },
   { key: "sets", label: "1st Grade Sets", sub: "Jersey + Shorts · ₹699" },
   { key: "fan", label: "Fan Version", sub: "Supporter kits · S/M/L/XL/XXL" },
+  { key: "fanfs", label: "Fan Full Sleeve", sub: "Club FS · ₹950" },
   { key: "jackets", label: "Jackets", sub: "Track jackets · S/M/L/XL/XXL" },
   { key: "shorts", label: "Shorts", sub: "Football shorts · S/M/L/XL/XXL" },
   { key: "polos", label: "Polo T-Shirts", sub: "Football polos · S/M/L/XL/XXL" },
@@ -360,9 +364,11 @@ function StockPanel({ token }: { token: string }) {
   }, [stockMap, initialized]);
 
   const items = section === "player" ? ALL_JERSEYS
+    : section === "clubpv" ? CLUB_PV
     : section === "specials" ? SPECIAL_ITEMS
     : section === "sets" ? SET_ITEMS
     : section === "fan" ? FAN_JERSEYS
+    : section === "fanfs" ? FAN_FS
     : section === "jackets" ? JACKETS
     : section === "shorts" ? SHORT_ITEMS
     : section === "polos" ? POLO_ITEMS
@@ -374,7 +380,7 @@ function StockPanel({ token }: { token: string }) {
   const dirty = useMemo(() => {
     const updates: { jersey_id: string; size: SizeKey; stock: number }[] = [];
     if (!stockMap) return updates;
-    const all = [...ALL_JERSEYS, ...SPECIAL_ITEMS, ...SET_ITEMS, ...FAN_JERSEYS, ...JACKETS, ...SHORT_ITEMS, ...POLO_ITEMS, ...EMB_ITEMS, ...POSTER_ITEMS];
+    const all = [...ALL_JERSEYS, ...CLUB_PV, ...SPECIAL_ITEMS, ...SET_ITEMS, ...FAN_JERSEYS, ...FAN_FS, ...JACKETS, ...SHORT_ITEMS, ...POLO_ITEMS, ...EMB_ITEMS, ...POSTER_ITEMS];
     for (const j of all) {
       const isPoster = j.id.startsWith("p-");
       const cols: SizeKey[] = isPoster ? ["M"] : SIZES;
@@ -405,9 +411,11 @@ function StockPanel({ token }: { token: string }) {
 
   const sectionDirty = dirty.filter((u) => {
     if (section === "player") return ALL_JERSEYS.some((j) => j.id === u.jersey_id);
+    if (section === "clubpv") return CLUB_PV.some((j) => j.id === u.jersey_id);
     if (section === "specials") return SPECIAL_ITEMS.some((j) => j.id === u.jersey_id);
     if (section === "sets") return SET_ITEMS.some((j) => j.id === u.jersey_id);
     if (section === "fan") return FAN_JERSEYS.some((j) => j.id === u.jersey_id);
+    if (section === "fanfs") return FAN_FS.some((j) => j.id === u.jersey_id);
     if (section === "jackets") return JACKETS.some((j) => j.id === u.jersey_id);
     if (section === "shorts") return SHORT_ITEMS.some((j) => j.id === u.jersey_id);
     if (section === "polos") return POLO_ITEMS.some((j) => j.id === u.jersey_id);
