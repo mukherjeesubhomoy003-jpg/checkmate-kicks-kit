@@ -5,6 +5,7 @@ import argPractice from "@/assets/specials/argentina-practice.jpg.asset.json";
 
 import manUtdPv from "@/assets/specials/man-united-pv.jpg.asset.json";
 import realMadridPv from "@/assets/specials/real-madrid-pv.jpg.asset.json";
+import spain2Star from "@/assets/specials/spain-2star-fan.jpg.asset.json";
 
 export type SpecialSize = "S" | "M" | "L" | "XL" | "XXL";
 
@@ -23,6 +24,18 @@ export type Special = {
 };
 
 export const SPECIALS: Special[] = [
+  {
+    id: "spain-2star-fan",
+    key: "spain-2star-fan",
+    team: "Spain · 2-Star Fan Version",
+    title: "Spain 2-Star",
+    subtitle: "Fan Version · Cream & Maroon · New Launch",
+    eyebrow: "New Launch · Fan Version",
+    image: spain2Star.url,
+    price: 850, mrp: 1699,
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    badge: "New",
+  },
   {
     id: "arg-fs",
     key: "arg-fs",
