@@ -150,11 +150,11 @@ const RAW: [string, "Home" | "Away", string][] = [
   ["Brasil", "Away", j33.url],
   ["Portugal", "Away", j34.url],
   ["Brasil", "Away", j35.url],
-  ["Brasil", "Home", j36.url],
+  ["Brasil", "Away", j36.url],
   ["Korea", "Home", j37.url],
   ["Mexico", "Away", j38.url],
   ["Colombia", "Away", j39.url],
-  ["South Africa", "Away", j40.url],
+  ["South Africa", "Home", j40.url],
   ["Netherlands", "Away", j41.url],
   ["Brasil", "Away", j42.url],
   ["Colombia", "Home", j43.url],
@@ -186,7 +186,7 @@ const RAW: [string, "Home" | "Away", string][] = [
   ["Chelsea", "Away", j71.url],
   ["Arsenal", "Away", j72.url],
   ["Barcelona", "Away", j73.url],
-  ["AC Milan", "Home", j74.url],
+  ["AC Milan", "Away", j74.url],
   ["Liverpool", "Away", j75.url],
   ["PSG", "Home", j76.url],
   ["Manchester United", "Away", j77.url],
@@ -210,8 +210,8 @@ const RAW: [string, "Home" | "Away", string][] = [
   ["Newcastle", "Home", j95.url],
   ["Real Madrid", "Home", j96.url],
   ["Arsenal", "Home", j97.url],
-  ["Manchester City", "Home", j98.url],
-  ["Tottenham", "Home", j99.url],
+  ["Manchester City", "Away", j98.url],
+  ["Tottenham", "Away", j99.url],
   ["PSG", "Away", j100.url],
   ["Napoli", "Away", j101.url],
   ["Liverpool", "Home", j102.url],
@@ -236,5 +236,14 @@ export const ALL_JERSEYS: Jersey[] = RAW.map(([team, tag, image], i) => ({
   image,
 }));
 
-// Show every jersey on the Player Version page — no dedup, no hiding.
-export const JERSEYS: Jersey[] = ALL_JERSEYS;
+// Hidden from the storefront: exact duplicate photos of kits already listed above.
+const DUPLICATE_IMAGES = new Set<string>([j69.url, j104.url, j106.url]);
+
+// Storefront list: every kit exactly once (same team name with a different kit is fine).
+const _seen = new Set<string>();
+export const JERSEYS: Jersey[] = ALL_JERSEYS.filter((j) => {
+  if (DUPLICATE_IMAGES.has(j.image)) return false;
+  if (_seen.has(j.image)) return false;
+  _seen.add(j.image);
+  return true;
+});
