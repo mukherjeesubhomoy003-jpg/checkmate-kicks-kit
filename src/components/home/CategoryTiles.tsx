@@ -11,6 +11,8 @@ import setsTile from "@/assets/sets/set07.jpg.asset.json";
 import embTile from "@/assets/embroidery/rm-front.jpg.asset.json";
 import clubPvTile from "@/assets/club-pv/cpv5.jpg.asset.json";
 import fanFsTile from "@/assets/fan-fs/ffs2.jpg.asset.json";
+import clubEmbTile from "@/assets/club-emb/ce1.jpg.asset.json";
+import fsRetroTile from "@/assets/fsretro/fsr1.jpg.asset.json";
 
 type Tile = {
   to:
@@ -22,7 +24,9 @@ type Tile = {
     | "/sets"
     | "/embroidery"
     | "/club-pv"
-    | "/fan-fs";
+    | "/fan-fs"
+    | "/club-emb"
+    | "/fs-retro";
   label: string;
   sub: string;
   price: string;
@@ -32,9 +36,11 @@ type Tile = {
 };
 
 const TILES: Tile[] = [
+  { to: "/club-emb", label: "Club Embroidery", sub: "Latest 2026/27 club season", price: "₹450", note: "No shipping", image: clubEmbTile.url, isNew: true },
+  { to: "/fs-retro", label: "Full Sleeve Retro", sub: "Retro & latest · embroidery", price: "₹950", note: "Free shipping", image: fsRetroTile.url, isNew: true },
   { to: "/club-pv", label: "Club Edition PV", sub: "Player version · 25/26 club drop", price: "₹899", note: "Free shipping", image: clubPvTile.url, isNew: true },
   { to: "/fan-fs", label: "Fan Full Sleeve", sub: "Long sleeve club edition", price: "₹950", note: "Free shipping", image: fanFsTile.url, isNew: true },
-  { to: "/embroidery", label: "Embroidery", sub: "RM 26/27 · Upcoming season", price: "₹450", image: embTile.url, isNew: true },
+  { to: "/embroidery", label: "Embroidery", sub: "Premium stitched crest & sponsor", price: "₹450", note: "No shipping", image: embTile.url, isNew: true },
   { to: "/sets", label: "1st Grade Sets", sub: "Jersey + shorts kit", price: "₹699", image: setsTile.url },
   { to: "/player-version", label: "Player Version", sub: "Match-grade fit", price: "₹850", image: pvSpecial.url },
   { to: "/fan-version", label: "Fan Version", sub: "Everyday supporter kit", price: "₹750", image: fanTile.url },
@@ -42,6 +48,7 @@ const TILES: Tile[] = [
   { to: "/polos", label: "Polo T-Shirts", sub: "Club & country polos", price: "₹1200", image: poloTile.url },
   { to: "/shorts", label: "Shorts", sub: "Club & country · match-grade", price: "₹250", note: "+₹50 shipping", image: shortsTile.url },
 ];
+
 
 export function CategoryTiles() {
   return (
