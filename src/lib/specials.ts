@@ -7,6 +7,17 @@ import manUtdPv from "@/assets/specials/man-united-pv.jpg.asset.json";
 import realMadridPv from "@/assets/specials/real-madrid-pv.jpg.asset.json";
 import spain2Star from "@/assets/specials/spain-2star-fan.jpg.asset.json";
 
+import milan1 from "@/assets/specials/milan1.jpg.asset.json";
+import milan2 from "@/assets/specials/milan2.jpg.asset.json";
+import spy1 from "@/assets/specials/spy1.jpg.asset.json";
+import spy2 from "@/assets/specials/spy2.jpg.asset.json";
+import spy3 from "@/assets/specials/spy3.jpg.asset.json";
+import spy4 from "@/assets/specials/spy4.jpg.asset.json";
+import spwc1 from "@/assets/specials/spwc1.jpg.asset.json";
+import spwc2 from "@/assets/specials/spwc2.jpg.asset.json";
+import spwc3 from "@/assets/specials/spwc3.jpg.asset.json";
+import spwc4 from "@/assets/specials/spwc4.jpg.asset.json";
+
 export type SpecialSize = "S" | "M" | "L" | "XL" | "XXL";
 
 export type Special = {
@@ -17,13 +28,59 @@ export type Special = {
   subtitle: string;
   eyebrow: string;
   image: string;
+  /** Optional multi-photo rotation (front / back / detail shots). */
+  gallery?: string[];
   price: number;
   mrp: number;
   sizes: SpecialSize[];
   badge?: string;
+  /** Optional bullet highlights shown on the card. */
+  highlights?: string[];
 };
 
 export const SPECIALS: Special[] = [
+  {
+    id: "ac-milan-retro-0607",
+    key: "ac-milan-retro-0607",
+    team: "AC Milan · Retro 2006/07 Away",
+    title: "AC Milan Retro 06/07",
+    subtitle: "Away · Embroidery Logos · Maldini Edition",
+    eyebrow: "Retro · Embroidery",
+    image: milan1.url,
+    gallery: [milan1.url, milan2.url],
+    price: 550, mrp: 1299,
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    badge: "New",
+    highlights: ["❤️ Embroidery logos", "❤️ Legendary Maldini edition", "❤️ Full sleeve retro cut"],
+  },
+  {
+    id: "spain-yamal-embroidery",
+    key: "spain-yamal-embroidery",
+    team: "Spain · 2-Star Home Embroidery",
+    title: "Spain 2⭐ Home Embroidery",
+    subtitle: "Yamal #19 · Premium Embroidery",
+    eyebrow: "Embroidery · New",
+    image: spy3.url,
+    gallery: [spy3.url, spy4.url, spy1.url, spy2.url],
+    price: 450, mrp: 1299,
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    badge: "New",
+    highlights: ["❤️ Premium embroidery quality", "❤️ Official 2-star home edition", "❤️ Yamal #19 print"],
+  },
+  {
+    id: "spain-2star-worldcup",
+    key: "spain-2star-worldcup",
+    team: "Spain · 2-Star World Cup",
+    title: "Spain 2⭐ World Cup",
+    subtitle: "Home & Away · Full Sublimation · Dotnet",
+    eyebrow: "World Cup Stock",
+    image: spwc1.url,
+    gallery: [spwc1.url, spwc2.url, spwc3.url, spwc4.url],
+    price: 400, mrp: 1199,
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    badge: "New",
+    highlights: ["❤️ Home & away available", "❤️ Full sublimation quality", "❤️ Dotnet material"],
+  },
   {
     id: "spain-2star-fan",
     key: "spain-2star-fan",
@@ -36,6 +93,7 @@ export const SPECIALS: Special[] = [
     sizes: ["S", "M", "L", "XL", "XXL"],
     badge: "New",
   },
+
   {
     id: "arg-fs",
     key: "arg-fs",
