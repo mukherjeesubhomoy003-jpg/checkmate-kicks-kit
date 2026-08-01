@@ -5,6 +5,8 @@ import { EMBROIDERY, EMBROIDERY_PRICE, EMBROIDERY_MRP, type Embroidery } from "@
 import { OrderModal } from "@/components/order/OrderModal";
 import { OrderGuide } from "@/components/OrderGuide";
 import { AddToCartModal } from "@/components/AddToCartModal";
+import { RotatingImage } from "@/components/RotatingImage";
+
 import { useJerseySizeStock, type SizeKey } from "@/lib/jersey-size-stock";
 import { useBulkCart } from "@/lib/bulk-cart";
 import { toast } from "sonner";
