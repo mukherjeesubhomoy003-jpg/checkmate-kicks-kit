@@ -51,10 +51,11 @@ function EmbroideryPage() {
                 Embroidery <span className="bg-gradient-to-r from-[#F1BF00] via-white to-[#F1BF00] bg-clip-text text-transparent">Edition.</span>
               </h1>
               <p className="mt-3 text-sm md:text-base text-white/85 max-w-lg">
-                Real Madrid <b className="text-white">26/27 Home</b> — stitched crest, embroidered sponsor, match-day feel.
+                Premium <b className="text-white">stitched crest & sponsor</b> — retro legends and latest club/country kits.
                 <br />
-                <span className="text-[#F1BF00] font-bold">₹{EMBROIDERY_PRICE} only</span> · Launch price · Limited units.
+                <span className="text-[#F1BF00] font-bold">₹{EMBROIDERY_PRICE} only</span> · No shipping charges · Limited units.
               </p>
+
               <div className="mt-4">
                 <Link to="/bulk-cart" className="inline-flex items-center gap-2 bg-[#F1BF00] text-black px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-white transition">
                   <ShoppingCart className="size-3.5" /> View Cart {cart.count > 0 && `· ${cart.count}`}
