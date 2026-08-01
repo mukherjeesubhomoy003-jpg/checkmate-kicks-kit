@@ -381,6 +381,8 @@ function StockPanel({ token }: { token: string }) {
     : section === "shorts" ? SHORT_ITEMS
     : section === "polos" ? POLO_ITEMS
     : section === "embroidery" ? EMB_ITEMS
+    : section === "clubemb" ? CLUB_EMB_ITEMS
+    : section === "fsretro" ? FS_RETRO_ITEMS
     : section === "posters" ? POSTER_ITEMS
     : [];
   const sizeCols: SizeKey[] = section === "posters" ? ["M"] : SIZES;
@@ -388,7 +390,8 @@ function StockPanel({ token }: { token: string }) {
   const dirty = useMemo(() => {
     const updates: { jersey_id: string; size: SizeKey; stock: number }[] = [];
     if (!stockMap) return updates;
-    const all = [...ALL_JERSEYS, ...CLUB_PV, ...SPECIAL_ITEMS, ...SET_ITEMS, ...FAN_JERSEYS, ...FAN_FS, ...JACKETS, ...SHORT_ITEMS, ...POLO_ITEMS, ...EMB_ITEMS, ...POSTER_ITEMS];
+    const all = [...ALL_JERSEYS, ...CLUB_PV, ...SPECIAL_ITEMS, ...SET_ITEMS, ...FAN_JERSEYS, ...FAN_FS, ...JACKETS, ...SHORT_ITEMS, ...POLO_ITEMS, ...EMB_ITEMS, ...CLUB_EMB_ITEMS, ...FS_RETRO_ITEMS, ...POSTER_ITEMS];
+
     for (const j of all) {
       const isPoster = j.id.startsWith("p-");
       const cols: SizeKey[] = isPoster ? ["M"] : SIZES;
