@@ -431,6 +431,9 @@ function StockPanel({ token }: { token: string }) {
     if (section === "shorts") return SHORT_ITEMS.some((j) => j.id === u.jersey_id);
     if (section === "polos") return POLO_ITEMS.some((j) => j.id === u.jersey_id);
     if (section === "embroidery") return EMB_ITEMS.some((j) => j.id === u.jersey_id);
+    if (section === "clubemb") return CLUB_EMB_ITEMS.some((j) => j.id === u.jersey_id);
+    if (section === "fsretro") return FS_RETRO_ITEMS.some((j) => j.id === u.jersey_id);
+
     if (section === "posters") return POSTER_ITEMS.some((j) => j.id === u.jersey_id);
     return false;
   }).length;
