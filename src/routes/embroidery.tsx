@@ -5,6 +5,8 @@ import { EMBROIDERY, EMBROIDERY_PRICE, EMBROIDERY_MRP, type Embroidery } from "@
 import { OrderModal } from "@/components/order/OrderModal";
 import { OrderGuide } from "@/components/OrderGuide";
 import { AddToCartModal } from "@/components/AddToCartModal";
+import { RotatingImage } from "@/components/RotatingImage";
+
 import { useJerseySizeStock, type SizeKey } from "@/lib/jersey-size-stock";
 import { useBulkCart } from "@/lib/bulk-cart";
 import { toast } from "sonner";
@@ -51,10 +53,11 @@ function EmbroideryPage() {
                 Embroidery <span className="bg-gradient-to-r from-[#F1BF00] via-white to-[#F1BF00] bg-clip-text text-transparent">Edition.</span>
               </h1>
               <p className="mt-3 text-sm md:text-base text-white/85 max-w-lg">
-                Real Madrid <b className="text-white">26/27 Home</b> — stitched crest, embroidered sponsor, match-day feel.
+                Premium <b className="text-white">stitched crest & sponsor</b> — retro legends and latest club/country kits.
                 <br />
-                <span className="text-[#F1BF00] font-bold">₹{EMBROIDERY_PRICE} only</span> · Launch price · Limited units.
+                <span className="text-[#F1BF00] font-bold">₹{EMBROIDERY_PRICE} only</span> · No shipping charges · Limited units.
               </p>
+
               <div className="mt-4">
                 <Link to="/bulk-cart" className="inline-flex items-center gap-2 bg-[#F1BF00] text-black px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-white transition">
                   <ShoppingCart className="size-3.5" /> View Cart {cart.count > 0 && `· ${cart.count}`}
@@ -68,7 +71,7 @@ function EmbroideryPage() {
       <section className="container-x py-10 md:py-14">
         <div className="grid lg:grid-cols-[1fr_280px] gap-8 lg:gap-12">
           <div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-5">
               {EMBROIDERY.map((p) => {
                 const total = totalStock(stockMap, p.id);
                 const low = typeof total === "number" && total > 0 && total <= 3;
@@ -76,23 +79,23 @@ function EmbroideryPage() {
                 return (
                   <article key={p.id} className={`group relative bg-[#f5f5f5] flex flex-col ${soldOut ? "opacity-70" : ""}`}>
                     <div className={`relative overflow-hidden bg-[#f5f5f5] ${soldOut ? "" : "cursor-pointer"}`} onClick={() => !soldOut && setActive(p)}>
-                      <div className="absolute right-2 top-2 z-10 bg-[#F1BF00] px-2 py-1 text-[9px] md:text-[10px] font-bold uppercase tracking-wider text-black inline-flex items-center gap-1">
+                      <div className="absolute right-2 top-2 z-30 bg-[#F1BF00] px-2 py-1 text-[9px] md:text-[10px] font-bold uppercase tracking-wider text-black inline-flex items-center gap-1">
                         <Sparkles className="size-3" /> Embroidery
                       </div>
                       {soldOut ? (
-                        <div className="absolute left-2 top-2 z-10 bg-red-600 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white">Sold out</div>
+                        <div className="absolute left-2 top-2 z-30 bg-red-600 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white">Sold out</div>
                       ) : low ? (
-                        <div className="absolute left-2 top-2 z-10 bg-black px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white">Only {total} left</div>
+                        <div className="absolute left-2 top-2 z-30 bg-black px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white">Only {total} left</div>
                       ) : (
-                        <div className="absolute left-2 top-2 z-10 bg-black px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-[#F1BF00] inline-flex items-center gap-1">
+                        <div className="absolute left-2 top-2 z-30 bg-black px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-[#F1BF00] inline-flex items-center gap-1">
                           <Flame className="size-3" /> New
                         </div>
                       )}
                       <div className="aspect-[4/5] w-full">
-                        <img src={p.image} alt={`${p.team} ${p.season} embroidery jersey`} loading="lazy" decoding="async"
-                          className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
+                        <RotatingImage images={p.gallery} alt={`${p.team} ${p.tag} embroidery jersey`} />
                       </div>
                     </div>
+
                     <div className="px-2 pt-3 pb-2 flex-1">
                       <div className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.16em] text-[#F1BF00]">{p.season}</div>
                       <h3 className="mt-0.5 font-bebas text-lg md:text-2xl leading-tight tracking-wide uppercase text-black">{p.team}</h3>

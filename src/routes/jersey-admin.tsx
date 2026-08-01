@@ -14,6 +14,9 @@ import { SETS } from "@/lib/sets";
 import { EMBROIDERY } from "@/lib/embroidery";
 import { CLUB_PV } from "@/lib/club-pv";
 import { FAN_FS } from "@/lib/fan-fs";
+import { CLUB_EMB } from "@/lib/club-emb";
+import { FS_RETRO } from "@/lib/fs-retro";
+
 import {
   setAdminSession,
   clearAdminSession,
@@ -321,9 +324,11 @@ const POSTER_ITEMS = [
   { id: "p-neymar", team: "Neymar · 10", image: "https://placehold.co/60/1a1a1a/fa5400?text=N" },
 ];
 
-type StockSection = "player" | "clubpv" | "specials" | "sets" | "fan" | "fanfs" | "jackets" | "shorts" | "polos" | "embroidery" | "posters";
+type StockSection = "player" | "clubpv" | "specials" | "sets" | "fan" | "fanfs" | "jackets" | "shorts" | "polos" | "embroidery" | "clubemb" | "fsretro" | "posters";
 const SECTIONS: { key: StockSection; label: string; sub: string }[] = [
-  { key: "embroidery", label: "Embroidery ✨", sub: "New · Upcoming season · ₹450" },
+  { key: "clubemb", label: "Club Embroidery 💙", sub: "2026/27 club season · ₹450" },
+  { key: "fsretro", label: "Full Sleeve Retro 🤍", sub: "Retro & latest FS · ₹950" },
+  { key: "embroidery", label: "Embroidery ✨", sub: "Premium stitched · ₹450" },
   { key: "player", label: "Player Version", sub: "Match-grade · S/M/L/XL/XXL" },
   { key: "clubpv", label: "Club Edition PV", sub: "Upcoming club 25/26 · ₹899" },
   { key: "specials", label: "Special Editions", sub: "FS · Practice · Deals" },
@@ -340,8 +345,11 @@ const SHORT_ITEMS = SHORTS.map((s) => ({ id: s.id, team: `${s.team} · ${s.colou
 const POLO_ITEMS = POLOS.map((p) => ({ id: p.id, team: `${p.team} · ${p.tag}`, image: p.image }));
 const SET_ITEMS = SETS.map((s) => ({ id: s.id, team: s.team, tag: s.tag, image: s.image }));
 const EMB_ITEMS = EMBROIDERY.map((e) => ({ id: e.id, team: e.team, tag: `${e.season} · ${e.tag}`, image: e.image }));
+const CLUB_EMB_ITEMS = CLUB_EMB.map((e) => ({ id: e.id, team: e.team, tag: e.tag, image: e.image }));
+const FS_RETRO_ITEMS = FS_RETRO.map((e) => ({ id: e.id, team: e.team, tag: `${e.era} · ${e.tag}`, image: e.image }));
 
 const SPECIAL_ITEMS = SPECIALS.map((s) => ({ id: s.id, team: s.title, image: s.image }));
+
 
 function StockPanel({ token }: { token: string }) {
   const [section, setSection] = useState<StockSection>("player");
@@ -373,6 +381,8 @@ function StockPanel({ token }: { token: string }) {
     : section === "shorts" ? SHORT_ITEMS
     : section === "polos" ? POLO_ITEMS
     : section === "embroidery" ? EMB_ITEMS
+    : section === "clubemb" ? CLUB_EMB_ITEMS
+    : section === "fsretro" ? FS_RETRO_ITEMS
     : section === "posters" ? POSTER_ITEMS
     : [];
   const sizeCols: SizeKey[] = section === "posters" ? ["M"] : SIZES;
@@ -380,7 +390,8 @@ function StockPanel({ token }: { token: string }) {
   const dirty = useMemo(() => {
     const updates: { jersey_id: string; size: SizeKey; stock: number }[] = [];
     if (!stockMap) return updates;
-    const all = [...ALL_JERSEYS, ...CLUB_PV, ...SPECIAL_ITEMS, ...SET_ITEMS, ...FAN_JERSEYS, ...FAN_FS, ...JACKETS, ...SHORT_ITEMS, ...POLO_ITEMS, ...EMB_ITEMS, ...POSTER_ITEMS];
+    const all = [...ALL_JERSEYS, ...CLUB_PV, ...SPECIAL_ITEMS, ...SET_ITEMS, ...FAN_JERSEYS, ...FAN_FS, ...JACKETS, ...SHORT_ITEMS, ...POLO_ITEMS, ...EMB_ITEMS, ...CLUB_EMB_ITEMS, ...FS_RETRO_ITEMS, ...POSTER_ITEMS];
+
     for (const j of all) {
       const isPoster = j.id.startsWith("p-");
       const cols: SizeKey[] = isPoster ? ["M"] : SIZES;
@@ -420,6 +431,9 @@ function StockPanel({ token }: { token: string }) {
     if (section === "shorts") return SHORT_ITEMS.some((j) => j.id === u.jersey_id);
     if (section === "polos") return POLO_ITEMS.some((j) => j.id === u.jersey_id);
     if (section === "embroidery") return EMB_ITEMS.some((j) => j.id === u.jersey_id);
+    if (section === "clubemb") return CLUB_EMB_ITEMS.some((j) => j.id === u.jersey_id);
+    if (section === "fsretro") return FS_RETRO_ITEMS.some((j) => j.id === u.jersey_id);
+
     if (section === "posters") return POSTER_ITEMS.some((j) => j.id === u.jersey_id);
     return false;
   }).length;
