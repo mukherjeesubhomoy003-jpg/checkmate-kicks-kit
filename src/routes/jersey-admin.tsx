@@ -14,6 +14,9 @@ import { SETS } from "@/lib/sets";
 import { EMBROIDERY } from "@/lib/embroidery";
 import { CLUB_PV } from "@/lib/club-pv";
 import { FAN_FS } from "@/lib/fan-fs";
+import { CLUB_EMB } from "@/lib/club-emb";
+import { FS_RETRO } from "@/lib/fs-retro";
+
 import {
   setAdminSession,
   clearAdminSession,
