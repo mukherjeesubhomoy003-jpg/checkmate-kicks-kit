@@ -20,9 +20,9 @@ export const Route = createFileRoute("/fan-fs")({
   head: () => ({
     meta: [
       { title: "Fan Version Full Sleeve — CHECKMATE" },
-      { name: "description", content: "Fan Version Full Sleeve club editions — Juventus, Arsenal, Liverpool, Man United, Real Madrid & Barcelona. ₹950 flat. Free shipping." },
+      { name: "description", content: "Fan Version Full Sleeve club editions — Juventus, Arsenal, Liverpool, Man United, Real Madrid & Barcelona. ₹999 plus distance-based shipping." },
       { property: "og:title", content: "CHECKMATE — Fan Full Sleeve Club Edition" },
-      { property: "og:description", content: "Full-sleeve fan version club kits · ₹950 · Free all-India shipping." },
+      { property: "og:description", content: "Full-sleeve fan version club kits · ₹999 plus distance-based shipping." },
     ],
   }),
   component: FanFsPage,
@@ -55,7 +55,7 @@ function FanFsPage() {
             Fan Version <span className="text-[#fa5400]">Full Sleeve.</span>
           </h1>
           <p className="mt-3 max-w-lg text-sm text-neutral-600">
-            Long-sleeve club edition supporter kits · <b>₹{FAN_FS_PRICE}</b> flat · Free all-India shipping.
+            Long-sleeve club edition supporter kits · <b>₹{FAN_FS_PRICE}</b> · Shipping calculated by distance.
           </p>
           <Link to="/bulk-cart" className="mt-4 inline-flex items-center gap-2 bg-black text-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-[#fa5400] transition">
             <ShoppingCart className="size-3.5" /> View Cart {cart.count > 0 && `· ${cart.count}`}
@@ -106,7 +106,7 @@ function FanFsPage() {
             </div>
 
             <div className="mt-10 text-center text-[11px] uppercase tracking-[0.25em] text-neutral-500">
-              Free shipping · All-India delivery · 7 days
+              Shipping calculated by distance · All-India delivery · 7 days
             </div>
           </div>
 

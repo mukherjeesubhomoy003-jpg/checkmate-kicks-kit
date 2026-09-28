@@ -1,4 +1,4 @@
-// Player Version — Club Edition 25/26 drop. ₹899 flat, no shipping.
+// Player Version — Club Edition 25/26 drop. ₹999 plus shipping.
 import c1 from "@/assets/club-pv/cpv1.jpg.asset.json";
 import c2 from "@/assets/club-pv/cpv2.jpg.asset.json";
 import c3 from "@/assets/club-pv/cpv3.jpg.asset.json";
@@ -49,5 +49,5 @@ export const CLUB_PV: ClubPv[] = [
   { id: "cpv22", team: "Manchester United",tag: "Away · White",          image: c22.url },
 ];
 
-export const CLUB_PV_PRICE = 899;
+export const CLUB_PV_PRICE = 999;
 export const CLUB_PV_MRP = 1799;

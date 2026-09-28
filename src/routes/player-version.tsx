@@ -6,9 +6,9 @@ export const Route = createFileRoute("/player-version")({
   head: () => ({
     meta: [
       { title: "Player Version Jerseys — CHECKMATE" },
-      { name: "description", content: "Player-edition World Cup 2026 jerseys. Match-grade fabric, federation badges. ₹850 flat, all teams." },
+      { name: "description", content: "Player-edition football jerseys. Match-grade fabric, federation badges. ₹999 plus distance-based shipping." },
       { property: "og:title", content: "CHECKMATE — Player Version Collection" },
-      { property: "og:description", content: "All player-version jerseys ₹850 · Free all-India shipping." },
+      { property: "og:description", content: "Player-version jerseys ₹999 plus distance-based shipping." },
     ],
   }),
   component: PlayerVersionPage,
