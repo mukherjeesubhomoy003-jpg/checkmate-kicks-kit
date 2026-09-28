@@ -20,9 +20,9 @@ export const Route = createFileRoute("/club-pv")({
   head: () => ({
     meta: [
       { title: "Club Edition Player Version 25/26 — CHECKMATE" },
-      { name: "description", content: "Upcoming Club Edition Player Version jerseys — Real Madrid, Barcelona, Arsenal, City, Bayern, Milan & more. ₹899 flat. Hurry — limited stock." },
+      { name: "description", content: "Upcoming Club Edition Player Version jerseys — Real Madrid, Barcelona, Arsenal, City, Bayern, Milan & more. ₹999 plus distance-based shipping. Hurry — limited stock." },
       { property: "og:title", content: "CHECKMATE — Club Edition Player Version" },
-      { property: "og:description", content: "Upcoming club 25/26 player version drops · ₹899 · Limited stock." },
+      { property: "og:description", content: "Upcoming club 25/26 player version drops · ₹999 plus distance-based shipping · Limited stock." },
     ],
   }),
   component: ClubPvPage,
@@ -59,12 +59,12 @@ function ClubPvPage() {
                 Hurry Up — <span className="text-[#fa5400]">Limited Stock.</span>
               </h2>
               <p className="mt-2 text-xs sm:text-sm text-white/80 max-w-xl">
-                First-lot upcoming season Player Version drops from the biggest clubs. Match-grade fabric, ₹{CLUB_PV_PRICE} flat, no shipping.
+                First-lot upcoming season Player Version drops from the biggest clubs. Match-grade fabric, ₹{CLUB_PV_PRICE} + shipping.
               </p>
             </div>
             <div className="text-right shrink-0">
               <div className="font-bebas text-4xl sm:text-5xl text-[#F1BF00] leading-none">₹{CLUB_PV_PRICE}</div>
-              <div className="text-[10px] uppercase tracking-widest text-white/70 mt-1">No shipping</div>
+                <div className="text-[10px] uppercase tracking-widest text-white/70 mt-1">+ shipping</div>
             </div>
           </div>
         </div>
@@ -79,7 +79,7 @@ function ClubPvPage() {
             Club Edition <span className="text-[#fa5400]">Player Version.</span>
           </h1>
           <p className="mt-3 max-w-lg text-sm text-neutral-600">
-            25/26 upcoming club drops · Match-grade · <b>₹{CLUB_PV_PRICE}</b> flat · No shipping.
+            25/26 upcoming club drops · Match-grade · <b>₹{CLUB_PV_PRICE}</b> + shipping.
           </p>
           <Link to="/bulk-cart" className="mt-4 inline-flex items-center gap-2 bg-black text-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-[#fa5400] transition">
             <ShoppingCart className="size-3.5" /> View Cart {cart.count > 0 && `· ${cart.count}`}
@@ -130,7 +130,7 @@ function ClubPvPage() {
             </div>
 
             <div className="mt-10 text-center text-[11px] uppercase tracking-[0.25em] text-neutral-500">
-              No shipping charge · All-India delivery · 7 days
+              Shipping calculated by distance · All-India delivery · 7 days
             </div>
           </div>
 

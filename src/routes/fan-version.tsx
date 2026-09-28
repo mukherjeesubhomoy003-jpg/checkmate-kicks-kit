@@ -23,9 +23,9 @@ export const Route = createFileRoute("/fan-version")({
   head: () => ({
     meta: [
       { title: "Fan Version Jerseys — CHECKMATE" },
-      { name: "description", content: "Fan-version football jerseys. Everyday supporter kits. ₹750 flat, all teams. Free all-India shipping." },
+      { name: "description", content: "Fan-version football jerseys. Everyday supporter kits. ₹750 offer price, ₹850 original price, plus distance-based shipping." },
       { property: "og:title", content: "CHECKMATE — Fan Version Collection" },
-      { property: "og:description", content: "All fan-version jerseys ₹750 · Free shipping across India." },
+      { property: "og:description", content: "Fan-version jerseys at ₹750 offer price, plus distance-based shipping." },
     ],
   }),
   component: FanPage,
@@ -58,7 +58,7 @@ function FanPage() {
             Fan <span className="text-[#fa5400]">Version.</span>
           </h1>
           <p className="mt-3 max-w-lg text-sm text-neutral-600">
-            Everyday supporter kits · Comfortable fabric · <b>₹{FAN_PRICE} flat</b> · Free all-India shipping.
+            Everyday supporter kits · Comfortable fabric · <b>₹{FAN_PRICE} offer</b> · Original ₹{FAN_MRP} · Shipping calculated by distance.
           </p>
           <Link to="/bulk-cart" className="mt-4 inline-flex items-center gap-2 bg-black text-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-[#fa5400] transition">
             <ShoppingCart className="size-3.5" /> View Cart {cart.count > 0 && `· ${cart.count}`}
@@ -72,8 +72,8 @@ function FanPage() {
                 const total = totalStock(stockMap, j.id);
                 const low = typeof total === "number" && total > 0 && total <= 3;
                 const premium = isPremium(j);
-                const price = premium ? 1050 : FAN_PRICE;
-                const mrp = premium ? 1899 : FAN_MRP;
+                const price = FAN_PRICE;
+                const mrp = FAN_MRP;
                 return (
                   <article key={j.id} className="group relative bg-[#f5f5f5] flex flex-col">
                     <div className="relative overflow-hidden bg-[#f5f5f5] cursor-pointer" onClick={() => setActive(j)}>
@@ -112,7 +112,7 @@ function FanPage() {
             </div>
 
             <div className="mt-10 text-center text-[11px] uppercase tracking-[0.25em] text-neutral-500">
-              Free shipping · All-India delivery · 7 days
+               Shipping calculated by distance · All-India delivery · 7 days
             </div>
           </div>
 
@@ -130,7 +130,7 @@ function FanPage() {
         open={!!active}
         team={active ? `${active.team} ${active.tag} · Fan Version` : ""}
         image={active?.image ?? ""}
-        priceOverride={active && isPremium(active) ? 1050 : FAN_PRICE}
+        priceOverride={FAN_PRICE}
         hideKitSelector
         jerseyId={active?.id}
         category="Fan Version"
@@ -143,8 +143,8 @@ function FanPage() {
             id: addingTo.id,
             title: `${addingTo.team} ${addingTo.tag}`,
             image: addingTo.image,
-            price: isPremium(addingTo) ? 1050 : FAN_PRICE,
-            mrp: isPremium(addingTo) ? 1899 : FAN_MRP,
+            price: FAN_PRICE,
+            mrp: FAN_MRP,
             category: "Fan Version",
           }}
           stock={stockMap?.[addingTo.id]}
@@ -154,7 +154,7 @@ function FanPage() {
               itemId,
               name: `${name} · Fan Version`,
               image: addingTo.image,
-              price: isPremium(addingTo) ? 1050 : FAN_PRICE,
+              price: FAN_PRICE,
               size,
               quantity: qty,
               category: "Fan Version",

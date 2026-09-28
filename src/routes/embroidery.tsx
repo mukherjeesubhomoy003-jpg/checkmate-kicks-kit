@@ -55,7 +55,7 @@ function EmbroideryPage() {
               <p className="mt-3 text-sm md:text-base text-white/85 max-w-lg">
                 Premium <b className="text-white">stitched crest & sponsor</b> — retro legends and latest club/country kits.
                 <br />
-                <span className="text-[#F1BF00] font-bold">₹{EMBROIDERY_PRICE} only</span> · No shipping charges · Limited units.
+                <span className="text-[#F1BF00] font-bold">₹{EMBROIDERY_PRICE}</span> · Shipping calculated by distance · Limited units.
               </p>
 
               <div className="mt-4">
@@ -121,7 +121,7 @@ function EmbroideryPage() {
 
             <div className="mt-10 text-center text-[11px] uppercase tracking-[0.25em] text-neutral-500">
               <Trophy className="inline size-3.5 mr-1 text-[#F1BF00]" />
-              Free shipping · All-India delivery · Launch pricing
+              Shipping calculated by distance · All-India delivery · Launch pricing
             </div>
           </div>
 
