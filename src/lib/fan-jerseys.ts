@@ -165,4 +165,4 @@ export const FAN_JERSEYS: FanJersey[] = [
 ];
 
 export const FAN_PRICE = 750;
-export const FAN_MRP = 1499;
+export const FAN_MRP = 850;

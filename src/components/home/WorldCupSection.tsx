@@ -17,8 +17,7 @@ const FULL_SLEEVE_IDS = new Set(["j112", "j113"]);
 function isFullSleeve(id: string) { return FULL_SLEEVE_IDS.has(id); }
 function priceFor(j: Jersey) {
   if (isFullSleeve(j.id)) return { price: 1200, mrp: 1999 };
-  const premium = j.team === "Spain" || j.team === "Argentina";
-  return { price: premium ? 1300 : 850, mrp: premium ? 2499 : 1999 };
+  return { price: 999, mrp: 1999 };
 }
 
 
@@ -52,7 +51,7 @@ export function WorldCupSection({ preview, showBanner: _showBanner = true, headi
           </h2>
 
           <p className="mt-3 max-w-xl text-xs md:text-sm text-neutral-600 px-4">
-            Match-grade fabric · federation badges · heat-pressed numbers · <b>₹850 flat</b>.
+            Match-grade fabric · federation badges · heat-pressed numbers · <b>₹999</b> + shipping.
           </p>
           {!preview && cart.count > 0 && (
             <a href="/bulk-cart" className="mt-4 inline-flex items-center gap-2 bg-black text-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-[#fa5400] transition">

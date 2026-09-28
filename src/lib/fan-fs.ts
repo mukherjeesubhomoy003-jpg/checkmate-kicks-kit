@@ -1,4 +1,4 @@
-// Fan Version — Full Sleeve Club Edition. ₹950 flat, no shipping.
+// Fan Version — Full Sleeve Club Edition. ₹999 plus shipping.
 import f1 from "@/assets/fan-fs/ffs1.jpg.asset.json";
 import f2 from "@/assets/fan-fs/ffs2.jpg.asset.json";
 import f3 from "@/assets/fan-fs/ffs3.jpg.asset.json";
@@ -21,5 +21,5 @@ export const FAN_FS: FanFs[] = [
   { id: "ffs8", team: "Barcelona",       tag: "Away · Kobe Purple",    image: f8.url },
 ];
 
-export const FAN_FS_PRICE = 950;
+export const FAN_FS_PRICE = 999;
 export const FAN_FS_MRP = 1899;
